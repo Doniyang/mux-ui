@@ -1,7 +1,7 @@
 <template>
   <transition name>
-    <section class="mux-prompt-wrapper">
-      <div class="mux-prompt-header"> <span class="mux-prompt-title"></span> </div>
+    <section class="mux-prompt-wrapper" v-if="value">
+      <div class="mux-prompt-header"> <span class="mux-prompt-title">{{title}}</span> </div>
       <div class="mux-prompt-main">
         <div class="mux-prompt-content">
           <input :type="inputType" class="mux-prompt-input" :class="{'mux-error-input':isError}" :placeholder="placeHolder" v-model="promptContent"/>
@@ -15,6 +15,7 @@
   </transition>
 </template>
 <script type="text/babel">
+import MaskMixin from '@/mixins/mask'
 export default{
   name: 'v-prompt',
   props: {
@@ -43,6 +44,7 @@ export default{
       default: '确定'
     }
   },
+  mixins: [MaskMixin],
   data () {
     return {
       isError: false,
@@ -52,12 +54,18 @@ export default{
   },
   methods: {
     handleClick (type) {
-      this.validator()
-      this.$nextTick(() => {
-        if (!this.isError) {
-          type === 'prompt' ? this.callBack(type, this.promptContent) : this.callBack(type)
-        }
-      })
+      if (type === 'prompt') {
+        this.validator()
+        this.$nextTick(() => {
+          if (!this.isError) {
+            this.value = false
+            this.callBack(type, this.promptContent)
+          }
+        })
+      } else {
+        this.value = false
+        this.callBack(type)
+      }
     },
     validator () {
       this.isError = this.validate && this.validate(this.promptContent)
@@ -83,11 +91,11 @@ export default{
   & .mux-prompt-header {
     padding: @prompt-header-padd-top 0 0;
     box-sizing: border-box;
+    text-align: center;
     & .mux-prompt-title {
       padding: 0;
       margin: 0;
       display: inline-block;
-      text-align: center;
       font-size: @prompt-font-size;
       font-weight: 600;
     }
@@ -103,9 +111,12 @@ export default{
     background-size: 100% 2px;
     background-repeat: no-repeat;
     background-position: bottom;
-    &.mux-prompt-content {
+    & .mux-prompt-content {
     	padding: 0;
     	box-sizing: border-box;
+      & .mux-prompt-input{
+      
+    }
     }
   }
   & .mux-prompt-footer {
@@ -124,10 +135,11 @@ export default{
       border: none;
       -webkit-appearance: none;
       height: @prompt-btn-height;
+      background-color: @prompt-bg;
     }
     & .mux-btn-cancel {
       color: @prompt-cancel-color;
-      border-left: 1px solid #dddddd;
+      border-right: 1px solid #dddddd;
       &:active {
         background-color: @prompt-bg;
         color: @prompt-cancel-color;
