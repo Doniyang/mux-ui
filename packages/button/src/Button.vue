@@ -22,25 +22,25 @@ export default {
     size: {
       type: String,
       default: 'normal',
-      validator (v) {
+      validator(v) {
         return ['small', 'normal', 'large'].includes(v)
       }
     },
     type: {
       type: String,
       default: 'default',
-      validator (v) {
+      validator(v) {
         return ['default', 'primary', 'danger'].includes(v)
       }
     }
   },
   computed: {
-    btnClass () {
+    btnClass() {
       return ['mux-btn-' + this.type, 'mux-btn-' + this.size, { 'mux-btn-disable': this.disable, 'mux-btn-block': this.block, 'mux-btn-plain': this.plain }]
     }
   },
   methods: {
-    handleClick (evt) {
+    handleClick(evt) {
       this.$emit('click', evt)
     }
   }
@@ -49,7 +49,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url('../../../src/style/variable.less');
-.mux-btn {
+@btn: ~"mux-btn";
+
+.@{btn} {
   position: relative;
   overflow: hidden;
   zoom: 1;
@@ -61,48 +63,48 @@ export default {
   border-radius: @btn-radius;
   box-sizing: border-box;
   appearance: none;
-  &.mux-btn-default {
+  &-default {
     background-color: @btn-default-bg;
     color: @btn-default-color;
     border: 1px solid @btn-default-border-color;
-    &.mux-btn-plain {
+    &.@{btn}-plain {
       background-color: transparent;
     }
   }
-  &.mux-btn-primary {
+  &-primary {
     background-color: @btn-primary-bg;
     color: @btn-primary-color;
     border: 1px solid @btn-primary-border-color;
-    &.mux-btn-plain {
+    &.@{btn}-plain {
       background-color: transparent;
       color: @btn-primary-bg;
     }
   }
-  &.mux-btn-danger {
+  &-danger {
     background-color: @btn-danger-bg;
     color: @btn-danger-color;
     border: 1px solid @btn-danger-border-color;
-    &.mux-btn-plain {
+    &.@{btn}-plain {
       background-color: transparent;
       color: @btn-danger-bg;
     }
   }
-  &.mux-btn-small {
+  &-small {
     font-size: @btn-small;
     padding: @btn-small-padding;
   }
-  &.mux-btn-normal {
+  &-normal {
     font-size: @btn-normal;
     padding: @btn-normal-padding;
   }
-  &.mux-btn-large {
+  &-large {
     font-size: @btn-large;
     padding: @btn-large-padding;
   }
-  &.mux-btn-disable {
+  &-disable {
     opacity: 0.6;
   }
-  &.mux-btn-block {
+  &-block {
     display: block;
     width: 100%;
   }

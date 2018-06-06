@@ -18,10 +18,10 @@ export default function (options) {
       resolve(action)
     }
     vm.callBack = defaultCallBack
-    if (!vm.value) {
+    if (!vm.visible) {
       document.body.appendChild(vm.$el)
-      Vue.nextTick(() => {
-        vm.value = true
+      vm.$nextTick(() => {
+        vm.visible = true
       })
     }
   })

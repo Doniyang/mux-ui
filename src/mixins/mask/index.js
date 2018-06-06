@@ -27,6 +27,7 @@ export default {
   },
   data () {
     return {
+      visible: false,
       maskId: 'MASK-1',
       opening: false,
       closing: false
@@ -36,6 +37,7 @@ export default {
     const maskID = 'MASK-' + (idSeed++)
     const vm = createInstance({ zIndex: this.zIndex - 1 })
     this.maskId = maskID
+    this.visible = this.value
     maskManager.register(maskID, vm)
   },
   beforeMount () {
@@ -58,6 +60,10 @@ export default {
   },
   watch: {
     value (nv, ov) {
+      if (nv === ov) return
+      this.visible = nv
+    },
+    visible (nv, ov) {
       if (nv === ov) { return }
       if (nv) {
         this.willOpen()
@@ -69,7 +75,7 @@ export default {
   methods: {
     onClickModal () {
       if (this.closeOnClickModal) {
-        this.value = false
+        this.$emit('input', false)
       }
     },
     willOpen () {

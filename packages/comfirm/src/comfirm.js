@@ -17,10 +17,11 @@ export default function (options) {
     }
     const vm = initInstance(Object.assign({}, defaults, options))
     vm.callBack = defaultCallBack
-    if (!vm.value) {
+    if (!vm.visible) {
+      console.log(vm);
       document.body.appendChild(vm.$el)
-      Vue.nextTick(() => {
-        vm.value = true
+      vm.$nextTick(() => {
+         vm.visible = true
       })
     }
   })

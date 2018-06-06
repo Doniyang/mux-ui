@@ -1,6 +1,6 @@
 <template>
   <transition name="mux-bounce">
-    <section class="mux-alert-wrapper" v-if="value">
+    <section class="mux-alert-wrapper" v-if="visible">
       <div class="mux-alert-header">
         <div class="mux-alert-title">{{title}}</div>
       </div>
@@ -32,14 +32,15 @@ export default {
     }
   },
   mixins: [MaskMixin],
-  data () {
+  data() {
     return {
       callBack: null
     }
   },
   methods: {
-    handleClick () {
-     this.value = false
+    handleClick() {
+      this.visible = false
+      this.$emit('input', false)
       if (this.callBack) {
         this.callBack('alert')
       }
@@ -50,31 +51,34 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url('../../../src/style/variable.less');
-.mux-alert-wrapper {
-  position: fixed;
-  z-index: @zIndex;
-  background-color: @alert-bg;
-  -webkit-user-select: none;
-  top: 50%;
-  left: 50%;
-  width: 75%;
-  border-radius: @alert-border-radius;
-  transform: translate3d(-50%, -50%, 0);
-  overflow: hidden;
-  transition: all .2s;
-  & .mux-alert-header {
+@alert: ~"mux-alert";
+.@{alert} {
+  &-wrapper {
+    position: fixed;
+    z-index: @zIndex;
+    background-color: @alert-bg;
+    -webkit-user-select: none;
+    top: 50%;
+    left: 50%;
+    width: 75%;
+    border-radius: @alert-border-radius;
+    transform: translate3d(-50%, -50%, 0);
+    overflow: hidden;
+    transition: all .2s;
+  }
+  &-header {
     padding: @alert-header-padd-top 0 0;
     box-sizing: border-box;
-    & .mux-alert-title {
-      padding: 0;
-      margin: 0;
-      display: block;
-      text-align: center;
-      font-size: @alert-font-size;
-      font-weight: 600;
-    }
   }
-  & .mux-alert-main {
+  &-title {
+    padding: 0;
+    margin: 0;
+    display: block;
+    text-align: center;
+    font-size: @alert-font-size;
+    font-weight: 600;
+  }
+  &-main {
     position: relative;
     min-height: @alert-content-height;
     padding: @alert-content-padd;
@@ -85,42 +89,42 @@ export default {
     background-size: 100% 2px;
     background-repeat: no-repeat;
     background-position: bottom;
-    & .mux-alert-content {
-      vertical-align: sub;
-      line-height: 1;
-      color: #999;
-    }
   }
-  & .mux-alert-footer {
+  &-content {
+    vertical-align: sub;
+    line-height: 1;
+    color: #999;
+  }
+  &-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    & .mux-alert-btn {
-      flex: 1;
-      -webkit-appearance: none;
-      height: @alert-btn-height;
-      display: block;
-      padding: 0;
-      margin: 0;
-      border: none;
-      outline: 0;
+  }
+  &-btn{
+    flex: 1;
+    -webkit-appearance: none;
+    height: @alert-btn-height;
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: 0;
+    color: @alert-btn-color;
+    background-color: @alert-bg;
+    &:active {
       color: @alert-btn-color;
       background-color: @alert-bg;
-       &:active {
-          color: @alert-btn-color;
-          background-color: @alert-bg;
-        }
     }
   }
 }
+.mux-bounce-enter {
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(0.7);
+}
 
- .mux-bounce-enter {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(0.7);
-  }
-  .mux-bounce-leave-active {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(0.9);
-  }
+.mux-bounce-leave-active {
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(0.9);
+}
 
 </style>
