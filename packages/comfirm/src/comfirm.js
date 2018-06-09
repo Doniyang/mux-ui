@@ -18,7 +18,6 @@ export default function (options) {
     const vm = initInstance(Object.assign({}, defaults, options))
     vm.callBack = defaultCallBack
     if (!vm.visible) {
-      console.log(vm);
       document.body.appendChild(vm.$el)
       vm.$nextTick(() => {
          vm.visible = true

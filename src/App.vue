@@ -10,6 +10,12 @@
       <v-button type="danger" size="large" :plain="true" :block="true" @click="showPrompt">默认按钮</v-button>
     </div>
     <v-cell title="left" :is-link="true">right</v-cell>
+    <div class="btn-box">
+      <v-upload :preview="true"></v-upload>
+    </div>
+    <div class="btn-box">
+       <v-input></v-input>
+    </div>
     <v-actionsheet :actions="menus" v-model="visible" :has-cancel="true"></v-actionsheet>
   </div>
 </template>
@@ -20,6 +26,8 @@ import Prompt from 'Packages/prompt'
 import Button from 'Packages/button'
 import Cell from 'Packages/cell'
 import Actionsheet from 'Packages/actionsheet'
+import Upload from 'Packages/upload'
+import Input from 'Packages/input'
 export default {
   name: 'App',
   data () {
@@ -35,6 +43,8 @@ export default {
   components: {
     'v-button': Button,
     'v-cell': Cell,
+    'v-upload': Upload,
+    'v-input': Input,
     'v-actionsheet': Actionsheet
   },
   methods: {
