@@ -14,8 +14,14 @@
       <v-upload :preview="true"></v-upload>
     </div>
     <div class="btn-box">
-       <v-input></v-input>
+      <v-input></v-input>
     </div>
+    <v-sticky>
+      <div>Sticky:粘性定位是相对定位和固定定位的混合。</div>
+    </v-sticky>
+    <ul>
+      <li v-for="(it,index) in dataList" :key="index">{{it}}</li>
+    </ul>
     <v-actionsheet :actions="menus" v-model="visible" :has-cancel="true"></v-actionsheet>
   </div>
 </template>
@@ -28,10 +34,12 @@ import Cell from 'Packages/cell'
 import Actionsheet from 'Packages/actionsheet'
 import Upload from 'Packages/upload'
 import Input from 'Packages/input'
+import Sticky from 'Packages/sticky'
 export default {
   name: 'App',
   data () {
     return {
+      dataList: [],
       menus: [{
         name: '122'
       }, {
@@ -45,7 +53,11 @@ export default {
     'v-cell': Cell,
     'v-upload': Upload,
     'v-input': Input,
+    'v-sticky': Sticky,
     'v-actionsheet': Actionsheet
+  },
+  mounted () {
+    this.dataList = Array.from(new Array(30)).map((item, index) => index + 1)
   },
   methods: {
     handleClick (e) {
@@ -75,7 +87,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin-top: 30px;
-  overflow: hidden;
+  transform: scale(1,1);
   zoom: 1;
 }
 

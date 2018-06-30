@@ -5,7 +5,6 @@
 </template>
 <script>
 export default {
-  name: 'v-button',
   props: {
     block: {
       type: Boolean,

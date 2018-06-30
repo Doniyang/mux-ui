@@ -5,12 +5,26 @@
     </div>
     <div class="mux-input-container">
       <span class="mux-input-icon"><slot name="icon"></slot></span>
-      <input :type="type" :name="name" class="mux-input-block">
+      <input :type="inputType" :name="name" class="mux-input-block">
       <span class="mux-input-times"><i class=""></i></span>
     </div>
   </section>
 </template>
-<script type="text/javascript"></script>
+<script type="text/javascript">
+export default {
+  props: {
+    inputType: {
+      type: String,
+      default: 'text'
+    },
+    name: {
+      type: String,
+      default: ''
+    }
+  }
+}
+
+</script>
 <style lang="less" scoped>
 @input: ~"mux-input";
 .@{input} {
