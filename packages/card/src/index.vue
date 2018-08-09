@@ -1,16 +1,16 @@
 <template>
-  <section class="mxoa-card-wrapper">
-    <header class="mxoa-card-header" v-if="hasTitle">
+  <section class="mux-card-wrapper">
+    <header class="mux-card-header" v-if="hasTitle">
       <slot name="header">
         <span>{{title}}</span>
       </slot>
     </header>
-    <main class="mxoa-card-main">
+    <main class="mux-card-main">
       <slot name="content">
         <span>{{content}}</span>
       </slot>
     </main>
-    <footer class="mxoa-card-footer">
+    <footer class="mux-card-footer">
       <slot name="footer">
         <span>{{footer}}</span>
       </slot>
@@ -19,7 +19,6 @@
 </template>
 <script type="text/javascript">
 export default {
-  name: 'mx-card',
   props: {
     title: {
       type: String,
@@ -42,7 +41,7 @@ export default {
 
 </script>
 <style lang="less" scoped>
-@card: ~"mxoa-card";
+@card: ~"mux-card";
 .setClearFix() {
   display: table;
   content: "";

@@ -1,5 +1,5 @@
 <template>
-  <i class="mxoa-plus-icon"></i>
+  <i class="mux-plus-icon"></i>
 </template>
 <script>
 export default {
@@ -8,7 +8,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @iconColor: #0796e2;
-.mxoa-plus-icon {
+.mux-plus-icon {
   display: inline-block;
   position: relative;
   width: 1.5em;

@@ -1,6 +1,6 @@
 <template>
-  <span class="mxox-checkbox-wrapper">
-    <input type="checkbox" class="mxoa-checkbox-input" :class="{'mxoa-checkbox-some':indeterminate}" :value="value" :checked="isChecked" @change="handleChange">
+  <span class="mux-checkbox-wrapper">
+    <input type="checkbox" class="mux-checkbox-input" :class="{'mux-checkbox-some':indeterminate}" :value="value" :checked="isChecked" @change="handleChange">
   </span>
 </template>
 <script>
@@ -40,7 +40,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@checkbox: ~"mxoa-checkbox";
+@checkbox: ~"mux-checkbox";
 @bglist: #aaaaaa,
 #3598db,
 #FFFFFF;

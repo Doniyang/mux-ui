@@ -1,6 +1,6 @@
 <template>
-  <span class="mxoa-radio-wrapper">
-     <input type="radio" :name="name" class="mxoa-radio-input" :checked="radioCheck" @change="handleChange($event)">
+  <span class="mux-radio-wrapper">
+     <input type="radio" :name="name" class="mux-radio-input" :checked="radioCheck" @change="handleChange($event)">
   </span>
 </template>
 <script>
@@ -25,7 +25,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@radio: ~"mxoa-radio";
+@radio: ~"mux-radio";
 @radioBg: #FFFFFF;
 @radioBorderColor: #aaaaaa;
 @radioCheckBorderColor: #3598db;

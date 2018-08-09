@@ -1,10 +1,10 @@
 <template>
-  <div class="mxoa-radiolist-group" :class="columnClass">
-    <label class="mxoa-radiolist-item" :class="positionClass" v-for="(item,index) in options" :key="index" :for="`redio_item_${index}`">
-      <div class="mxoa-radiolist-item-header">
-        <input type="radio" :name="name" :value="item.value" class="mxoa-radiolist-input" :id="`redio_item_${index}`" v-model="currentValue">
+  <div class="mux-radiolist-group" :class="columnClass">
+    <label class="mux-radiolist-item" :class="positionClass" v-for="(item,index) in options" :key="index" :for="`redio_item_${index}`">
+      <div class="mux-radiolist-item-header">
+        <input type="radio" :name="name" :value="item.value" class="mux-radiolist-input" :id="`redio_item_${index}`" v-model="currentValue">
       </div>
-      <div class="mxoa-radiolist-item-main"><span v-text="item.name"></span></div>
+      <div class="mux-radiolist-item-main"><span v-text="item.name"></span></div>
     </label>
   </div>
 </template>
@@ -36,12 +36,12 @@ export default {
   computed: {
     columnClass () {
       return {
-        'mxoa-radiolist-column': !this.isInline
+        'mux-radiolist-column': !this.isInline
       }
     },
     positionClass () {
       return {
-        'mxoa-radiolist-item-left': this.labelPosition === 'left'
+        'mux-radiolist-item-left': this.labelPosition === 'left'
       }
     }
   },
@@ -62,7 +62,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@radiolist: ~"mxoa-radiolist";
+@radiolist: ~"mux-radiolist";
 @bglist: #aaaaaa,
 #3598db,
 #FFFFFF;

@@ -1,6 +1,6 @@
 <template>
-  <div class="mxoa-checkboxtree-wrapper">
-    <div class="mxoa-checkboxtree-container" data-role="tree" v-for="(item,index) in options" :key="index">
+  <div class="mux-checkboxtree-wrapper">
+    <div class="mux-checkboxtree-container" data-role="tree" v-for="(item,index) in options" :key="index">
       <v-tree-node :node="item" :icon-close="showCloseIcon" :is-collopse="true" :checked="isChecked" @onAsyncSelected="handleSelected"></v-tree-node>
     </div>
   </div>
@@ -49,7 +49,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@checkboxtree: ~"mxoa-checkboxtree";
+@checkboxtree: ~"mux-checkboxtree";
 .@{checkboxtree} {
   &-wrapper {
     padding: 0;

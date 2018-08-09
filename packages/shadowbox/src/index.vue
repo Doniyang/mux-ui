@@ -1,5 +1,5 @@
 <template>
-  <div class="mxoa-shadowbox-container">
+  <div class="mux-shadowbox-container">
     <slot></slot>
   </div>
 </template>
@@ -10,7 +10,7 @@ export default {
 
 </script>
 <style lang="less" scoped>
-.mxoa-shadowbox-container {
+.mux-shadowbox-container {
   display: block;
   overflow: hidden;
   zoom: 1;

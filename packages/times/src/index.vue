@@ -1,5 +1,5 @@
 <template>
-  <i class="mxoa-times-icon"></i>
+  <i class="mux-times-icon"></i>
 </template>
 <script type="text/javascript">
 export default {
@@ -7,7 +7,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.mxoa-times-icon {
+.mux-times-icon {
   position: relative;
   display: block;
   height: 1.4em;

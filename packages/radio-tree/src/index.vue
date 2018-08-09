@@ -1,5 +1,5 @@
 <template>
-  <div class="mxoa-radio-tree-wrapper">
+  <div class="mux-radio-tree-wrapper">
     <radio-tree-node v-for="(item,index) in options" :key="index" :radio-tree-data="item" @onAsyncSelected="handleSelect"></radio-tree-node>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@radiotree: ~"mxoa-radio-tree";
+@radiotree: ~"mux-radio-tree";
 .@{radiotree} {
   &-wrapper {
     position: relative;

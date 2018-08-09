@@ -1,17 +1,19 @@
 <template>
-  <div class="mxoa-nodetree-wrapper" v-show="isCollopse">
-    <div class="mxoa-nodetree-main">
-      <div class="mxoa-nodetree-title" @click.stop="handleClick">
-        <span class="mxoa-nodetree-iconbox">
+  <div class="mux-nodetree-wrapper">
+    <div class="mux-nodetree-header">
+      <div class="mux-nodetree-title" @click.stop="handleClick">
+        <span class="mux-nodetree-iconbox">
           <i :class="iconClass"></i></span>
         <span>{{node.name}}</span>
         <v-load :visible="isLoad"></v-load>
       </div>
-      <div class="mxoa-nodetree-box">
+      <div class="mux-nodetree-box">
         <v-check :value="node.id" :checked="node.nocheck" :indeterminate="isIndeterminate" @change="handleCheckedChange"></v-check>
       </div>
     </div>
+    <div class="mux-nodetree-main" v-show="isLeafCollopse">
     <v-tree-node v-for="child in nodeChildren  " :node="child" :key="child.id" :icon-close="isLeafIconClose" :is-collopse="isLeafCollopse" :checked="isChecked" @onAsyncSelected="handleAsyncSelected" @onAsyncChange="updateCheckState"></v-tree-node>
+    </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -61,7 +63,7 @@ export default {
   },
   computed: {
     iconClass() {
-      return { 'mxoa-nodetree-arrow-close': this.isIconClose, 'mxoa-nodetree-arrow-open': !this.isIconClose, 'mxoa-nodetree-arrow-hide': this.hiddenIcon }
+      return { 'mux-nodetree-arrow-close': this.isIconClose, 'mux-nodetree-arrow-open': !this.isIconClose, 'mux-nodetree-arrow-hide': this.hiddenIcon }
     }
   },
   created() {
@@ -177,7 +179,7 @@ export default {
 
 </script>
 <style lang="less" scoped>
-@nodetree: ~"mxoa-nodetree";
+@nodetree: ~"mux-nodetree";
 .@{nodetree} {
   &-wrapper {
     margin: 0 0 0 1.25em;

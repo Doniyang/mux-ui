@@ -1,16 +1,16 @@
 <template>
-  <div class="mxoa-tree-node-wrapper">
-    <div class="mxoa-tree-node-header">
-      <div class="mxoa-tree-node-title" @click="handleClick">
+  <div class="mux-tree-node-wrapper">
+    <div class="mux-tree-node-header">
+      <div class="mux-tree-node-title" @click="handleClick">
         <span :class="iconClass"></span>
-        <span class="mxoa-tree-node-label"> {{radioTreeData.name}}</span>
+        <span class="mux-tree-node-label"> {{radioTreeData.name}}</span>
         <v-load :visible="isLoad"></v-load>
       </div>
-      <div class="mxoa-tree-node-arrow">
+      <div class="mux-tree-node-arrow">
         <v-radio @change="handleChange"></v-radio>
       </div>
     </div>
-    <main class="mxoa-tree-node-main">
+    <main class="mux-tree-node-main">
       <radio-tree-node v-for="(item,index) in nodeChildren" :key="index" :radio-tree-data="item" @onAsyncSelected="handleAsyncSelected"></radio-tree-node>
     </main>
   </div>
@@ -36,9 +36,9 @@ export default {
   computed: {
     iconClass () {
       return {
-        'mxoa-tree-node-arrow-close': !this.isCollapse,
-        'mxoa-tree-node-arrow-open': this.isCollapse,
-        'mxoa-tree-node-arrow-hide': this.isNoIcon
+        'mux-tree-node-arrow-close': !this.isCollapse,
+        'mux-tree-node-arrow-open': this.isCollapse,
+        'mux-tree-node-arrow-hide': this.isNoIcon
       }
     }
   },
@@ -104,7 +104,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@treenode: ~"mxoa-tree-node";
+@treenode: ~"mux-tree-node";
 .@{treenode} {
   &-wrapper {
     position: relative;
