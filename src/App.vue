@@ -9,14 +9,11 @@
     <div class="btn-box">
       <v-button type="danger" size="large" :plain="true" :block="true" @click="showPrompt">默认按钮</v-button>
     </div>
-    <v-cell title="left" :is-link="true">right</v-cell>
+    <v-cell :is-link="true">right</v-cell>
     <div class="btn-box">
       <v-upload :preview="true"></v-upload>
     </div>
     <div class="btn-box">
-      <v-checkbox check-value="1" v-model="checkboxList"></v-checkbox>
-      <v-checkbox check-value="2" v-model="checkboxList"></v-checkbox>
-      <v-checkbox check-value="3" v-model="checkboxList"></v-checkbox>
     </div>
     <v-sticky>
       <div>Sticky:粘性定位是相对定位和固定定位的混合。</div>
