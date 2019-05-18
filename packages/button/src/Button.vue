@@ -5,6 +5,7 @@
 </template>
 <script>
 export default {
+  name:'mx-button',
   props: {
     block: {
       type: Boolean,

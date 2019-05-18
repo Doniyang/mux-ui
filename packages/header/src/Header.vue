@@ -46,6 +46,7 @@ export default {
 
 </script>  
 <style lang="less" scoped>
+@import url('../../../src/style/variable.less');
 @header: ~"mux-header";
 .@{header} {
   &-wrapper {
@@ -55,13 +56,13 @@ export default {
     overflow: hidden;
     flex-wrap: nowrap;
     align-items: center;
-    min-height: 4.2em;
-    background: rgba(0, 0, 0, 0.78);
+    min-height: @header-min-height;
+    background: @header-bg;
   }
   &-left {
     display: block;
-    min-width: 4em;
-    color: #FFFFFF;
+    min-width: @header-side-min-width;
+    color:@header-back-color;
   }
   &-back-arrow {
     position: relative;
@@ -71,11 +72,11 @@ export default {
     &:after {
       position: absolute;
       content: "";
-      width: 1em;
-      height: 0.15em;
-      top: -.15em;
-      left: 1.25em;
-      background-color: #FFFFFF;
+      width: 12px;
+      height: 2px;
+      top: -2px;
+      left: 15px;
+      background-color: @header-arrow-bg;
       transform-origin: left;
     }
     &:before {
@@ -87,27 +88,27 @@ export default {
   }
   &-back-box {
     display: inline-block;
-    margin-left: 1.6em;
-    font-size: 1.2em
+    margin-left: 24px;
+    font-size: @header-side-size;
   }
 
   &-content {
     display: block;
     flex: 1;
     text-align: center;
-    color: #FFFFFF;
+    color: @header-title-color;
   }
   &-title {
-    font-size: 1.5em;
+    font-size: @header-title-size;
   }
   &-right {
-    min-width: 4em;
-    color: #FFFFFF;
+    min-width: @header-side-min-width;
+    color: @header-more-color;
     text-align: right;
   }
   &-more-box {
-    margin-right: 1.25em;
-    font-size: 1.2em
+    margin-right: 15px;
+    font-size: @header-side-size;
   }
 }
 

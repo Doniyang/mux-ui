@@ -15,6 +15,7 @@
 <script type="text/javascript">
 import MaskMixin from '@/mixins/mask'
 export default {
+  name:'mx-actionsheet',
   props: {
     actions: {
       type: [Array, Object],

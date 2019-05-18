@@ -16,7 +16,7 @@
 <script>
 import MaskMixin from '@/mixins/mask'
 export default {
-  name: 'v-alert',
+  name: 'mx-alert',
   props: {
     title: {
       type: String,

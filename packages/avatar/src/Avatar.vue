@@ -8,6 +8,7 @@
 </template>
 <script type="text/javascript">
 export default {
+  name:'mx-avatar',
   props: {
     src: {
       type: String,

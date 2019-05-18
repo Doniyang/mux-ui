@@ -1,6 +1,6 @@
 <template>
   <section class="mux-card-wrapper">
-    <header class="mux-card-header" v-if="hasTitle">
+    <header class="mux-card-header">
       <slot name="header">
         <span>{{title}}</span>
       </slot>
@@ -19,6 +19,7 @@
 </template>
 <script type="text/javascript">
 export default {
+  name:'mx-card',
   props: {
     title: {
       type: String,
@@ -31,10 +32,6 @@ export default {
     footer: {
       type: String,
       default: ''
-    },
-    hasTitle: {
-      type: Boolean,
-      default: false
     }
   }
 }
