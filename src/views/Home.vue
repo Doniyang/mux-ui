@@ -11,6 +11,9 @@
       <v-cell is-link>
         <router-link class="mux-cell-link" tag="a" to="/alter">弹窗组件</router-link>
       </v-cell>
+      <v-cell is-link>
+        <router-link class="mux-cell-link" tag="a" to="/test">树组件</router-link>
+      </v-cell>
     </main>
   </section>
 </template>
