@@ -1,1 +1,1 @@
-export {default} from './src/Table.js'
+export {default} from './src/VTable'
