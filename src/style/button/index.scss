@@ -1,4 +1,17 @@
-@use "../variable.scss" as *
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
 .component{
-	
+  @include prefix($prefix,'-btn'){
+    position: relative;
+    overflow: hidden;
+    zoom: 1;
+    text-align: center;
+    border: none;
+    outline: 0;
+    display: inline-block;
+    margin: 0;
+    border-radius: none;
+    box-sizing: border-box;
+    appearance: none;
+  }
 }
