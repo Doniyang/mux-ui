@@ -14,6 +14,10 @@ export default {
       type: Boolean,
       default: false
     },
+    rounded:{
+      type:Boolean,
+      default:false
+    },
     size: {
       type: String,
       default: "normal",
@@ -36,13 +40,14 @@ export default {
       {
         "mux-btn--is-disabled": context.props.disabled,
         "mux-btn--is-block": context.props.block,
-        "mux-btn--is-plain": context.props.plain
+        "mux-btn--is-plain": context.props.plain,
+        "mux-btn-is-round":context.props.rounded
       }
     ];
     const attrs = { disabled: context.props.disabled };
     return h(
       "button",
-      { ...context.data, class: classMap, attrs: attrs },
+      { ...context.data, class: classMap, attrs: attrs,staticClass:'component mux-btn' },
       context.children
     );
   }
