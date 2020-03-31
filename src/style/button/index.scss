@@ -1,17 +1,30 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
-.component{
-  @include prefix($prefix,'-btn'){
+.component {
+  @include prefix($prefix, "-btn") {
     position: relative;
     overflow: hidden;
     zoom: 1;
     text-align: center;
     border: none;
-    outline: 0;
+    outline: none;
     display: inline-block;
     margin: 0;
-    border-radius: none;
     box-sizing: border-box;
     appearance: none;
+
+    @include btn-color($btn-color-map);
+    @include btn-box($btn-size-map);
+
+    &--is-disabled {
+      opacity: 0.6;
+    }
+    &--is-block {
+      display: block;
+      width: 100%;
+    }
+    &--is-rounded{
+      border-radius: $btn-radius;
+    }
   }
 }
