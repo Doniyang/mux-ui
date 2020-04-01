@@ -1,44 +1,23 @@
-import Actionsheet from './actionsheet'
-import Alert from './alert'
-import Avatar from './avatar'
-import Button from './button'
-import Card from './card'
-import Cell from './cell'
-import Collapse from './collapse'
-import Comfirm from './comfirm'
-import Field from './field'
-import Header from './header'
-import Prompt from './prompt'
-import { RadioGroup, Radio } from './radio-group'
-import Shadowbox from './shadowbox'
-import Sticky from './sticky'
-import Switch from './switch'
-import Tab from './tab'
-import TabItem from './tab-item'
-import Tree from './tree'
-import Toast from './toast'
-import Upload from './upload'
 
-export {
-  Actionsheet,
-  Alert,
-  Avatar,
-  Button,
-  Card,
-  Cell,
-  Header,
-  RadioGroup,
-  Radio,
-  Collapse,
-  Comfirm,
-  Field,
-  Prompt,
-  Shadowbox,
-  Switch,
-  Sticky,
-  Tab,
-  TabItem,
-  Tree,
-  Toast,
-  Upload
-}
+export { default as Actionsheet } from './actionsheet'
+export { default as Alert } from './alert'
+export { default as Avatar } from './avatar'
+export { default as Button } from './button'
+export { default as Card } from './card'
+export { default as Cell } from './cell'
+export { default as Collapse } from './collapse'
+export { default as Comfirm } from './comfirm'
+export { default as Field } from './field'
+export { default as Header } from './header'
+export { default as Prompt } from './prompt'
+export { default as Radio } from './radio'
+export { default as RadioGroup } from './radio-group'
+export { default as Shadowbox } from './shadowbox'
+export { default as Sticky } from './sticky'
+export { default as Switch } from './switch'
+export { default as Tab } from './tab'
+export { default as TabItem } from './tab-item'
+export { default as Tree } from './tree'
+export { default as Toast } from './toast'
+export { default as Upload } from './upload'
+

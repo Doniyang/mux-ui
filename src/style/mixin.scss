@@ -1,8 +1,44 @@
 @use 'sass:selector';
 @use 'sass:string';
-@mixin  prefix($prefix,$name) {
-   $selectors:string.quote(".")+string.quote($prefix);	
-  &#{selector-append($selectors,$name)}{
+@use 'sass:list';
+@mixin prefix($prefix, $name) {
+  $prefixselector: string.unquote(".") +
+    string.unquote(string.to-lower-case($prefix));
+  &#{selector.append($prefixselector,$name)} {
     @content;
   }
 }
+
+@mixin btn-color($map, $default: #ffffff) {
+  @each $name, $colors in $map {
+    $plain: selector.append(&, "--is-plain");
+    &-#{$name} {
+      background-color: list.nth($colors, 1);
+      color: list.nth($colors, 2);
+      border-width: 1px;
+      border-style: solid;
+      border-color: list.nth($colors, 3);
+      &#{$plain} {
+        background-color: $default !important;
+        color: list.nth($colors, 4);
+      }
+    }
+  }
+}
+
+@mixin btn-box($map) {
+   @each $name,$sizes in $map {
+     &-#{$name}{
+      font-size: list.nth($sizes,1);
+      padding: list.nth($sizes,2) list.nth($sizes,3);
+     }
+   }
+}
+
+@mixin setposition($top,$left,$bottom:$top,$right:$left) {
+    top: $top;
+    right: $right;
+    bottom: $bottom; 
+    left: $left;
+}
+

@@ -1,0 +1,12 @@
+@keyframes swoosh {
+  from {
+    opacity: 0.5;
+    box-shadow: 0 0 0 0 currentColor;
+    background-color: currentColor;
+  }
+  to {
+    opacity: 0;
+    box-shadow: 0 0 20px currentColor;
+    background-color: currentColor;
+  }
+}

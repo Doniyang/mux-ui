@@ -5,11 +5,15 @@
   "author": "niyang",
   "private": false,
   "scripts": {
-    "build": "sass src/style/index.scss:dist/style/index.css",
-    "dev":"sass src/style:dist/style"
+    "build:css": "sass src/style/index.scss:dist/style/index.css",
+    "dev:css": "sass src/style:dist/style",
+    "build:component":"npx babel packages --out-dir libs"
   },
   "dependencies": {},
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
     "sass": "^1.26.3"
   },
   "engines": {
@@ -21,7 +25,7 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "style":"dist/style/index.css",
+  "style": "dist/style/index.css",
   "main": "packages/index.js",
   "repository": {
     "type": "git",
