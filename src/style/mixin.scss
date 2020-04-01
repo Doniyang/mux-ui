@@ -34,3 +34,11 @@
      }
    }
 }
+
+@mixin setposition($top,$left,$bottom:$top,$right:$left) {
+    top: $top;
+    right: $right;
+    bottom: $bottom; 
+    left: $left;
+}
+
