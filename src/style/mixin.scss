@@ -1,7 +1,8 @@
 @use 'sass:selector';
-
+@use 'sass:string';
 @mixin  prefix($prefix,$name) {
-  &#{selector-append("."+$prefix,$name)}{
+   $selectors:string.quote(".")+string.quote($prefix);	
+  &#{selector-append($selectors,$name)}{
     @content;
   }
 }

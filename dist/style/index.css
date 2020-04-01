@@ -1,0 +1,49 @@
+.component.mux-btn {
+  position: relative;
+  overflow: hidden;
+  zoom: 1;
+  text-align: center;
+  border: none;
+  outline: 0;
+  display: inline-block;
+  margin: 0;
+  border-radius: none;
+  box-sizing: border-box;
+  appearance: none;
+}
+.component.mux-btn-default {
+  background-color: #dddddd;
+  color: #dddddd;
+  border: 1px solid #dddddd;
+}
+.component.mux-btn-primary {
+  background-color: #dddddd;
+  color: #dddddd;
+  border: 1px solid #dddddd;
+}
+.component.mux-btn-danger {
+  background-color: #dddddd;
+  color: #dddddd;
+  border: 1px solid #dddddd;
+}
+.component.mux-btn-small {
+  font-size: #dddddd;
+  padding: #dddddd;
+}
+.component.mux-btn-normal {
+  font-size: #dddddd;
+  padding: #dddddd;
+}
+.component.mux-btn-large {
+  font-size: #dddddd;
+  padding: #dddddd;
+}
+.component.mux-btn-disable {
+  opacity: 0.6;
+}
+.component.mux-btn-block {
+  display: block;
+  width: 100%;
+}
+
+/*# sourceMappingURL=index.css.map */

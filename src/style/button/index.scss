@@ -13,5 +13,40 @@
     border-radius: none;
     box-sizing: border-box;
     appearance: none;
+    &-default {
+       background-color: #dddddd;
+       color:#dddddd;
+       border: 1px solid#dddddd;
+    }
+    &-primary {
+        background-color:#dddddd;
+        color:#dddddd;
+        border: 1px solid#dddddd;
+    }
+    &-danger {
+        background-color:#dddddd;
+        color:#dddddd;
+        border: 1px solid#dddddd;
+    }
+    &-small {
+        font-size:#dddddd;
+        padding:#dddddd;
+    }
+    &-normal {
+        font-size:#dddddd;
+        padding:#dddddd;
+    }
+    &-large {
+        font-size:#dddddd;
+        padding:#dddddd;
+     }
+    &-disable {
+        opacity: 0.6;
+    }
+    &-block {
+       display: block;
+       width: 100%;
+    }
+
   }
 }
