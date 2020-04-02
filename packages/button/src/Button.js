@@ -1,5 +1,5 @@
 export default {
-  name: "mx-button",
+  name: "v-button",
   functional: true,
   props: {
     block: {

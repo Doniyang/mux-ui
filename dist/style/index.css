@@ -4,46 +4,161 @@
   zoom: 1;
   text-align: center;
   border: none;
-  outline: 0;
+  outline: none;
   display: inline-block;
   margin: 0;
-  border-radius: none;
+  cursor: pointer;
   box-sizing: border-box;
   appearance: none;
 }
+.component.mux-btn:focus {
+  border-width: 2px;
+  transition: border-width 200ms ease-out;
+}
+.component.mux-btn::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  bottom: -10px;
+  left: -10px;
+  pointer-events: none;
+  background-color: currentColor;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.component.mux-btn:active::after {
+  opacity: 0.3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: 0s;
+}
 .component.mux-btn-default {
-  background-color: #dddddd;
-  color: #dddddd;
-  border: 1px solid #dddddd;
+  background-color: #ffffff;
+  color: #212121;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dddddd;
+}
+.component.mux-btn-default.component.mux-btn--is-plain {
+  background-color: #ffffff !important;
+  color: #212121;
 }
 .component.mux-btn-primary {
-  background-color: #dddddd;
-  color: #dddddd;
-  border: 1px solid #dddddd;
+  background-color: #26a2ff;
+  color: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #26a2ff;
+}
+.component.mux-btn-primary.component.mux-btn--is-plain {
+  background-color: #ffffff !important;
+  color: #26a2ff;
 }
 .component.mux-btn-danger {
-  background-color: #dddddd;
-  color: #dddddd;
-  border: 1px solid #dddddd;
+  background-color: #ef4f4f;
+  color: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ef4f4f;
+}
+.component.mux-btn-danger.component.mux-btn--is-plain {
+  background-color: #ffffff !important;
+  color: #ef4f4f;
+}
+.component.mux-btn-error {
+  background-color: #ff0000;
+  color: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ff0000;
+}
+.component.mux-btn-error.component.mux-btn--is-plain {
+  background-color: #ffffff !important;
+  color: #ff0000;
 }
 .component.mux-btn-small {
-  font-size: #dddddd;
-  padding: #dddddd;
+  font-size: 14px;
+  padding: 4px 10px;
 }
 .component.mux-btn-normal {
-  font-size: #dddddd;
-  padding: #dddddd;
+  font-size: 16px;
+  padding: 8px 12px;
 }
 .component.mux-btn-large {
-  font-size: #dddddd;
-  padding: #dddddd;
+  font-size: 18px;
+  padding: 12px 16px;
 }
-.component.mux-btn-disable {
+.component.mux-btn--is-disabled {
   opacity: 0.6;
 }
-.component.mux-btn-block {
+.component.mux-btn--is-block {
   display: block;
   width: 100%;
+}
+.component.mux-btn--is-rounded {
+  border-radius: 6px;
+}
+
+.component.mux-actionsheet {
+  position: fixed;
+  background: #e0e0e0;
+  text-align: center;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.component.mux-actionsheet .mux-actionsheet--wrap {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  zoom: 1;
+}
+.component.mux-actionsheet .mux-actionsheet-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  font-size: 18px;
+  color: #212121;
+  background-color: #FFFFFF;
+}
+.component.mux-actionsheet .mux-actionsheet-item::after {
+  height: 1px;
+  background-color: #e0e0e0;
+  display: block;
+  content: "";
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+.component.mux-actionsheet .mux-actionsheet-btn {
+  margin-top: 5px;
+  display: block;
+}
+
+.component.mux-matte {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0.5;
 }
 
 /*# sourceMappingURL=index.css.map */

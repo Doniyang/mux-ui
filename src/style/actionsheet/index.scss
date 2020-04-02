@@ -1,0 +1,44 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+@use 'sass:selector';
+.component {
+  @include prefix($prefix, "-actionsheet") {
+    position: fixed;
+    background: $action-sheet;
+    text-align: center;
+    @include setposition(auto, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    #{selector.replace(&,".component","*") }--wrap {
+      position: relative;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      zoom: 1;
+    }
+    #{selector.replace(&,".component","*") }-item {
+      position: relative;
+      display: block;
+      width: $action-sheet-item-width;
+      height: $action-sheet-item-height;
+      line-height: $action-sheet-item-height;
+      font-size: $action-sheet-item-fontsize;
+      color: $action-sheet-item-color;
+      background-color: $action-sheet-item;
+      &::after {
+        height: 1px;
+        background-color: $action-sheet;
+        display: block;
+        content: "";
+        position: absolute;
+        @include setposition(auto, 0, 0, 0);
+        -webkit-transform-origin: 50% 100%;
+        transform-origin: 50% 100%;
+      }
+    }
+    #{selector.replace(&,".component","*") }-btn {
+      margin-top: $action-sheet-item-cancel-gap;
+      display: block;
+    }
+  }
+}

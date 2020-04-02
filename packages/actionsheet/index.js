@@ -1,1 +1,1 @@
-export {default} from './src/Actionsheet.vue'
+export {default} from './src/ActionSheet'

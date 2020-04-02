@@ -1,0 +1,10 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component{
+  @include prefix($prefix, "-matte"){
+    position: fixed;
+    @include setposition(0,0);
+    background-color: $matte;
+    opacity: $matte-opacity;
+  }
+}
