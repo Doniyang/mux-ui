@@ -1,0 +1,47 @@
+.component.mux-actionsheet {
+  position: fixed;
+  background: #e0e0e0;
+  text-align: center;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.component.mux-actionsheet .mux-actionsheet--wrap {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  zoom: 1;
+}
+.component.mux-actionsheet .mux-actionsheet-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  font-size: 18px;
+  color: #212121;
+  background-color: #FFFFFF;
+}
+.component.mux-actionsheet .mux-actionsheet-item::after {
+  height: 1px;
+  background-color: #e0e0e0;
+  display: block;
+  content: "";
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+.component.mux-actionsheet .mux-actionsheet-btn {
+  margin-top: 5px;
+  display: block;
+}
+
+/*# sourceMappingURL=index.css.map */

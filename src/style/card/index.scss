@@ -1,0 +1,30 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+@use 'sass:list';
+.component {
+  @include prefix($prefix, "-card") {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    zoom: 1;
+    margin: 0;
+    padding: list.append(0,$card-gap, $separator: space);
+    box-sizing: border-box;
+    &::before {
+      @include clearfix();
+    }
+    &::after {
+      @include clearfix(true);
+    }
+
+    @include subclass('-header'){
+       @include card-box(list.append($card-gap, 0,$separator: space),true,$card-border-color)  
+    }
+    @include subclass('-main'){
+      @include card-box(list.append($card-gap, 0,$separator: space),true,$card-border-color)
+    }
+    @include subclass('-footer'){
+      @include card-box(list.append($card-gap, 0,$separator: space))
+    }
+  }
+}

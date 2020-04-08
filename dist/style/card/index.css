@@ -1,0 +1,62 @@
+.component.mux-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  zoom: 1;
+  margin: 0;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+.component.mux-card::before {
+  display: table;
+  content: "";
+  box-sizing: border-box;
+}
+.component.mux-card::after {
+  display: table;
+  content: "";
+  box-sizing: border-box;
+  clear: both;
+}
+.component.mux-card .mux-card-header {
+  position: relative;
+  display: block;
+  padding: 15px 0;
+  margin: 0;
+  border-bottom: 1px solid #dcdcdc;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .component.mux-card .mux-card-header {
+    border: none;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-image: -webkit-linear-gradient(90deg, #dcdcdc, #dcdcdc 50%, transparent 50%);
+    background-image: linear-gradient(0, #dcdcdc, #dcdcdc 50%, transparent 50%);
+  }
+}
+.component.mux-card .mux-card-main {
+  position: relative;
+  display: block;
+  padding: 15px 0;
+  margin: 0;
+  border-bottom: 1px solid #dcdcdc;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .component.mux-card .mux-card-main {
+    border: none;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-image: -webkit-linear-gradient(90deg, #dcdcdc, #dcdcdc 50%, transparent 50%);
+    background-image: linear-gradient(0, #dcdcdc, #dcdcdc 50%, transparent 50%);
+  }
+}
+.component.mux-card .mux-card-footer {
+  position: relative;
+  display: block;
+  padding: 15px 0;
+  margin: 0;
+}
+
+/*# sourceMappingURL=index.css.map */

@@ -1,13 +1,29 @@
 <template>
   <div class="hz-field-wrapper">
-    <div class="hz-field-label" :class="{'hz-field-required':required}" :style="labelStyle">
+    <div
+      class="hz-field-label"
+      :class="{ 'hz-field-required': required }"
+      :style="labelStyle"
+    >
       <slot name="label">
-        <label :for="`vir-field-${uuid}`">{{label}}</label>
+        <label :for="`vir-field-${uuid}`">{{ label }}</label>
       </slot>
     </div>
     <div class="hz-field-container">
       <div class="hz-field-box" :class="`hz-field-align-${align}`">
-        <input class="hz-field-block" ref="vField" v-model="currentValue" :id="`vir-field-${uuid}`" :type="type" :name="name" :class="{'hz-field-is-danger': invalid}" :required="required" :disabled="disabled" :readonly="readonly" :placeholder="placeholder" />
+        <input
+          class="hz-field-block"
+          ref="vField"
+          v-model="currentValue"
+          :id="`vir-field-${uuid}`"
+          :type="type"
+          :name="name"
+          :class="{ 'hz-field-is-danger': invalid }"
+          :required="required"
+          :disabled="disabled"
+          :readonly="readonly"
+          :placeholder="placeholder"
+        />
         <span class="hz-field-help" v-if="invalid">{{ message }}</span>
       </div>
       <div class="hz-field-times" v-if="isClear">
@@ -24,115 +40,132 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'text',
+      default: "text",
       validator(v) {
-        return ['email', 'number', 'password', 'search', 'tel', 'text', 'url'].indexOf(v) > -1
-      }
+        return (
+          [
+            "email",
+            "number",
+            "password",
+            "search",
+            "tel",
+            "text",
+            "url",
+          ].indexOf(v) > -1
+        );
+      },
     },
     attr: Object,
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     label: {
       type: String,
-      default: ''
+      default: "",
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     name: {
       type: String,
-      default: 'XFeild'
+      default: "XFeild",
     },
     value: {
       type: String,
-      default: ''
+      default: "",
     },
     placeholder: {
       type: String,
-      default: '请输入'
+      default: "请输入",
     },
     clearable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     readonly: {
       type: Boolean,
-      default: false
+      default: false,
     },
     labelWidth: {
       type: String,
-      default: '80px'
+      default: "80px",
     },
     align: {
       type: String,
-      default: 'left',
+      default: "left",
       validator(v) {
-        return ['left', 'center', 'right'].indexOf(v) > -1
-      }
+        return ["left", "center", "right"].indexOf(v) > -1;
+      },
     },
-    invalid:{
-      type:Boolean,
-      default:false
+    invalid: {
+      type: Boolean,
+      default: false,
     },
-    message:{
-      type:String,
-      default:''
-    }
+    message: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
-      currentValue: '',
+      currentValue: "",
       uuid: null,
-      localize: null
-    }
+      localize: null,
+    };
   },
   computed: {
     isClear() {
-      return this.currentValue !== '' && this.clearable && !this.readonly
+      return this.currentValue !== "" && this.clearable && !this.readonly;
     },
     labelStyle() {
       return {
-        width: this.labelWidth
-      }
-    }
+        width: this.labelWidth,
+      };
+    },
   },
   created() {
-    this.uuid = Math.random().toString(32).substring(4, 9)
-    this.currentValue = this.value
+    this.uuid = Math.random().toString(32).substring(4, 9);
+    this.currentValue = this.value;
   },
   watch: {
     value(nv, ov) {
-      if (nv === ov) { return }
-      this.currentValue = nv
+      if (nv === ov) {
+        return;
+      }
+      this.currentValue = nv;
     },
     attr: {
       handler(attrs) {
-        if (!attrs) { return }
+        if (!attrs) {
+          return;
+        }
         this.$nextTick(() => {
-          Object.keys(attrs).forEach(name => {
-            this.$refs.vField.setAttribute(name, attrs[name])
-          })
-        })
+          Object.keys(attrs).forEach((name) => {
+            this.$refs.vField.setAttribute(name, attrs[name]);
+          });
+        });
       },
-      immediate: true
+      immediate: true,
     },
     currentValue(nv, ov) {
-      if (nv === ov) { return }
-      this.$emit('input', nv)
-    }
+      if (nv === ov) {
+        return;
+      }
+      this.$emit("input", nv);
+    },
   },
   methods: {
     handleClear(e) {
-      if (this.readonly) { return }
-      this.currentValue = ''
-      this.$refs.vField.focus()
-    }
-  }
-}
-
+      if (this.readonly) {
+        return;
+      }
+      this.currentValue = "";
+      this.$refs.vField.focus();
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
 @input: ~"hz-field";
@@ -148,7 +181,7 @@ export default {
     height: 46px;
     flex-wrap: nowrap;
     align-items: center;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-bottom: 1px solid #dcdcdc;
 
     @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
@@ -156,8 +189,18 @@ export default {
       background-size: 100% 1px;
       background-repeat: no-repeat;
       background-position: bottom;
-      background-image: linear-gradient(0, #dcdcdc, #dcdcdc 50%, transparent 50%);
-      background-image: -webkit-linear-gradient(90deg, #dcdcdc, #dcdcdc 50%, transparent 50%);
+      background-image: linear-gradient(
+        0,
+        #dcdcdc,
+        #dcdcdc 50%,
+        transparent 50%
+      );
+      background-image: -webkit-linear-gradient(
+        90deg,
+        #dcdcdc,
+        #dcdcdc 50%,
+        transparent 50%
+      );
     }
   }
 
@@ -266,7 +309,7 @@ export default {
       right: 2px;
       top: 50%;
       margin-top: -1px;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       transform-origin: center;
     }
 
@@ -283,5 +326,4 @@ export default {
     display: block;
   }
 }
-
 </style>

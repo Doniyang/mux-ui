@@ -1,0 +1,37 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+@use '../library' as lib;
+.component {
+  @include prefix($prefix, "-cell") {
+    @include lib.box;
+    position: relative;
+    width: 100%;
+    align-items: center;
+    min-height: $cell-min-height;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: $cell-bgcolor;
+    @include line($cell-border-color);
+
+    @include subclass("-container") {
+      flex: 1;
+      @include  lib.box;
+      align-items: center;
+    }
+    @include direction($cell-direction-list);
+
+    @include align($cell-align-map);
+
+    @include justify($cell-content-map);
+
+    @include subclass('-arrow'){
+      display: block;
+      min-width: $cell-arrow-min-width;
+    } 
+
+    @include subclass('-caret'){
+     @include arrow($cell-arrow-size,$cell-arrow-color,$cell-arrow-dir)
+    }
+
+  }
+}

@@ -1,0 +1,62 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+@use '../library' as lib;
+.component{
+  @include prefix($prefix, "-field"){
+       
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    zoom: 1;
+    box-sizing: border-box;
+    @include lib.box;
+    min-height:$field-min-height;
+    flex-wrap: nowrap;
+    align-items: center;
+    background-color:$field-bgcolor;
+    @include line($field-border-color);
+
+    @include subclass('-label'){
+      padding-left: 15px;
+      font-size: 15px;
+      color: #787878;
+    }
+    @include subclass('-required'){
+      position: relative;
+      &:before {
+        content: "*";
+        position: absolute;
+        color: red;
+        left: 8px;
+      }
+    }
+
+   @include subclass('-container'){
+    position: relative;
+    flex: 1;
+    @include lib.box;
+    align-items: center;
+    padding: 0 12px 0 0;
+   }
+    
+   @include subclass('-block'){
+    width: 100%;
+    display: block;
+    flex: 1;
+    height: 44px;
+    font-size: 15px;
+    color: #0c0c0c;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    appearance: none;
+    text-align: inherit;
+  
+    &input::-webkit-input-placeholder {
+      font-size: 15px;
+      color: #bcbcbc;
+    }
+   }
+
+  }
+}
