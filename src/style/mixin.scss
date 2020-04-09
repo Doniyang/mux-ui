@@ -1,10 +1,17 @@
 @use 'sass:selector';
 @use 'sass:string';
 @use 'sass:list';
+
 @mixin prefix($prefix, $name) {
   $prefixselector: string.unquote(".") +
     string.unquote(string.to-lower-case($prefix));
   &#{selector.append($prefixselector,$name)} {
+    @content;
+  }
+}
+
+@mixin subclass($name) {
+  #{selector.replace(&,".component","*") + string.unquote($name) } {
     @content;
   }
 }
@@ -27,18 +34,136 @@
 }
 
 @mixin btn-box($map) {
-   @each $name,$sizes in $map {
-     &-#{$name}{
-      font-size: list.nth($sizes,1);
-      padding: list.nth($sizes,2) list.nth($sizes,3);
-     }
-   }
+  @each $name, $sizes in $map {
+    &-#{$name} {
+      font-size: list.nth($sizes, 1);
+      padding: list.nth($sizes, 2) list.nth($sizes, 3);
+    }
+  }
 }
 
-@mixin setposition($top,$left,$bottom:$top,$right:$left) {
-    top: $top;
-    right: $right;
-    bottom: $bottom; 
-    left: $left;
+@mixin setposition($top, $left, $bottom: $top, $right: $left) {
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
 }
 
+@mixin clearfix($clean: false) {
+  display: table;
+  content: "";
+  box-sizing: border-box;
+  @if $clean {
+    clear: both;
+  }
+}
+
+@mixin card-box($padding, $border: false, $border-color: #dcdcdc) {
+  position: relative;
+  display: block;
+  padding: $padding;
+  margin: 0;
+  @if $border {
+    @include line($border-color);
+  }
+}
+
+@mixin line($border-color,$position:bottom) {
+  border-#{$position}: 1px solid $border-color;
+  @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+    border: none;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: $position;
+    background-image: -webkit-linear-gradient(
+      90deg,
+      $border-color,
+      $border-color 50%,
+      transparent 50%
+    );
+    background-image: linear-gradient(
+      0,
+      $border-color,
+      $border-color 50%,
+      transparent 50%
+    );
+  }
+}
+
+@mixin align($map) {
+  @each $name, $value in $map {
+    @include subclass(string.unquote("-item-") + $name) {
+      align-items: $value;
+    }
+  }
+}
+
+@mixin justify($map) {
+  @each $name, $value in $map {
+    @include subclass(string.unquote("-content-") + $name) {
+      justify-content: $value;
+    }
+  }
+}
+
+@mixin direction($list) {
+  @each $prop in $list {
+    @include subclass(string.unquote("-") + $prop) {
+      flex-direction: $prop;
+    }
+  }
+}
+
+@mixin txt-align($list, $browses) {
+  @each $prop in $list {
+    @include subclass(string.unquote("-align-") + $prop) {
+      text-align: $prop;
+      & {
+        @include placeholder('placeholder',$browses){
+          text-align: $prop;
+        }
+      }
+    }
+  }
+}
+
+@mixin placeholder($property, $browses,$parent:input) {
+  @each $prefix,$list in $browses {
+    @if list.nth($list,2) {
+    #{selector.append($parent,":"+list.nth($list,1)+$property)} {
+        @content;
+      }
+    } @else {
+      #{selector.append($parent,"::"+list.nth($list,1)+$property)} {
+        @content;
+      }
+    }
+  }
+  #{selector.append($parent,"::"+$property)} {
+    @content;
+  }
+}
+
+@mixin arrow($size, $color, $dir) {
+  position: relative;
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    left: 50%;
+    top: 50%;
+    width: $size;
+    height: 1px;
+    background: $color;
+    transform-origin: $dir;
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+  }
+  &::before {
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+  }
+  &::after {
+    transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+  }
+}

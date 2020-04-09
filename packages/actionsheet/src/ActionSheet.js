@@ -7,6 +7,10 @@ export default {
       type: Array,
       default: () => []
     },
+    value:{
+      type:Boolean,
+      default:false
+    },
     cancel: {
       type: [Boolean, Object],
       default: false
@@ -22,8 +26,7 @@ export default {
   },
   data () {
     return {
-      nextZIndex: 2021,
-      visible: true
+      nextZIndex: 2021
     }
   },
   methods: {
@@ -41,11 +44,12 @@ export default {
           zIndex: this.zIndex,
           closeOnMaskClick: this.closeOnMaskClick
         },
+        ref:'Mask',
         on: {
           layerChange: zIndex => this.nextZIndex = zIndex,
           matteClick: e => {
             e.stopPropagation()
-            this.visible = false
+            this.$emit('input',false)
           }
         }
       })
@@ -76,7 +80,8 @@ export default {
         on: {
           click: e => {
             e.stopPropagation()
-            this.visible = false
+            this.$refs.Mask.close()
+            this.$emit('input',false)
           }
         }
       }, this.cancel.text || '取消')
@@ -87,6 +92,6 @@ export default {
       props: {
         name: this.transition
       }
-    }, [this.visible ? this.genContext() : null])
+    }, [this.value ? this.genContext() : null])
   }
 }

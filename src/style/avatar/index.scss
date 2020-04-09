@@ -1,0 +1,29 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-avatar") {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 50%;
+    &-shadow {
+      box-shadow: $avatar-shadow;
+    }
+    @include subclass("-image") {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    @include subclass("-placeholder"){
+      position:absolute;
+      @include setposition(0,0);
+      z-index: 4;
+      vertical-align: middle;
+      background-color: $avatar-placeholder-bgcolor;
+      color: $avatar-placeholder-color;
+    }
+  }
+}

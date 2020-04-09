@@ -1,6 +1,14 @@
 $prefix:MUX;
 
 $base-color:#FFFFFF;
+$border-color:#dcdcdc;
+
+$dialog-radius:6px;
+$dialog-header-padd-top:15px;
+$dialog-content-padd:10px  20px 15px;
+$dialog-btn-height:40px;
+
+
 $matte:rgba(0,0,0,0.3);
 $matte-opacity:0.5;
 
@@ -12,11 +20,6 @@ $action-sheet-item-fontsize:18px;
 $action-sheet-item-color:#212121;
 $action-sheet-item-cancel-gap:5px;
 
-$dialog-radius:6px;
-$dialog-header-padd-top:15px;
-$dialog-content-padd:10px  20px 15px;
-$dialog-btn-height:40px;
-
 $alert-bg:$base-color;
 $alert-border-radius:$dialog-radius;
 $alert-header-padd-top:$dialog-header-padd-top;
@@ -25,6 +28,30 @@ $alert-content-padd:$dialog-content-padd;
 $alert-content-height:36px;
 $alert-btn-height:$dialog-btn-height;
 $alert-btn-color:#26a2ff;
+
+$avatar-shadow:0 0px 4px 2px #a9d9ef;
+$avatar-placeholder-bgcolor:#3f9ff3;
+$avatar-placeholder-color:$base-color;
+
+$btn-radius:6px;
+$btn-color-map:("default":(#ffffff,#212121,#dddddd,#212121),"primary":(#26a2ff,#FFFFFF,#26a2ff,#26a2ff),"danger":(#ef4f4f,#FFFFFF,#ef4f4f,#ef4f4f),"error":(#ff0000,#FFFFFF,#ff0000,#ff0000));
+$btn-size-map:("small":(14px,4px,10px),"normal":(16px,8px,12px),"large":(18px,12px,16px));
+
+$card-gap:15px;
+$card-border-color:$border-color;
+
+
+$cell-bgcolor:$base-color;
+$cell-border-color:$border-color;
+$cell-min-height:46px;
+$cell-align-map:("start":flex-start,"end":flex-end,"center":center,"baseline":baseline,"stretch":stretch);
+$cell-content-map:("start":flex-start,"end":flex-end,"center":center,"between":space-between,"around":space-around);
+$cell-direction-list:row,column;
+$cell-arrow-min-width:25px;
+$cell-arrow-color:rgba(0,0,0,0.56);
+$cell-arrow-size:10px;
+$cell-arrow-dir:right;
+
 $comfirm-bg:$base-color;
 $comfirm-border-radius:$dialog-radius;
 $comfirm-header-padd-top:$dialog-header-padd-top;
@@ -34,6 +61,26 @@ $comfirm-content-height:36px;
 $comfirm-btn-height:$dialog-btn-height;
 $comfirm-btn-color:#26a2ff;
 $comfirm-cancel-color:#353535;
+
+
+
+$field-min-height:46px;
+$field-bgcolor:$base-color;
+$field-border-color:$border-color;
+$field-text-align:(left,right,center);
+$field-browsers:("webkit":("-webkit-input-",false),"ms":("-ms-input-",true),"moz":("-moz-",false));
+
+
+
+$header-bg:rgba(0, 0, 0, 0.78);
+$header-min-height:50px;
+$header-side-min-width:40px;
+$header-arrow-bg:$base-color;
+$header-back-color:$base-color;
+$header-title-color:$base-color;
+$header-title-size:16px;
+$header-side-size:15px;
+$header-more-color:$base-color;
 
 $prompt-bg:$base-color;
 $prompt-border-radius:$dialog-radius;
@@ -45,22 +92,3 @@ $prompt-btn-height:$dialog-btn-height;
 $prompt-btn-color:#26a2ff;
 $prompt-cancel-color:#353535;
 
-$btn-radius:6px;
-$btn-color-map:("default":(#ffffff,#212121,#dddddd,#212121),"primary":(#26a2ff,#FFFFFF,#26a2ff,#26a2ff),"danger":(#ef4f4f,#FFFFFF,#ef4f4f,#ef4f4f),"error":(#ff0000,#FFFFFF,#ff0000,#ff0000));
-$btn-size-map:("small":(14px,4px,10px),"normal":(16px,8px,12px),"large":(18px,12px,16px));
-
-
-$cell-title-color:#999999;
-$cell-value-color:#333333;
-$cell-height:40px;
-$cell-size:16px;
-
-$header-bg:rgba(0, 0, 0, 0.78);
-$header-min-height:50px;
-$header-side-min-width:40px;
-$header-arrow-bg:$base-color;
-$header-back-color:$base-color;
-$header-title-color:$base-color;
-$header-title-size:16px;
-$header-side-size:15px;
-$header-more-color:$base-color;

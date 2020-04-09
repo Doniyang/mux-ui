@@ -1,0 +1,107 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+@use '../library' as lib;
+.component {
+  @include prefix($prefix, "-field") {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    zoom: 1;
+    box-sizing: border-box;
+    @include lib.box;
+    min-height: $field-min-height;
+    flex-wrap: nowrap;
+    align-items: center;
+    background-color: $field-bgcolor;
+    @include line($field-border-color);
+
+    @include subclass("-label") {
+      padding-left: 15px;
+      font-size: 15px;
+      color: #787878;
+    }
+    @include subclass("-required") {
+      position: relative;
+      &:before {
+        content: "*";
+        position: absolute;
+        color: red;
+        left: 8px;
+      }
+    }
+
+    @include subclass("-container") {
+      position: relative;
+      flex: 1;
+      @include lib.box;
+      align-items: center;
+    }
+
+    @include subclass("-box") {
+      flex: 1;
+      display: block;
+      padding: 0 12px;
+      position: relative;
+    }
+
+    @include txt-align($field-text-align, $field-browsers);
+
+    @include subclass("-block") {
+      width: 100%;
+      display: block;
+      flex: 1;
+      height: 44px;
+      font-size: 15px;
+      color: #0c0c0c;
+      outline: none;
+      border: none;
+      box-sizing: border-box;
+      appearance: none;
+      text-align: inherit;
+    }
+
+    @include placeholder(
+      "placeholder",
+      $field-browsers,
+      "input.mux-field-block"
+    ) {
+      font-size: 15px;
+      color: #bcbcbc;
+    }
+
+    @include subclass("-is-danger") {
+      border: 1px solid #f00;
+    }
+
+    @include subclass("-is-plain") {
+      border: 1px solid rgba($color: #000000, $alpha: 0.76);
+    }
+
+    @include subclass("-is-rounded") {
+      border-radius: 4px;
+    }
+
+    @include subclass("-help") {
+      position: absolute;
+      right: 2px;
+      top: 50%;
+      color: red;
+      font-size: 12px;
+      transform: translate3d(0, -50%, 0);
+    }
+
+    @include subclass("-cleanbox") {
+      display: block;
+      padding-left: 8px;
+    }
+
+    @include subclass("-clear-icon") {
+      @include lib.close(16px, #aaaaaa);
+    }
+
+    @include subclass("-append") {
+      display: block;
+      position: relative;
+    }
+  }
+}

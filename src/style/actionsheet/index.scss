@@ -1,6 +1,5 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
-@use 'sass:selector';
 .component {
   @include prefix($prefix, "-actionsheet") {
     position: fixed;
@@ -9,14 +8,16 @@
     @include setposition(auto, 0, 0, 0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    #{selector.replace(&,".component","*") }--wrap {
+
+    @include subclass("--wrap") {
       position: relative;
       list-style: none;
       margin: 0;
       padding: 0;
       zoom: 1;
     }
-    #{selector.replace(&,".component","*") }-item {
+
+    @include subclass("-item") {
       position: relative;
       display: block;
       width: $action-sheet-item-width;
@@ -36,7 +37,7 @@
         transform-origin: 50% 100%;
       }
     }
-    #{selector.replace(&,".component","*") }-btn {
+    @include subclass("-btn") {
       margin-top: $action-sheet-item-cancel-gap;
       display: block;
     }

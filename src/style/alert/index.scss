@@ -1,0 +1,18 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-alert") {
+    overflow: hidden;
+
+    @include subclass("-content") {
+      margin: 0;
+      padding: 15px 0 0;
+    }
+
+    @include subclass("-btnarea") {
+      position: relative;
+      overflow: hidden;
+      padding: 0 4px;
+    }
+  }
+}

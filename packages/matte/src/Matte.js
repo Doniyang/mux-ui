@@ -38,6 +38,9 @@ export default {
     setZIndex (zIndex) {
      this.$emit('layerChange',zIndex)
     },
+    close(){
+      this.mask.close(this.uuid)
+    },
     handleClick (e) {
       e.stopPropagation()
       if (this.closeOnMaskClick) {

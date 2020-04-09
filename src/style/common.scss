@@ -1,0 +1,35 @@
+@mixin box {
+  display: flex;
+}
+
+@mixin close($size, $color) {
+  display: inline-block;
+  position: relative;
+  width: $size;
+  height: $size;
+  box-sizing: border-box;
+  border: 1px solid $color;
+  border-radius: 100%;
+  background-color: $color;
+  vertical-align: middle;
+
+  &:before,
+  &:after {
+    position: absolute;
+    content: "";
+    width: ($size * 3/4);
+    height: 1px;
+    left: 50%;
+    top: 50%;
+    background-color: #ffffff;
+    transform-origin: center;
+  }
+
+  &:before {
+    transform: translate3d(-50%, -50%, 0) rotate(135deg);
+  }
+
+  &:after {
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+  }
+}
