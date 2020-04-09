@@ -12,20 +12,10 @@ export default {
     }
   },
   methods: {
-    genHeaderContext () {
-      return this.$createElement('header', {
-        staticClass: 'mux-card-header'
-      }, [this.genSlotContext('header', this.header)])
-    },
-    genMainContext () {
-      return this.$createElement('main', {
-        staticClass: 'mux-card-main'
-      }, [this.genSlotContext('default', this.content)])
-    },
-    genFooterContext () {
-      return this.$createElement('footer', {
-        staticClass: 'mux-card-footer'
-      }, [this.genSlotContext('footer', this.footer)])
+    genContext (tag, children) {
+      return this.$createElement(tag, {
+        staticClass: 'mux-card-' + tag
+      }, children)
     },
     genSlotContext (slot, text) {
       return this.$scopedSlots[slot] ? this.$scopedSlots[slot]() : text
@@ -34,6 +24,6 @@ export default {
   render (h) {
     return h('div', {
       staticClass: 'component mux-card'
-    }, [this.genHeaderContext(), this.genMainContext(), this.genFooterContext()])
+    }, [this.genContext('footer', [this.genSlotContext('header', this.header)]), this.genContext('main', [this.genSlotContext('default', this.content)]), this.genContext('footer', [this.genSlotContext('footer', this.footer)])])
   }
 }

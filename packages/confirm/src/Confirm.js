@@ -1,7 +1,7 @@
 import Dialog from "../../dialog"
 import Button from '../../button'
 export default {
-  name:'v-alert',
+  name:'v-confirm',
   props:{
     title: {
       type: String,
@@ -23,7 +23,11 @@ export default {
       type:String,
       default:''
     },
-    btnText:{
+    cancelBtnText:{
+      type:String,
+      default:'取消'
+    },
+    confirmBtnText:{
       type:String,
       default:'确定'
     }
@@ -31,15 +35,23 @@ export default {
   methods:{
     genMsgContext(){
       return this.$createElement('p',{
-        staticClass:'mux-alert-content'
+        staticClass:'mux-confirm-content'
       },this.message)
     },
-    genAlertBtnContext(){
-      return this.$createElement('div',{
-        staticClass:'mux-alert-btnarea'   
-      },[this.genBtnContext()])
+    genConfirmBtnContext(){
+     return [this.genBtnareaContext('cancel',this.cancelBtnText),this.genDividerContext(),this.genBtnareaContext('confirm',this.confirmBtnText)]
     },
-    genBtnContext(){
+    genDividerContext(){
+      return this.$createElement('div',{
+        staticClass:'mux-confirm-divider'
+      })  
+    },
+    genBtnareaContext(type,text){
+      return this.$createElement('div',{
+        staticClass:'mux-'+type+'-btnarea'   
+      },[this.genBtnContext(type,text)]) 
+    },
+    genBtnContext(type,text){
       return this.$createElement(Button,{
         props:{
           block:true,
@@ -48,17 +60,17 @@ export default {
         on:{
           click:e=>{
             e.stopPropagation()
-            this.$emit('confirm')
-            this.$refs.Alert.close()
+            this.$emit(type)
+            this.$refs.Confirm.close()
             this.$emit('input',false)
           }
         }
-      },this.btnText)  
+      },text)  
     }
   },
   render(h){
     return h(Dialog,{
-      staticClass:'component mux-alert',
+      staticClass:'component mux-confirm',
       props:{
         title: this.title,
         zIndex: this.zIndex,
@@ -67,10 +79,10 @@ export default {
         closeOnMaskClick: false
       },
       scopedSlots:{
-        footer:()=>this.genAlertBtnContext(),
+        footer:()=>this.genConfirmBtnContext(),
         default:()=>this.genMsgContext()
       },
-      ref:'Alert',
+      ref:'Confirm',
       on:{
         input:v=>{this.$emit('input',v)}
       }

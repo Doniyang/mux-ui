@@ -1,1 +1,1 @@
-export {default} from './src/cell.js'
+export {default} from './src/Cell.js'

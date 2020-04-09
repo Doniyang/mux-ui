@@ -1,0 +1,44 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-dialog") {
+    position: fixed;
+    @include setposition(50%, 50%, auto, auto);
+    width: 75%;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #ffffff;
+    transform: translate3d(-50%, -50%, 0);
+    -webkit-user-select: none;
+    transition: all 0.2s;
+    @include subclass("-header"){
+      padding: 16px 0 8px;
+      box-sizing: border-box;
+    }
+    @include subclass("-main"){
+      position: relative;
+      min-height: 40px;
+      padding: 0 20px;
+      vertical-align: middle;
+      text-align: center;
+      @include line(#dedede);
+    }
+    @include subclass("-footer"){
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @include subclass('-title'){
+      padding: 0;
+      margin: 0;
+      display: block;
+      text-align: center;
+      font-size: 16px;
+    }
+  
+  }
+
+  
+}
+

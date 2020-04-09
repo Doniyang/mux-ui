@@ -1,1 +1,1 @@
-export { default } from './src/alert.js'
+export { default } from './src/Alert.js'

@@ -29,7 +29,9 @@ $alert-content-height:36px;
 $alert-btn-height:$dialog-btn-height;
 $alert-btn-color:#26a2ff;
 
-$avatar-shadow:0 -2px 4px 2px #a9d9ef;
+$avatar-shadow:0 0px 4px 2px #a9d9ef;
+$avatar-placeholder-bgcolor:#3f9ff3;
+$avatar-placeholder-color:$base-color;
 
 $btn-radius:6px;
 $btn-color-map:("default":(#ffffff,#212121,#dddddd,#212121),"primary":(#26a2ff,#FFFFFF,#26a2ff,#26a2ff),"danger":(#ef4f4f,#FFFFFF,#ef4f4f,#ef4f4f),"error":(#ff0000,#FFFFFF,#ff0000,#ff0000));
@@ -65,6 +67,10 @@ $comfirm-cancel-color:#353535;
 $field-min-height:46px;
 $field-bgcolor:$base-color;
 $field-border-color:$border-color;
+$field-text-align:(left,right,center);
+$field-browsers:("webkit":("-webkit-input-",false),"ms":("-ms-input-",true),"moz":("-moz-",false));
+
+
 
 $header-bg:rgba(0, 0, 0, 0.78);
 $header-min-height:50px;

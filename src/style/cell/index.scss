@@ -26,10 +26,10 @@
 
     @include subclass('-arrow'){
       display: block;
-      min-width: $cell-arrow-min-width;
     } 
 
     @include subclass('-caret'){
+      min-width: $cell-arrow-min-width;
      @include arrow($cell-arrow-size,$cell-arrow-color,$cell-arrow-dir)
     }
 

@@ -1,6 +1,7 @@
 @use 'sass:selector';
 @use 'sass:string';
 @use 'sass:list';
+
 @mixin prefix($prefix, $name) {
   $prefixselector: string.unquote(".") +
     string.unquote(string.to-lower-case($prefix));
@@ -67,13 +68,13 @@
   }
 }
 
-@mixin line($border-color) {
-  border-bottom: 1px solid $border-color;
+@mixin line($border-color,$position:bottom) {
+  border-#{$position}: 1px solid $border-color;
   @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
     border: none;
     background-size: 100% 1px;
     background-repeat: no-repeat;
-    background-position: bottom;
+    background-position: $position;
     background-image: -webkit-linear-gradient(
       90deg,
       $border-color,
@@ -91,7 +92,7 @@
 
 @mixin align($map) {
   @each $name, $value in $map {
-    @include subclass(string.unquote("-item-")+$name) {
+    @include subclass(string.unquote("-item-") + $name) {
       align-items: $value;
     }
   }
@@ -99,7 +100,7 @@
 
 @mixin justify($map) {
   @each $name, $value in $map {
-    @include subclass(string.unquote("-content-")+$name) {
+    @include subclass(string.unquote("-content-") + $name) {
       justify-content: $value;
     }
   }
@@ -107,9 +108,39 @@
 
 @mixin direction($list) {
   @each $prop in $list {
-    @include subclass(string.unquote("-")+$prop) {
+    @include subclass(string.unquote("-") + $prop) {
       flex-direction: $prop;
     }
+  }
+}
+
+@mixin txt-align($list, $browses) {
+  @each $prop in $list {
+    @include subclass(string.unquote("-align-") + $prop) {
+      text-align: $prop;
+      & {
+        @include placeholder('placeholder',$browses){
+          text-align: $prop;
+        }
+      }
+    }
+  }
+}
+
+@mixin placeholder($property, $browses,$parent:input) {
+  @each $prefix,$list in $browses {
+    @if list.nth($list,2) {
+    #{selector.append($parent,":"+list.nth($list,1)+$property)} {
+        @content;
+      }
+    } @else {
+      #{selector.append($parent,"::"+list.nth($list,1)+$property)} {
+        @content;
+      }
+    }
+  }
+  #{selector.append($parent,"::"+$property)} {
+    @content;
   }
 }
 

@@ -52,6 +52,14 @@ export default {
         return ['left', 'center', 'right'].indexOf(v) > -1
       }
     },
+    plain:{
+       type:Boolean,
+       default:false 
+    },
+    rounded:{
+      type:Boolean,
+      default:false
+    },
     invalid: {
       type: Boolean,
       default: false
@@ -89,17 +97,15 @@ export default {
     },
     genInputWrapContext () {
       return this.$createElement('div', {
-        staticClass: 'hz-field-box',
-        class: ['mux-field-align-' + this.align]
+        staticClass: 'mux-field-box',
+        class: ['mux-field-align-' + this.align,{'mux-field-is-plain':this.plain},{'mux-field-is-rounded':this.rouned},{ 'mux-field-is-danger': this.invalid }]
       }, [this.genInputContext(), this.invalid ? this.genMsgContext() : null])
     },
     genInputContext () {
       return this.$createElement('input', {
         staticClass: 'mux-field-block',
-        class: { 'hz-field-is-danger': this.invalid },
         attrs: {
-          id: 'FIELD' + this.uuid,
-          value: this.value,
+          id: 'FIELD' + this.uuid,      
           type: this.type,
           name: this.name,
           required: this.required,
@@ -108,9 +114,13 @@ export default {
           placeholder:this.placeholder,
           ...this.attrs
         },
+        domProps:{
+          value: this.value,
+        },
         on: {
-          input: e => {
-            this.$emit('input', e.target.value)
+          input:  e=> {
+            const target = e.target||e.srcElement;
+            this.$emit('input', target.value)
           }
         },
         ref: 'field'
@@ -124,7 +134,7 @@ export default {
     genCleanWrapContext () {
       return this.$createElement('div', {
         staticClass: 'mux-field-cleanbox'
-      }, [this.genCleanIconContext()])
+      }, [(!!this.value&&this.clearable&&!this.readonly)?this.genCleanIconContext():null])
     },
     genCleanIconContext () {
       return this.$createElement('i', {
@@ -146,7 +156,7 @@ export default {
   },
   render (h) {
     return h('div', {
-      staticClass: 'component muxffield'
+      staticClass: 'component mux-field'
     }, [this.genLabelWrapContext(), this.genWrapContext(), this.genAppendWrapContext()])
   }
 }

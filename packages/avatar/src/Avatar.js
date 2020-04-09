@@ -48,13 +48,14 @@ export default {
   },
   render (h) {
     return h('div', {
-      staticClass: 'component mux-avtar',
+      staticClass: 'component mux-avatar',
       class: {
         'mux-avatar-shadow': !this.flat
       },
       style: {
         width: isNaN(this.size) ? this.size : (this.size + 'px'),
-        height: isNaN(this.size) ? this.size : (this.size + 'px')
+        height: isNaN(this.size) ? this.size : (this.size + 'px'),
+        lineHeight: isNaN(this.size) ? this.size : (this.size + 'px')
       }
     }, [this.genImageContext(), this.isPlaceholder ? this.genPlaceholderContext() : null])
   }

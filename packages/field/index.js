@@ -1,1 +1,1 @@
-export {default} from './src/Field.vue'
+export {default} from './src/Field.js'
