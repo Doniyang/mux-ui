@@ -43,7 +43,7 @@ export default {
       return this.$createElement(Button,{
         props:{
           block:true,
-          plain:true
+          plain:false
         },
         on:{
           click:e=>{

@@ -1,0 +1,31 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-prompt") {
+    overflow: hidden;
+
+    @include subclass("-content") {
+      margin: 0;
+    }
+
+    @each $name, $prop in $prompt-btns {
+      @include subclass("-" + $name) {
+        position: relative;
+        flex: 1;
+        overflow: hidden;
+        padding: {
+          #{$prop}: $prompt-gap;
+        }
+        & .mux-btn--is-plain {
+          border: none;
+        }
+      }
+    }
+     
+    @include subclass('-divider'){
+      height: $prompt-divider-height;
+      width: 1px;
+      background-color: $prompt-divider-color;
+    }
+  }
+}

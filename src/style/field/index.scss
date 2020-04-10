@@ -16,17 +16,19 @@
     @include line($field-border-color);
 
     @include subclass("-label") {
-      padding-left: 15px;
-      font-size: 15px;
-      color: #787878;
+      font-size: $field-font-size;
+      color: $field-label-color;
     }
     @include subclass("-required") {
       position: relative;
+      padding-left: $field-gap;
       &:before {
         content: "*";
         position: absolute;
         color: red;
-        left: 8px;
+        left: 0;
+        top: 50%;
+        transform: translate3d(0,-50%,0);
       }
     }
 
@@ -40,7 +42,7 @@
     @include subclass("-box") {
       flex: 1;
       display: block;
-      padding: 0 12px;
+      padding: $field-input-box-padding;
       position: relative;
     }
 
@@ -50,8 +52,8 @@
       width: 100%;
       display: block;
       flex: 1;
-      height: 44px;
-      font-size: 15px;
+      min-height: $field-min-height - 8px;
+      font-size: $field-font-size;
       color: #0c0c0c;
       outline: none;
       border: none;
@@ -60,43 +62,46 @@
       text-align: inherit;
     }
 
-    @include placeholder(
-      "placeholder",
-      $field-browsers,
-      "input.mux-field-block"
-    ) {
-      font-size: 15px;
-      color: #bcbcbc;
-    }
-
-    @include subclass("-is-danger") {
-      border: 1px solid #f00;
+    @include placeholder("placeholder",$field-browsers,"input.mux-field-block") {
+      font-size: $field-font-size;
+      color: $field-placeholder-color;
     }
 
     @include subclass("-is-plain") {
-      border: 1px solid rgba($color: #000000, $alpha: 0.76);
+      border: {
+        width: 1px;
+        style:solid;
+        color: $field-border-color;
+      }
     }
 
+    @include subclass("-is-danger") {
+      border: {
+        width: 1px;
+        style:solid;
+        color: $field-help-color !important;
+      }
+    }
     @include subclass("-is-rounded") {
-      border-radius: 4px;
+      border-radius: $field-border-radius;
     }
 
     @include subclass("-help") {
       position: absolute;
-      right: 2px;
+      right: $field-gap/4;
       top: 50%;
-      color: red;
-      font-size: 12px;
+      color: $field-help-color;
+      font-size: $field-help-font-size;
       transform: translate3d(0, -50%, 0);
     }
 
     @include subclass("-cleanbox") {
       display: block;
-      padding-left: 8px;
+      padding-right: $field-gap;
     }
 
     @include subclass("-clear-icon") {
-      @include lib.close(16px, #aaaaaa);
+      @include lib.close($field-icon-size, $field-icon-color);
     }
 
     @include subclass("-append") {

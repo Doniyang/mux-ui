@@ -14,14 +14,14 @@
     box-sizing: border-box;
     appearance: none;
     &:focus {
-      border-width: 2px;
+      border-width: 0px;
       transition: border-width 200ms ease-out;
     }
     &::after {
       content: "";
       display: block;
       position: absolute;
-      @include setposition(-10px, -10px);
+      @include setposition($btn-shadow-size, $btn-shadow-size);
       pointer-events: none;
       background-color: currentColor;
       background-repeat: no-repeat;
@@ -43,6 +43,7 @@
 
     &--is-disabled {
       opacity: 0.6;
+      pointer-events: none;
     }
     &--is-block {
       display: block;

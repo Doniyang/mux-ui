@@ -20,10 +20,14 @@
     @include subclass("-placeholder"){
       position:absolute;
       @include setposition(0,0);
-      z-index: 4;
+      z-index: $avatar-zindex;
       vertical-align: middle;
       background-color: $avatar-placeholder-bgcolor;
       color: $avatar-placeholder-color;
+      line-height: 1;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

@@ -4,24 +4,24 @@
   @include prefix($prefix, "-dialog") {
     position: fixed;
     @include setposition(50%, 50%, auto, auto);
-    width: 75%;
+    width: $dialog-width;
     overflow: hidden;
-    border-radius: 4px;
-    background-color: #ffffff;
+    border-radius: $dialog-radius;
+    background-color: $dialog-bgcolor;
     transform: translate3d(-50%, -50%, 0);
     -webkit-user-select: none;
     transition: all 0.2s;
     @include subclass("-header"){
-      padding: 16px 0 8px;
+      padding: $dialog-header-padding;
       box-sizing: border-box;
     }
     @include subclass("-main"){
       position: relative;
-      min-height: 40px;
-      padding: 0 20px;
+      min-height: $dialog-content-min-height;
+      padding:$dialog-content-padding;
       vertical-align: middle;
       text-align: center;
-      @include line(#dedede);
+      @include line($dialog-border-color);
     }
     @include subclass("-footer"){
       display: flex;
@@ -34,11 +34,8 @@
       margin: 0;
       display: block;
       text-align: center;
-      font-size: 16px;
+      font-size: $dialog-font-size;
     }
-  
   }
-
-  
 }
 

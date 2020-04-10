@@ -22,12 +22,16 @@
     &-#{$name} {
       background-color: list.nth($colors, 1);
       color: list.nth($colors, 2);
-      border-width: 1px;
-      border-style: solid;
-      border-color: list.nth($colors, 3);
+      border: {
+        width: 0px;
+        style: solid;
+        color: list.nth($colors, 3);
+      };
+   
       &#{$plain} {
         background-color: $default !important;
         color: list.nth($colors, 4);
+        border-width: 1px;
       }
     }
   }

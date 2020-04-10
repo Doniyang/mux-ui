@@ -1,0 +1,73 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-header") {
+    position: relative;
+    z-index: 0;
+    zoom: 1;
+    @include subclass("-wrap") {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      min-height: $header-min-height;
+      background-color: $header-bgcolor;
+    }
+
+    @include subclass("-back") {
+      position: relative;
+      padding: {
+        left: $header-side-gap;
+      }
+    }
+
+    @include subclass("-back-box") {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    @include subclass("-back-icon") {
+      display: inline-block;
+      width: $header-side-box;
+      height: $header-side-box;
+      @include arrow($header-side-box, $header-side-box-color, left);
+    }
+
+    @include subclass("-back-text") {
+      font-size: $header-side-size;
+      color: $header-side-color;
+    }
+
+    @include subclass("-main") {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      zoom: 1;
+      text-align: center;
+    }
+
+    @include subclass("-title") {
+      font-size: $header-title-size;
+      color: $header-title-color;
+      font-weight: $header-title-weight;
+      margin: 0;
+    }
+
+    @include subclass("-more") {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: {
+        right: $header-side-gap;
+      }
+    }
+
+    @include subclass("-more-text") {
+      font-size: $header-more-size;
+      color: $header-more-color;
+      line-height: 1;
+      vertical-align: super;
+    }
+  }
+}

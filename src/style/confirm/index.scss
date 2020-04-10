@@ -1,0 +1,31 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-confirm") {
+    overflow: hidden;
+
+    @include subclass("-content") {
+      margin: 0;
+    }
+
+    @each $name, $prop in $confirm-btns {
+      @include subclass("-" + $name) {
+        position: relative;
+        flex: 1;
+        overflow: hidden;
+        padding: {
+          #{$prop}: $confirm-gap;
+        }
+        & .mux-btn--is-plain {
+          border: none;
+        }
+      }
+    }
+     
+    @include subclass('-divider'){
+      height: $confirm-divider-height;
+      width: 1px;
+      background-color: $confirm-divider-color;
+    }
+  }
+}

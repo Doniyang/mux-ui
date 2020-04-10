@@ -81,21 +81,22 @@ export default {
       })
     },
     genPrompBtnContext () {
-      return [this.genBtnareaContext('cancel', this.cancelBtnText), this.genDividerContext(), this.genBtnareaContext('confirm', this.confirmBtnText)]
+      return [this.genBtnareaContext('default','cancel', this.cancelBtnText), this.genDividerContext(), this.genBtnareaContext('primary','confirm', this.confirmBtnText)]
     },
     genDividerContext () {
       return this.$createElement('div', {
-        staticClass: 'mux-confirm-divider'
+        staticClass: 'mux-prompt-divider'
       })
     },
-    genBtnareaContext (type, text) {
+    genBtnareaContext (color,type, text) {
       return this.$createElement('div', {
-        staticClass: 'mux-' + type + '-btnarea'
-      }, [this.genBtnContext(type, text)])
+        staticClass: 'mux-prompt-' + type 
+      }, [this.genBtnContext(color,type, text)])
     },
-    genBtnContext (type, text) {
+    genBtnContext (color,type, text) {
       return this.$createElement(Button, {
         props: {
+          color:color,
           block: true,
           plain: true
         },
@@ -110,13 +111,13 @@ export default {
   },
   render (h) {
     return h(Dialog, {
-      staticClass: 'component mux-confirm',
+      staticClass: 'component mux-prompt',
       props: {
         title: this.title,
         zIndex: this.zIndex,
         value: this.value,
         transition: this.transition,
-        closeOnMaskClick: false
+        closeOnMaskClick: true
       },
       scopedSlots: {
         footer: () => this.genPrompBtnContext(),

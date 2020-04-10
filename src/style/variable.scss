@@ -2,17 +2,16 @@ $prefix:MUX;
 
 $base-color:#FFFFFF;
 $border-color:#dcdcdc;
+$border-radius:6px;
+$gap:15px;
 
-$dialog-radius:6px;
-$dialog-header-padd-top:15px;
-$dialog-content-padd:10px  20px 15px;
-$dialog-btn-height:40px;
 
 
 $matte:rgba(0,0,0,0.3);
 $matte-opacity:0.5;
 
-$action-sheet:#e0e0e0;
+$action-sheet-bgcolor:#e0e0e0;
+$action-sheet-border-color:#e0e0e0;
 $action-sheet-item:$base-color;
 $action-sheet-item-width:100%;
 $action-sheet-item-height:45px;
@@ -20,25 +19,22 @@ $action-sheet-item-fontsize:18px;
 $action-sheet-item-color:#212121;
 $action-sheet-item-cancel-gap:5px;
 
-$alert-bg:$base-color;
-$alert-border-radius:$dialog-radius;
-$alert-header-padd-top:$dialog-header-padd-top;
-$alert-font-size:16px;
-$alert-content-padd:$dialog-content-padd;
-$alert-content-height:36px;
-$alert-btn-height:$dialog-btn-height;
-$alert-btn-color:#26a2ff;
 
+$alert-btnarea-padding: 0 $border-radius;
+
+$avatar-zindex:4;
 $avatar-shadow:0 0px 4px 2px #a9d9ef;
 $avatar-placeholder-bgcolor:#3f9ff3;
 $avatar-placeholder-color:$base-color;
 
-$btn-radius:6px;
+$btn-shadow-size:-10px;
+$btn-radius:$border-radius;
 $btn-color-map:("default":(#ffffff,#212121,#dddddd,#212121),"primary":(#26a2ff,#FFFFFF,#26a2ff,#26a2ff),"danger":(#ef4f4f,#FFFFFF,#ef4f4f,#ef4f4f),"error":(#ff0000,#FFFFFF,#ff0000,#ff0000));
 $btn-size-map:("small":(14px,4px,10px),"normal":(16px,8px,12px),"large":(18px,12px,16px));
 
-$card-gap:15px;
+$card-gap:$gap;
 $card-border-color:$border-color;
+$card-shadow:0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 
 
 $cell-bgcolor:$base-color;
@@ -52,43 +48,58 @@ $cell-arrow-color:rgba(0,0,0,0.56);
 $cell-arrow-size:10px;
 $cell-arrow-dir:right;
 
-$comfirm-bg:$base-color;
-$comfirm-border-radius:$dialog-radius;
-$comfirm-header-padd-top:$dialog-header-padd-top;
-$comfirm-font-size:16px;
-$comfirm-content-padd:$dialog-content-padd;
-$comfirm-content-height:36px;
-$comfirm-btn-height:$dialog-btn-height;
-$comfirm-btn-color:#26a2ff;
-$comfirm-cancel-color:#353535;
+$confirm-gap:$border-radius;
+$confirm-divider-height:26px;
+$confirm-divider-color:$border-color;
+$confirm-btns:("cancel":left,"confirm":right);
 
 
+$dialog-radius:6px;
+$dialog-width:75%;
+$dialog-font-size:16px;
+$dialog-bgcolor:$base-color;
+$dialog-header-padding:$gap 0 $gap/2;
+$dialog-content-min-height:40px;
+$dialog-content-padding: 0 $gap;
+$dialog-border-color:$border-color;
 
-$field-min-height:46px;
+
+$field-min-height:44px;
 $field-bgcolor:$base-color;
+$field-font-size:15px;
+$field-gap:8px;
+$field-placeholder-color:#bcbcbc;
 $field-border-color:$border-color;
+$field-border-radius:$border-radius;
+$field-help-color:rgba(#f00,.78);
+$field-help-font-size:12px;
+$field-label-color:#787878;
+$field-icon-color:#aaa;
+$field-icon-size:16px;
+$field-input-box-padding:0 $field-gap;
 $field-text-align:(left,right,center);
 $field-browsers:("webkit":("-webkit-input-",false),"ms":("-ms-input-",true),"moz":("-moz-",false));
 
 
 
-$header-bg:rgba(0, 0, 0, 0.78);
+
+$header-bgcolor:#26a2ff;
 $header-min-height:50px;
 $header-side-min-width:40px;
-$header-arrow-bg:$base-color;
-$header-back-color:$base-color;
 $header-title-color:$base-color;
 $header-title-size:16px;
+$header-title-weight:600;
 $header-side-size:15px;
+$header-side-color:$base-color;
+$header-side-gap:16px;
+$header-side-box:16px;
+$header-side-box-color:$base-color;
 $header-more-color:$base-color;
+$header-more-size:15px;
 
-$prompt-bg:$base-color;
-$prompt-border-radius:$dialog-radius;
-$prompt-header-padd-top:$dialog-header-padd-top;
-$prompt-font-size:16px;
-$prompt-content-padd:$dialog-content-padd;
-$prompt-content-height:36px;
-$prompt-btn-height:$dialog-btn-height;
-$prompt-btn-color:#26a2ff;
-$prompt-cancel-color:#353535;
+$prompt-gap:$border-radius;
+$prompt-divider-height:26px;
+$prompt-divider-color:$border-color;
+$prompt-btns:("cancel":left,"confirm":right);
+
 

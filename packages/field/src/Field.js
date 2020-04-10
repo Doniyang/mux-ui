@@ -52,13 +52,13 @@ export default {
         return ['left', 'center', 'right'].indexOf(v) > -1
       }
     },
-    plain:{
-       type:Boolean,
-       default:false 
+    plain: {
+      type: Boolean,
+      default: false
     },
-    rounded:{
-      type:Boolean,
-      default:false
+    rounded: {
+      type: Boolean,
+      default: false
     },
     invalid: {
       type: Boolean,
@@ -92,34 +92,35 @@ export default {
     },
     genWrapContext () {
       return this.$createElement('div', {
-        staticClass: 'mux-field-container'
+        staticClass: 'mux-field-container',
+        class: { 'mux-field-is-plain': this.plain, 'mux-field-is-rounded': this.rounded, 'mux-field-is-danger': this.invalid }
       }, [this.genInputWrapContext(), this.genCleanWrapContext()])
     },
     genInputWrapContext () {
       return this.$createElement('div', {
         staticClass: 'mux-field-box',
-        class: ['mux-field-align-' + this.align,{'mux-field-is-plain':this.plain},{'mux-field-is-rounded':this.rouned},{ 'mux-field-is-danger': this.invalid }]
+        class: ['mux-field-align-' + this.align]
       }, [this.genInputContext(), this.invalid ? this.genMsgContext() : null])
     },
     genInputContext () {
       return this.$createElement('input', {
         staticClass: 'mux-field-block',
         attrs: {
-          id: 'FIELD' + this.uuid,      
+          id: 'FIELD' + this.uuid,
           type: this.type,
           name: this.name,
           required: this.required,
           disabled: this.disabled,
           readonly: this.readonly,
-          placeholder:this.placeholder,
+          placeholder: this.placeholder,
           ...this.attrs
         },
-        domProps:{
+        domProps: {
           value: this.value,
         },
         on: {
-          input:  e=> {
-            const target = e.target||e.srcElement;
+          input: e => {
+            const target = e.target || e.srcElement;
             this.$emit('input', target.value)
           }
         },
@@ -134,7 +135,7 @@ export default {
     genCleanWrapContext () {
       return this.$createElement('div', {
         staticClass: 'mux-field-cleanbox'
-      }, [(!!this.value&&this.clearable&&!this.readonly)?this.genCleanIconContext():null])
+      }, [(!!this.value && this.clearable && !this.readonly) ? this.genCleanIconContext() : null])
     },
     genCleanIconContext () {
       return this.$createElement('i', {

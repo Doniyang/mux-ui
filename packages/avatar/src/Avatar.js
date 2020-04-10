@@ -54,8 +54,7 @@ export default {
       },
       style: {
         width: isNaN(this.size) ? this.size : (this.size + 'px'),
-        height: isNaN(this.size) ? this.size : (this.size + 'px'),
-        lineHeight: isNaN(this.size) ? this.size : (this.size + 'px')
+        height: isNaN(this.size) ? this.size : (this.size + 'px')
       }
     }, [this.genImageContext(), this.isPlaceholder ? this.genPlaceholderContext() : null])
   }
