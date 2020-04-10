@@ -58,5 +58,4 @@ export default {
       }
     }, [this.genImageContext(), this.isPlaceholder ? this.genPlaceholderContext() : null])
   }
-
 }
