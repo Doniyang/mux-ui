@@ -29,7 +29,8 @@
     } 
 
     @include subclass('-caret'){
-      min-width: $cell-arrow-min-width;
+      width: $cell-arrow-box-size;
+      height: $cell-arrow-box-size;
      @include arrow($cell-arrow-size,$cell-arrow-color,$cell-arrow-dir)
     }
 

@@ -1,2 +1,2 @@
 
-export{default}from './src/RadioGroup.vue'
+export{default}from './src/RadioGroup'

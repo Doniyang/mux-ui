@@ -8,6 +8,10 @@ export default {
         return ['email', 'number', 'password', 'search', 'tel', 'text', 'url'].indexOf(v) > -1
       }
     },
+    id:{
+      type:String,
+      default:''
+    },
     attrs: Object,
     required: {
       type: Boolean,
@@ -74,6 +78,11 @@ export default {
       uuid: Math.random().toString(32).substring(4, 9).toUpperCase()
     }
   },
+  computed:{
+    fieldId(){
+      return this.id||'FIELD-' + this.uuid
+    }
+  },
   methods: {
     genLabelWrapContext () {
       return this.$createElement('div', {
@@ -86,7 +95,7 @@ export default {
     genLabelContext () {
       return this.$scopedSlots.label ? this.$scopedSlots.label({ label: this.label }) : this.$createElement('label', {
         attrs: {
-          for: 'FIELD' + this.uuid
+          for: this.fieldId
         }
       }, this.label)
     },
@@ -106,7 +115,7 @@ export default {
       return this.$createElement('input', {
         staticClass: 'mux-field-block',
         attrs: {
-          id: 'FIELD' + this.uuid,
+          id: this.fieldId,
           type: this.type,
           name: this.name,
           required: this.required,

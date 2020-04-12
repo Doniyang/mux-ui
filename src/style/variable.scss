@@ -43,7 +43,7 @@ $cell-min-height:46px;
 $cell-align-map:("start":flex-start,"end":flex-end,"center":center,"baseline":baseline,"stretch":stretch);
 $cell-content-map:("start":flex-start,"end":flex-end,"center":center,"between":space-between,"around":space-around);
 $cell-direction-list:row,column;
-$cell-arrow-min-width:25px;
+$cell-arrow-box-size:16px;
 $cell-arrow-color:rgba(0,0,0,0.56);
 $cell-arrow-size:10px;
 $cell-arrow-dir:right;
@@ -64,6 +64,7 @@ $dialog-content-padding: 0 $gap;
 $dialog-border-color:$border-color;
 
 
+$field-z-index:2020;
 $field-min-height:44px;
 $field-bgcolor:$base-color;
 $field-font-size:15px;
@@ -80,7 +81,17 @@ $field-input-box-padding:0 $field-gap;
 $field-text-align:(left,right,center);
 $field-browsers:("webkit":("-webkit-input-",false),"ms":("-ms-input-",true),"moz":("-moz-",false));
 
-
+$fold-header-gap:10px;
+$fold-line-height:18px;
+$fold-line-width:2px;
+$fold-line-color:#009688;
+$fold-title-size:16px;
+$fold-title-color:#212121;
+$fold-arrow-box-size:16px;
+$fold-arrow-color:rgba(0,0,0,0.56);
+$fold-arrow-size:10px;
+$fold-arrow-dir:right;
+$fold-panel-gap:12px 15px 0;
 
 
 $header-bgcolor:#26a2ff;
@@ -101,5 +112,12 @@ $prompt-gap:$border-radius;
 $prompt-divider-height:26px;
 $prompt-divider-color:$border-color;
 $prompt-btns:("cancel":left,"confirm":right);
+
+$radio-border-color:$border-color;
+$radio-bgcolor: $base-color;
+$radio-checked-color:#3598db;
+$radio-focus-opacity:0.2;
+$radio-box-size:22px;
+$radio-gap:15px;
 
 

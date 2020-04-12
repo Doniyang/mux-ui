@@ -1,0 +1,27 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component{
+  @include prefix($prefix, "-radio-group"){
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    align-items: center;
+    
+    @include subclass('--is-reverse'){
+    	zoom:1;
+    	& .mux-radio{
+    		flex-direction: row-reverse;
+    	}
+    }
+
+    @include subclass('--is-block'){
+       width: 100%;
+       flex-direction: column;
+       align-items: flex-start;
+       & .mux-radio{
+       	  @include line($radio-border-color);
+       }   	
+    }
+  }  
+}

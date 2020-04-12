@@ -25,7 +25,13 @@ export default {
     },
     genTitleWrapContext(){
       return this.$createElement('div',{
-        staticClass:'mux-fold-header'
+        staticClass:'mux-fold-header',
+        on:{
+          click:e=>{
+            e.stopPropagation();
+            this.$emit('input',!this.value)
+          }
+        }
       },[this.genTitleContext()])
     },
     genTitleContext(){
@@ -38,8 +44,14 @@ export default {
         staticClass:'mux-fold-arrow',
         class:{
           'mux-fold-rotate':this.value 
-        }     
-      })
+        },
+        on:{
+          click:e=>{
+            e.stopPropagation();
+            this.$emit('input',!this.value)
+          }
+        }  
+      },[this.genIconContext()])
     },
     genIconContext(){
       return this.$createElement('i',{
@@ -48,11 +60,13 @@ export default {
     },
     genTransitionContext(){
       return this.$createElement('transition',{
-        props:'fade'
+        props:{
+        name:'fade'
+       }
       },[this.genMainContext()])
     },
     genMainContext(){
-      this.$createElement('main',{
+     return this.$createElement('main',{
         staticClass:'mux-fold-container',
         directives:[{name:'show',value:this.value}]
       },this.$slots.default)
