@@ -1,5 +1,6 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
+@use 'sass:list';
 .component {
   @include prefix($prefix, "-checkbox") {
     display: flex;
@@ -16,14 +17,14 @@
       position: relative;
       display: inline-block;
       vertical-align: middle;
-      width: 20px;
-      height: 20px;
+      width: $checkbox-box-size;
+      height: $checkbox-box-size;
       outline: 0;
       margin: 0;
       padding: 0;
-      color: $radio-checked-color;
-      background-color: #ffffff;
-      border: solid 1px #aaaaaa;
+      color: $checkbox-checked-color;
+      background-color: $checkbox-bgcolor;
+      border: solid 1px $checkbox-border-color;
       cursor: pointer;
       -webkit-appearance: none;
       appearance: none;
@@ -33,7 +34,7 @@
       transition: background-color ease 0.1s;
 
       &:disabled {
-        color: $radio-disabled-color;
+        color: $checkbox-disabled-color;
         cursor: not-allowed;
       }
 
@@ -67,18 +68,18 @@
 
         &::before {
           content: "";
-          width: 10px;
-          height: 6px;
+          width: list.nth($checkbox-clip-list,1);
+          height:list.nth($checkbox-clip-list,2);
           position: absolute;
           top: 50%;
           left: 50%;
-          margin-left: -5px;
-          margin-top: -5px;
+          margin-left: -list.nth($checkbox-clip-list,1);
+          margin-top: -list.nth($checkbox-clip-list,1);
           background: transparent;
           border: {
             width: 1px;
             style: solid;
-            color: #ffffff;
+            color: $checkbox-bgcolor;
           }
           border-top: none;
           border-right: none;
@@ -105,7 +106,7 @@
         @include setposition(50%,50%,auto,auto);
         width:10px;
         height: 1px;
-        background-color: #ffffff;
+        background-color: $checkbox-bgcolor;
         transform: translate3d(-50%,-50%,0);
       } 
     } 
@@ -116,8 +117,8 @@
       overflow: hidden;
     }
     @include subclass("-label") {
-      font-size: $radio-label-font-size;
-      color: $radio-label-color;
+      font-size: $checkbox-label-font-size;
+      color: $checkbox-label-color;
     }
   }
 }

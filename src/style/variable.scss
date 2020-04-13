@@ -48,9 +48,15 @@ $cell-arrow-color:rgba(0,0,0,0.56);
 $cell-arrow-size:10px;
 $cell-arrow-dir:right;
 
-$checkbox-bgcolor:$base-color;
+$checkbox-border-color:$border-color;
+$checkbox-bgcolor: $base-color;
+$checkbox-checked-color:#3598db;
+$checkbox-disabled-color:#dddddd;
+$checkbox-box-size:20px;
 $checkbox-box-gap:8px;
-$checkbox-label-gap:8px;
+$checkbox-label-color:#0c0c0c;
+$checkbox-label-font-size:15px;
+$checkbox-clip-list:(10px,6px);
 
 $confirm-gap:$border-radius;
 $confirm-divider-height:26px;
@@ -123,9 +129,7 @@ $radio-checked-color:#3598db;
 $radio-disabled-color:#dddddd;
 $radio-focus-opacity:0.2;
 $radio-box-size:22px;
-$radio-gap:15px;
 $radio-box-gap:8px;
-$radio-label-gap:8px;
 $radio-label-color:#0c0c0c;
 $radio-label-font-size:15px;
 

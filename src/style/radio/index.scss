@@ -7,10 +7,6 @@
     flex-wrap: nowrap;
     align-items: center;
 
-    &:last-child {
-      margin: 0;
-    }
-
     @include subclass("-box") {
       display: block;
       padding: $radio-box-gap;
