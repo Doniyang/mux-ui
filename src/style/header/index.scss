@@ -7,7 +7,6 @@
     
     &--is-fixed{
          margin: 0;
-         z-index: 0;
          zoom: 1; 
          padding:{
           bottom: $header-min-height;
@@ -26,7 +25,7 @@
     @include subclass('-wrap--is-fixed'){
        position:fixed;
        @include setposition(0,0,auto,0);
-       z-index: $field-min-height;
+       z-index: 2020;
     }
 
     @include subclass("-back") {

@@ -1,0 +1,123 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-checkbox") {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    @include subclass("-box") {
+      display: block;
+      padding: $checkbox-box-gap;
+      overflow: visible;
+    }
+
+    @include subclass("-block") {
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      outline: 0;
+      margin: 0;
+      padding: 0;
+      color: $radio-checked-color;
+      background-color: #ffffff;
+      border: solid 1px #aaaaaa;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-transition: background-color ease 0.1s;
+      transition: background-color ease 0.1s;
+
+      &:disabled {
+        color: $radio-disabled-color;
+        cursor: not-allowed;
+      }
+
+      &:focus {
+        &::after {
+          content: "";
+          position: absolute;
+          @include setposition(0, 0);
+          border-radius: 50%;
+          opacity: 0.2;
+          background: {
+            color: currentColor;
+          }
+          -webkit-transform: scale(1.75);
+          -ms-transform: scale(1.75);
+          transform: scale(1.75);
+          -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+          transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+        }
+      }
+
+      &:checked {
+        border: {
+          color: currentColor;
+        };
+        background: {
+          color: currentColor;
+          clip: border-box;
+        };
+        text-align: center;
+
+        &::before {
+          content: "";
+          width: 10px;
+          height: 6px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-left: -5px;
+          margin-top: -5px;
+          background: transparent;
+          border: {
+            width: 1px;
+            style: solid;
+            color: #ffffff;
+          }
+          border-top: none;
+          border-right: none;
+          z-index: 2;
+          -webkit-border-radius: 0;
+          border-radius: 0;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+        }
+      }
+    }
+    @include subclass('--is-partial'){
+      border: {
+        color: currentColor;
+      };
+      background: {
+        color: currentColor;
+        clip: border-box;
+      };
+      text-align: center;
+      &::before{
+        content: "";
+        position: absolute;
+        @include setposition(50%,50%,auto,auto);
+        width:10px;
+        height: 1px;
+        background-color: #ffffff;
+        transform: translate3d(-50%,-50%,0);
+      } 
+    } 
+
+    @include subclass("-label-wrap") {
+      display: block;
+      flex: 1;
+      overflow: hidden;
+    }
+    @include subclass("-label") {
+      font-size: $radio-label-font-size;
+      color: $radio-label-color;
+    }
+  }
+}

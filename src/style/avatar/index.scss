@@ -8,6 +8,7 @@
     box-sizing: border-box;
     border-radius: 50%;
     &-shadow {
+      margin: 4px;
       box-shadow: $avatar-shadow;
     }
     @include subclass("-image") {
