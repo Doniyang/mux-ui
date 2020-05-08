@@ -1,0 +1,40 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-tabs") {
+    position: relative;
+    overflow: hidden;
+    zoom: 1;
+    box-sizing: border-box;
+    background: #ffffff;
+
+    @include subclass("-container") {
+      display: flex;
+      height: $tab-height;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow: visible;
+      transition: all 0.2s;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    @include subclass("-slider") {
+      position: absolute;
+      height: $tab-slider-size;
+      min-width: 0px;
+      border-radius: $tab-slider-radius;
+      transition: left 200ms;
+      background-color: $tab-slider-bgcolor;
+
+      &--is-bottom {
+        bottom: 0;
+      }
+
+      &--is-top {
+        top: 0;
+      }
+    }
+  }
+}

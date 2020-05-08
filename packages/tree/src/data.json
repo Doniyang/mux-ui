@@ -26484,7 +26484,7 @@
     ],
     "icon": "business/system/images/tree/dept.gif",
     "id": "440600000000",
-    "name": "汇智通信",
+    "name": "智汇通信",
     "nocheck": false,
     "onclick": "$DeptService.getSonDept('440600000000', '汇智通信');",
     "oncontextmenu": "$DeptService.treeMenu('440600000000', '汇智通信', 0);",

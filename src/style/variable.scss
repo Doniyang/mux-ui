@@ -133,5 +133,15 @@ $radio-box-gap:8px;
 $radio-label-color:#0c0c0c;
 $radio-label-font-size:15px;
 
+$switch-size:26px;
+$switch-min-width:60px;
+$switch-box-color:$base-color;
+$switch-track-bgcolor:$border-color;
+$switch-track-active-bgcolor:#009688;
+$switch-box-shadow:1px 1px 1px 1px rgba(0, 0, 0, 0.08);
 
+$tab-height:52px;
+$tab-slider-size:3px;
+$tab-slider-radius:5px;
+$tab-slider-bgcolor:linear-gradient(to right, #7956ee, #2eb7fd);
 

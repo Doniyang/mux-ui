@@ -1,0 +1,8 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-sticky") {
+      position: sticky;
+  }
+    
+}
