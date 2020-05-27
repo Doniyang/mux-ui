@@ -1,1 +1,1 @@
-export { default } from './src/Tree.vue'
+export { default } from './src/Tree.js'

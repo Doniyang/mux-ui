@@ -1,4 +1,5 @@
 import Store from "./model/Store";
+import Checkbox from "../../checkbox";
 export default {
   name: "v-tree",
   props: {
@@ -30,13 +31,13 @@ export default {
       type: Boolean,
       default: false,
     },
-    lazyChildren: {
+    loadChildren: {
       type: Function,
-      default: () => {},
+      default: (id) => { },
     },
     useCheckbox: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     open: {
       type: Boolean,
@@ -45,7 +46,7 @@ export default {
   },
   data() {
     return {
-      parentId: "-100102",
+      parentId: -1,
       nodeStore: null,
     };
   },
@@ -53,45 +54,140 @@ export default {
     this.nodeStore = new Store(this.parentId, this.items, {
       text: this.itemText,
       value: this.itemValue,
-      children: this.itemValue,
+      children: this.itemChildren,
       isChecked: this.checked,
       isPlain: false,
       isOpen: this.open,
     });
+    this.nodeStore.on('asyncChange',this.handleAsyncChange)
+  },
+  beforeMount(){
+    this.nodeStore.updateRootNodeCheckedState(this.value)
+  },
+  beforeDestroy(){
+    if(this.nodeStore){
+      this.nodeStore.off('asyncChange',this.handleAsyncChange)
+      this.nodeStore= null
+    }
+  },
+  watch:{
+    checked(nv,ov){
+       if(nv!=ov){
+        this.nodeStore.updateNodeCheckedState(this.parentId, nv)
+       }  
+    },
+    open(nv,ov){
+      if(nv!=ov){
+        this.nodeStore.updateNodeOpenState(this.parentId, nv)
+      }
+    }
   },
   methods: {
-    genTreeWrapContext(pId) {
-      return this.$createElement(
-        "ul",
-        {
-          staticClass: "mux-tree-wrap",
+    handleAsyncChange(e,data){
+      e.stopPropagation()
+      this.$emit('input',data)
+    },
+    handleClick(nodeId, isOpen, isChecked) {
+      if(this.lazy && !isOpen){
+        this.lazyLoadChildren(nodeId).then(children=>{
+          children.forEach(item=>{
+            this.nodeStore.addNode(item[this.itemValue],nodeId,item[this.itemText],'leaf',false,false,isChecked)
+          })
+          this.nodeStore.updateNodeOpenState(nodeId, !isOpen)
+        }).catch(e=>{
+          console.log(e)
+        })     
+      }else{
+        this.nodeStore.updateNodeOpenState(nodeId, !isOpen)
+        this.nodeStore.updateChildrenNodeCheckedState(nodeId, isChecked) 
+      }
+    },
+    handleChange(e) {
+      const target = e.target || e.srcElement
+      e.stopPropagation()
+      this.nodeStore.updateNodeCheckedState(target.value, target.checked)
+    },
+    lazyLoadChildren(nodeId){
+      return new Promise((resolve,reject)=>{
+        const children = this.loadChildren.call(this,nodeId)
+        if(Array.isArray(children)){
+          resolve(children)
+        }else{
+          reject(new Error('Tree node is Array,but get object'))
+        } 
+      }) 
+    },
+    genTreeWrapContext(pId, level) {
+      return this.$createElement("ul", {
+        staticClass: "mux-tree-wrap",
+        attrs: {
+          ariaLevel: level,
         },
-        this.genTreeLeafContext(pId)
-      );
+      }, this.genTreeNodeContext(pId));
     },
-    genTreeLeafContext(pId) {
+    genTreeNodeContext(pId) {
       const nodeMap = this.nodeStore.getNodeTreeMap(pId);
-      return nodeMap.map((item) =>
-        this.$createElement("li", {
-          staticClass: "hz-tree-item",
-          key: item[this.itemValue],
-        },[this.genLeafWrapContext(item),item.isOpen?this.genTreeWrapContext(item[this.itemValue]):null])
-      );
+      return nodeMap.map((node) => this.$createElement("li", {
+        staticClass: "mux-tree-item",
+        key: node.getNodeId(),
+      }, [this.genNodeContentContext(node), node.isOpen ? this.genTreeWrapContext(node.getNodeId(), "leaf") : null]));
     },
-    genLeafWrapContext(node){
-        return this.$createElement('a',{
-           staticClass:'mux-tree-container'
-        }) 
+    genNodeContentContext(node) {
+      return this.$createElement("div", {
+        staticClass: "mux-tree-container",
+      }, [this.genIconWrapContext(node.getNodeId(), node.isOpen, node.isChildrenChecked), this.useCheckbox ? this.genCheckboxWrapContext(node.isChecked, node.isPlain, node.getNodeId()) : null, this.genContentWrapContext(node.title)]);
     },
-    genLeafContext(item){
-
+    genIconWrapContext(nId, isOpen, isChildrenChecked) {
+      return this.$createElement("a", {
+        staticClass: "mux-tree-icon-box",
+        class: { 'mux-tree-icon--is-open': isOpen },
+        attrs: {
+          href: "javascript:void(0)"
+        },
+        on: {
+          click: e => {
+            e.stopPropagation()
+            this.handleClick(nId, isOpen, isChildrenChecked)
+          }
+        }
+      }, [this.genIconContext()]);
     },
-    genCheckboxContext(isChecked,isPlain,value){
-
-    } 
-
+    genCheckboxWrapContext(isChecked, isPlain, value) {
+      return this.$createElement("div", {
+        staticClass: 'mux-tree-checkbox',
+        attrs: {
+          role: "checkbox",
+        },
+      }, [this.genCheckboxContext(isChecked, isPlain, value)]);
+    },
+    genContentWrapContext(text) {
+      return this.$createElement('p', {
+        staticClass: 'mux-tree-title'
+      }, text)
+    },
+    genCheckboxContext(isChecked, isPlain, value) {
+      return this.$createElement(Checkbox, {
+        props: {
+          checked: isChecked,
+          partial: isPlain,
+          checkboxValue: value,
+        },
+        on: {
+          change: (e) => {
+            this.handleChange(e)
+          },
+        },
+      });
+    },
+    genIconContext() {
+      return this.$createElement('span', {
+        staticClass: 'mux-tree-icon'
+      })
+    }
   },
   render(h) {
-    return h("div", {});
+    return h("div", {
+      staticClass: 'component mux-tree'
+    }, [this.genTreeWrapContext(this.parentId, 'root')]);
   },
 };

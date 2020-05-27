@@ -16,7 +16,7 @@ export { default as Sticky } from "./sticky";
 export { default as Switch } from "./switch";
 export { default as Tab } from './tab';
 export { default as TabItem } from './tab-item';
+export { default as Tree } from './tree'
 
-// export { default as Tree } from './tree'
 // export { default as Toast } from './toast'
 // export { default as Upload } from './upload'

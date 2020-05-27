@@ -26,7 +26,7 @@
       min-width: 0px;
       border-radius: $tab-slider-radius;
       transition: left 200ms;
-      background-color: $tab-slider-bgcolor;
+      background: $tab-slider-bgcolor;
 
       &--is-bottom {
         bottom: 0;

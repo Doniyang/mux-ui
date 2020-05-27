@@ -55,7 +55,7 @@
         }
       }
 
-      &:checked {
+      &[checked] {
         border: {
           color: currentColor;
         }

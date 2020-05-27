@@ -1,0 +1,76 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as *;
+.component {
+  @include prefix($prefix, "-tree") {
+    position: relative;
+    overflow: hidden;
+    zoom: 1;
+    box-sizing: border-box;
+
+    @include subclass("-wrap") {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      zoom: 1;
+    }
+
+    @include subclass("-item") {
+      position: relative;
+      display: block;
+      list-style: none;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+      *zoom: 1;
+      padding: 0 0 0 15px;
+      box-sizing: border-box;
+    }
+
+    @include subclass("-container") {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow: hidden;
+      padding: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    @include subclass("-icon-box") {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      overflow: hidden;
+      transition: all 280ms;
+      &:active {
+        border-radius: 50%;
+        background-color: rgba($color: #3598db, $alpha: 0.24);
+      }
+    }
+    
+    @include subclass("-checkbox"){
+        position: static;
+        overflow: visible;
+    }
+
+    @include subclass("-title"){
+        position: static;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+    } 
+
+
+    @include subclass("-icon--is-open") {
+      transform: rotate(90deg);
+    }
+
+    @include subclass("-icon") {
+      display: inline-block;
+      @include arrow(12px, rgba(0, 0, 0, 0.56), right);
+    }
+  }
+}

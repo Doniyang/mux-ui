@@ -10,6 +10,14 @@ export default class Node {
     this.isParent = true
     this.isChildrenChecked = false
     this.timeStamp = 0
+    this.updateChildrenCheckedState(checked)
+  }
+  /**
+   * 获取节点ID
+   * return String
+   */
+  getNodeId(){
+    return this.nodeId
   }
   /**
    * 获取父节点ID
@@ -36,7 +44,7 @@ export default class Node {
    * 更新节点是否选中
    * @param {Boolean} isChecked
    */
-  updateNodeCheckedState (isChecked) {
+  updateCheckedState (isChecked) {
     this.isChecked = isChecked
     if (isChecked) { this.isPlain = false }
   }
@@ -44,14 +52,14 @@ export default class Node {
    * 设置节点是否打开
    * @param {Boolean} isOpen
    */
-  updateNodeOpenState (isOpen) {
+  updateOpenState (isOpen) {
     this.isOpen = isOpen
   }
   /**
    * 设置选中some
    * @param {Boolean} isPlain
    */
-  updateNodePlainState (isPlain) {
+  updatePlainState (isPlain) {
     this.isPlain = isPlain
   }
   /**

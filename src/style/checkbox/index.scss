@@ -56,25 +56,25 @@
         }
       }
 
-      &:checked {
+      &[checked] {
         border: {
           color: currentColor;
-        };
+        }
         background: {
           color: currentColor;
           clip: border-box;
-        };
+        }
         text-align: center;
 
         &::before {
           content: "";
-          width: list.nth($checkbox-clip-list,1);
-          height:list.nth($checkbox-clip-list,2);
+          width: list.nth($checkbox-clip-list, 1);
+          height: list.nth($checkbox-clip-list, 2);
           position: absolute;
           top: 50%;
           left: 50%;
-          margin-left: 0 - (list.nth($checkbox-clip-list,1)+2)/2;
-          margin-top: 0 - (list.nth($checkbox-clip-list,1)+2)/2;
+          margin-left: 0 - (list.nth($checkbox-clip-list, 1) + 2)/2;
+          margin-top: 0 - (list.nth($checkbox-clip-list, 1) + 2)/2;
           background: transparent;
           border: {
             width: 1px;
@@ -91,25 +91,25 @@
         }
       }
     }
-    @include subclass('--is-partial'){
+    @include subclass("--is-partial") {
       border: {
         color: currentColor;
-      };
+      }
       background: {
         color: currentColor;
         clip: border-box;
-      };
+      }
       text-align: center;
-      &::before{
+      &::before {
         content: "";
         position: absolute;
-        @include setposition(50%,50%,auto,auto);
-        width:10px;
+        @include setposition(50%, 50%, auto, auto);
+        width: 10px;
         height: 1px;
         background-color: $checkbox-bgcolor;
-        transform: translate3d(-50%,-50%,0);
-      } 
-    } 
+        transform: translate3d(-50%, -50%, 0);
+      }
+    }
 
     @include subclass("-label-wrap") {
       display: block;
