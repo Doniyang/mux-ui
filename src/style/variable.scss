@@ -26,6 +26,7 @@ $avatar-zindex:4;
 $avatar-shadow:0 0px 4px 2px #a9d9ef;
 $avatar-placeholder-bgcolor:#3f9ff3;
 $avatar-placeholder-color:$base-color;
+$avatar-fit-map:("width":(100%,auto),"height":(auto,100%),"all":(100%,100%));
 
 $btn-shadow-size:-10px;
 $btn-radius:$border-radius;

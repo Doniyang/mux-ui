@@ -46,6 +46,6 @@ export default {
   render (h) {
     return h('div', {
       staticClass: 'component mux-cell'
-    }, [this.genCellContext(), this.genArrowContext()])
+    }, [this.genCellContext(), this.arrow?this.genArrowContext():null])
   }
 }

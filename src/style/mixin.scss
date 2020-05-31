@@ -92,6 +92,15 @@
   }
 }
 
+@mixin fitmap($map){
+  @each $name,$list in $map{
+    @include subclass(string.unquote("--fit-") + $name){
+      width: list.nth($list,1);
+      height: list.nth($list,2);
+    }
+  }
+}
+
 @mixin justify($map) {
   @each $name, $value in $map {
     @include subclass(string.unquote("-content-") + $name) {

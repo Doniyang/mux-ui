@@ -17,17 +17,25 @@ export default {
     flat: {
       type: Boolean,
       default: false
+    },
+    fit:{
+      type:String,
+      default:'all',
+      validator(v){
+        return ['width','height','all'].indexOf(v)>-1
+      }
     }
   },
   data () {
     return {
-      isPlaceholder: true
+      isPlaceholder: false
     }
   },
   methods: {
     genImageContext () {
       return this.$createElement('img', {
         staticClass: 'mux-avatar-image',
+        class:['mux-avatar--fit-'+this.fit],
         attrs: {
           src: this.src,
           alt: this.alt

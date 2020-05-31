@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     handleChange(e) {
-      console.log(e)
       const target = e.target || e.srcElement
       let currentValue = [...this.value]
       this.$emit('change', e)
@@ -71,8 +70,8 @@ export default {
           type: 'checkbox',
           name: this.name,
           id: this.checkboxId,
-          checked: this.checked,
-          disabled: this.isChecked
+          checked: this.isChecked,
+          disabled: this.disabled
         },
         domProps: {
           value: this.checkboxValue

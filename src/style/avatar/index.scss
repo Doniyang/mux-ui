@@ -11,13 +11,14 @@
       margin: 4px;
       box-shadow: $avatar-shadow;
     }
+    
+    @include fitmap($avatar-fit-map);
+     
     @include subclass("-image") {
       display: inline-block;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
       vertical-align: middle;
     }
+
     @include subclass("-placeholder"){
       position:absolute;
       @include setposition(0,0);

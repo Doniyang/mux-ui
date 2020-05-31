@@ -27,7 +27,7 @@ export default {
   methods: {
     updateChildrenNode (value) {
       if (this.$children.length > 0) {
-        this.$children.forEach(vm => { vm.$emit('input', value) })
+        this.$children.forEach(vm => { vm.updateCheckedState(value) })
       }
     }
   },
