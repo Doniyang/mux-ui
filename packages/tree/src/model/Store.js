@@ -171,7 +171,17 @@ export default class Store {
       }
     }
   }
-
+  /**
+   * 更新节点加载状态
+   * @param {*} nId 
+   * @param {*} isLoading 
+   */
+  updateNodeLoadingState(nId,isLoading){
+    const node = this.nodeMaps.find(n=>n.getNodeId()===nid);
+    if(node){
+      node.updateLoadingState(isLoading);
+    }
+  }    
   /**
    * 获取选中的节点
    */

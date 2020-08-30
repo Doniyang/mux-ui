@@ -8,6 +8,7 @@ export default class Node {
     this.isPlain = plain || false
     this.isChecked = checked || false
     this.isParent = true
+    this.isLoading=false
     this.isChildrenChecked = false
     this.timeStamp = 0
     this.updateChildrenCheckedState(checked)
@@ -69,4 +70,12 @@ export default class Node {
   updateChildrenCheckedState (isChecked) {
     this.isChildrenChecked = isChecked
   }
+  /**
+   * 更新接点加载状态
+   * @param {*} isLoading 
+   */
+  updateLoadingState(isLoading){
+    this.isLoading=isLoading
+  }
+  
 }

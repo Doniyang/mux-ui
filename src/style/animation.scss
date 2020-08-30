@@ -10,3 +10,13 @@
     background-color: currentColor;
   }
 }
+
+
+@keyframes spinner{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
