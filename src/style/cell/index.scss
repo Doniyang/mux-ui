@@ -1,6 +1,6 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
-@use '../library' as lib;
+@use '../common' as lib;
 .component {
   @include prefix($prefix, "-cell") {
     @include lib.box;
