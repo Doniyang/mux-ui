@@ -1,57 +1,57 @@
 export default class Maskable {
   constructor(zIndex) {
-    this.isOpening = false
-    this.isOpened = false
-    this.isClosing = false
-    this.isClosed = true
-    this.zIndex = zIndex
-    this.maskMap = new Map()
+    this.isOpening = false;
+    this.isOpened = false;
+    this.isClosing = false;
+    this.isClosed = true;
+    this.zIndex = zIndex;
+    this.maskMap = new Map();
   }
-  get opening () {
-    return this.isOpening
+  get opening() {
+    return this.isOpening;
   }
-  get opened () {
-    return this.isOpened
+  get opened() {
+    return this.isOpened;
   }
-  get closing () {
-    return this.isClosing
+  get closing() {
+    return this.isClosing;
   }
-  get closed () {
-    return this.isClosed
+  get closed() {
+    return this.isClosed;
   }
-  register (key, mask) {
-    this.maskMap.set(key, mask)
+  register(key, mask) {
+    this.maskMap.set(key, mask);
   }
-  deregister (key) {
-    this.maskMap.delete(key)
+  deregister(key) {
+    this.maskMap.delete(key);
   }
-  getMask (key) {
-    return this.maskMap.get(key)
+  getMask(key) {
+    return this.maskMap.get(key);
   }
-  setZIndex (zIndex) {
-    this.zIndex = zIndex
+  setZIndex(zIndex) {
+    this.zIndex = zIndex;
   }
-  getNextZIndex () {
-    return this.zIndex + 1
+  getNextZIndex() {
+    return this.zIndex + 1;
   }
-  open (key) {
-    this.isOpening = true
-    const vm = this.getMask(key)
+  open(key) {
+    this.isOpening = true;
+    const vm = this.getMask(key);
     if (vm) {
-      vm.setZIndex(this.getNextZIndex())
-      document.body.appendChild(vm.$el)
-      this.isOpened = true
-      this.setZIndex(this.getNextZIndex())
+      vm.setZIndex(this.getNextZIndex());
+      document.body.appendChild(vm.$el);
+      this.isOpened = true;
+      this.setZIndex(this.getNextZIndex());
     }
-    this.isOpening = false
+    this.isOpening = false;
   }
-  close (key) {
-    this.isClosing = true
-    const vm = this.getMask(key)
+  close(key) {
+    this.isClosing = true;
+    const vm = this.getMask(key);
     if (vm) {
-      document.body.removeChild(vm.$el)
-      this.isClosed = true
+      document.body.removeChild(vm.$el);
+      this.isClosed = true;
     }
-    this.isClosing = false
+    this.isClosing = false;
   }
 }
