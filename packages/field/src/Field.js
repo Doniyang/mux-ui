@@ -4,13 +4,13 @@ export default {
     type: {
       type: String,
       default: 'text',
-      validator (v) {
+      validator(v) {
         return ['email', 'number', 'password', 'search', 'tel', 'text', 'url'].indexOf(v) > -1
       }
     },
-    id:{
-      type:String,
-      default:''
+    id: {
+      type: String,
+      default: ''
     },
     attrs: Object,
     required: {
@@ -52,7 +52,7 @@ export default {
     align: {
       type: String,
       default: 'left',
-      validator (v) {
+      validator(v) {
         return ['left', 'center', 'right'].indexOf(v) > -1
       }
     },
@@ -73,18 +73,18 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       uuid: Math.random().toString(32).substring(4, 9).toUpperCase()
     }
   },
-  computed:{
-    fieldId(){
-      return this.id||'FIELD-' + this.uuid
+  computed: {
+    fieldId() {
+      return this.id || 'FIELD-' + this.uuid
     }
   },
   methods: {
-    genLabelWrapContext () {
+    genLabelWrapContext() {
       return this.$createElement('div', {
         staticClass: 'mux-field-label',
         class: [{
@@ -92,26 +92,26 @@ export default {
         }, Array.isArray(this.labelClass) ? this.labelClass.join(' ') : this.labelClass]
       }, [this.genLabelContext()])
     },
-    genLabelContext () {
+    genLabelContext() {
       return this.$scopedSlots.label ? this.$scopedSlots.label({ label: this.label }) : this.$createElement('label', {
         attrs: {
           for: this.fieldId
         }
       }, this.label)
     },
-    genWrapContext () {
+    genWrapContext() {
       return this.$createElement('div', {
         staticClass: 'mux-field-container',
         class: { 'mux-field-is-plain': this.plain, 'mux-field-is-rounded': this.rounded, 'mux-field-is-danger': this.invalid }
       }, [this.genInputWrapContext(), this.genCleanWrapContext()])
     },
-    genInputWrapContext () {
+    genInputWrapContext() {
       return this.$createElement('div', {
         staticClass: 'mux-field-box',
         class: ['mux-field-align-' + this.align]
       }, [this.genInputContext(), this.invalid ? this.genMsgContext() : null])
     },
-    genInputContext () {
+    genInputContext() {
       return this.$createElement('input', {
         staticClass: 'mux-field-block',
         attrs: {
@@ -136,17 +136,17 @@ export default {
         ref: 'field'
       })
     },
-    genMsgContext () {
+    genMsgContext() {
       return this.$createElement('span', {
         staticClass: 'mux-field-help'
       }, this.message)
     },
-    genCleanWrapContext () {
+    genCleanWrapContext() {
       return this.$createElement('div', {
         staticClass: 'mux-field-cleanbox'
       }, [(!!this.value && this.clearable && !this.readonly) ? this.genCleanIconContext() : null])
     },
-    genCleanIconContext () {
+    genCleanIconContext() {
       return this.$createElement('i', {
         staticClass: 'mux-field-clear-icon',
         on: {
@@ -158,13 +158,13 @@ export default {
         }
       })
     },
-    genAppendWrapContext () {
+    genAppendWrapContext() {
       return this.$createElement('div', {
         staticClass: 'mux-field-append'
       }, [this.$scopedSlots.append ? this.$scopedSlots.append() : null])
     }
   },
-  render (h) {
+  render(h) {
     return h('div', {
       staticClass: 'component mux-field'
     }, [this.genLabelWrapContext(), this.genWrapContext(), this.genAppendWrapContext()])
