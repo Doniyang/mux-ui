@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _Node = _interopRequireDefault(require("./Node.js"));
 
-var _toolkit = require("@niyang-es/toolkit");
+var _notify = require("@niyang-es/notify");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16,7 +16,7 @@ class Store {
     this.rootId = rootKey;
     this.config = config;
     this.nodeMaps = [];
-    this.notifier = new _toolkit.Notifier();
+    this.notifier = new _notify.Notifier();
     this.initNodeTree(data, rootKey, true);
   }
   /**

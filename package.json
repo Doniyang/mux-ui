@@ -1,6 +1,6 @@
 {
   "name": "@niyang-es/mux-ui",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A Vue.js project",
   "author": "niyang",
   "private": false,
@@ -9,7 +9,9 @@
     "dev:css": "sass src/style:dist/style",
     "build:component": "npx babel packages --out-dir libs"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@niyang-es/notify": "0.0.1"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
@@ -17,7 +19,7 @@
     "sass": "^1.26.3"
   },
   "peerDependencies": {
-    "@niyang-es/toolkit": "latest"
+    "@niyang-es/notify": "latest"
   },
   "engines": {
     "node": ">= 6.0.0",
