@@ -1,5 +1,5 @@
 import Node from "./Node.js";
-import { Notifier } from '@niyang-es/toolkit'
+import { Notifier } from "@niyang-es/toolkit";
 export default class Store {
   constructor(rootKey, data, config) {
     this.rootId = rootKey;
@@ -24,7 +24,15 @@ export default class Store {
       const text = _this.getNodeTextKey();
       const children = _this.getNodeChildrenKey();
       const property = isRoot ? "root" : "leaf";
-      _this.addNode(node[key], pId, node[text], property, isOpen, isPlain, isChecked);
+      _this.addNode(
+        node[key],
+        pId,
+        node[text],
+        property,
+        isOpen,
+        isPlain,
+        isChecked
+      );
       if (Array.isArray(node[children])) {
         _this.initNodeTree(node[children], node[key], false);
       }
@@ -41,7 +49,9 @@ export default class Store {
    * @param {Boolean} checked
    */
   addNode(nodeId, parentId, title, type, open, plain, checked) {
-    this.nodeMaps.push(new Node(nodeId, parentId, title, type, open, plain, checked));
+    this.nodeMaps.push(
+      new Node(nodeId, parentId, title, type, open, plain, checked)
+    );
   }
   /**
    * 获取默认打开状态
@@ -98,12 +108,15 @@ export default class Store {
   }
 
   updateRootNodeCheckedState(values) {
-    const nodeList = this.getNodeTreeMap(this.rootKey)
-    nodeList.forEach(node => {
+    const nodeList = this.getNodeTreeMap(this.rootKey);
+    nodeList.forEach((node) => {
       if (!node.isChecked) {
-        this.updateNodeCheckedState(node.getNodeId(), (values.indexOf(node.getNodeId()) > -1))
+        this.updateNodeCheckedState(
+          node.getNodeId(),
+          values.indexOf(node.getNodeId()) > -1
+        );
       }
-    })
+    });
   }
   /**
    * 更新节点
@@ -173,15 +186,15 @@ export default class Store {
   }
   /**
    * 更新节点加载状态
-   * @param {*} nId 
-   * @param {*} isLoading 
+   * @param {*} nId
+   * @param {*} isLoading
    */
-  updateNodeLoadingState(nId,isLoading){
-    const node = this.nodeMaps.find(n=>n.getNodeId()===nid);
-    if(node){
+  updateNodeLoadingState(nId, isLoading) {
+    const node = this.nodeMaps.find((n) => n.getNodeId() === nid);
+    if (node) {
       node.updateLoadingState(isLoading);
     }
-  }    
+  }
   /**
    * 获取选中的节点
    */
@@ -194,13 +207,13 @@ export default class Store {
    * @param {Function} fn
    */
   on(evt, fn) {
-    this.notifier.on(evt, fn)
+    this.notifier.on(evt, fn);
   }
   /**
    * 触发事件
    */
   emit(evt, ...args) {
-    this.notifier.notify(evt, args)
+    this.notifier.notify(evt, args);
   }
   /**
    * 取消监听
@@ -208,6 +221,6 @@ export default class Store {
    * @param {Function} fun
    */
   off(evt, fn) {
-    this.notifier.off(evt, fn)
+    this.notifier.off(evt, fn);
   }
 }
