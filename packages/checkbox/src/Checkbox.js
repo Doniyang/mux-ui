@@ -62,9 +62,9 @@ export default {
     genCheckboxContext() {
       return this.$createElement('input', {
         staticClass: 'mux-checkbox-block',
-        class: { 
+        class: {
           'mux-checkbox--is-partial': this.partial,
-          'mux-checkbox--is-checked':this.isChecked
+          'mux-checkbox--is-checked': this.isChecked
         },
         attrs: {
           type: 'checkbox',

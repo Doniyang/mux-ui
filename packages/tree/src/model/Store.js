@@ -1,5 +1,5 @@
 import Node from "./Node.js";
-import { Notifier } from "@niyang-es/toolkit";
+import { Notifier } from '@niyang-es/notify'
 export default class Store {
   constructor(rootKey, data, config) {
     this.rootId = rootKey;

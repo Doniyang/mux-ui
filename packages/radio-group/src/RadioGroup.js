@@ -11,7 +11,7 @@ export default {
       default: false
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.updateChildrenNode(this.value)
     })
@@ -19,19 +19,19 @@ export default {
   watch: {
     value: {
       immediate: true,
-      handler (nv, ov) {
+      handler(nv, ov) {
         if (nv !== ov) this.updateChildrenNode(nv)
       }
     }
   },
   methods: {
-    updateChildrenNode (value) {
+    updateChildrenNode(value) {
       if (this.$children.length > 0) {
         this.$children.forEach(vm => { vm.updateCheckedState(value) })
       }
     }
   },
-  render (h) {
+  render(h) {
     return h('div', {
       staticClass: 'component mux-radio-group',
       class: {

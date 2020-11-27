@@ -12,9 +12,9 @@ export default {
       type: String,
       default: 'text'
     },
-    rules:{
-      type:Array,
-      default:()=>[]
+    rules: {
+      type: Array,
+      default: () => []
     },
     value: {
       type: Boolean,
@@ -37,7 +37,7 @@ export default {
       default: '确定'
     }
   },
-  data () {
+  data() {
     return {
       formvalue: '',
       formvalid: false,
@@ -45,25 +45,25 @@ export default {
     }
   },
   methods: {
-    handleClick(type){
-     type==='cancel'?this.handleCancelClick():this.handleConfirmClick()
+    handleClick(type) {
+      type === 'cancel' ? this.handleCancelClick() : this.handleConfirmClick()
     },
-    handleConfirmClick(){
-      const result = this.rules.map(fn=>fn(this.formvalue))
-      this.formmsg =  result.find(item=>typeof (item) === 'string')
-      this.formvalid = result.some(item=>item===true)
-      if(!this.formvalid){
+    handleConfirmClick() {
+      const result = this.rules.map(fn => fn(this.formvalue))
+      this.formmsg = result.find(item => typeof (item) === 'string')
+      this.formvalid = result.some(item => item === true)
+      if (!this.formvalid) {
         this.$emit('confirm')
-      this.$refs.Confirm.close()
-      this.$emit('input', false)
-      }   
+        this.$refs.Confirm.close()
+        this.$emit('input', false)
+      }
     },
-    handleCancelClick(){
+    handleCancelClick() {
       this.$emit('cancel')
       this.$refs.Confirm.close()
       this.$emit('input', false)
     },
-    genFieldContext () {
+    genFieldContext() {
       return this.$createElement(Field, {
         props: {
           type: this.type,
@@ -80,23 +80,23 @@ export default {
         }
       })
     },
-    genPrompBtnContext () {
-      return [this.genBtnareaContext('default','cancel', this.cancelBtnText), this.genDividerContext(), this.genBtnareaContext('primary','confirm', this.confirmBtnText)]
+    genPrompBtnContext() {
+      return [this.genBtnareaContext('default', 'cancel', this.cancelBtnText), this.genDividerContext(), this.genBtnareaContext('primary', 'confirm', this.confirmBtnText)]
     },
-    genDividerContext () {
+    genDividerContext() {
       return this.$createElement('div', {
         staticClass: 'mux-prompt-divider'
       })
     },
-    genBtnareaContext (color,type, text) {
+    genBtnareaContext(color, type, text) {
       return this.$createElement('div', {
-        staticClass: 'mux-prompt-' + type 
-      }, [this.genBtnContext(color,type, text)])
+        staticClass: 'mux-prompt-' + type
+      }, [this.genBtnContext(color, type, text)])
     },
-    genBtnContext (color,type, text) {
+    genBtnContext(color, type, text) {
       return this.$createElement(Button, {
         props: {
-          color:color,
+          color: color,
           block: true,
           plain: true
         },
@@ -109,7 +109,7 @@ export default {
       }, text)
     }
   },
-  render (h) {
+  render(h) {
     return h(Dialog, {
       staticClass: 'component mux-prompt',
       props: {
