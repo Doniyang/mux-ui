@@ -24,15 +24,7 @@ export default class Store {
       const text = _this.getNodeTextKey();
       const children = _this.getNodeChildrenKey();
       const property = isRoot ? "root" : "leaf";
-      _this.addNode(
-        node[key],
-        pId,
-        node[text],
-        property,
-        isOpen,
-        isPlain,
-        isChecked
-      );
+      _this.addNode(node[key],pId,node[text],property,isOpen,isPlain,isChecked);
       if (Array.isArray(node[children])) {
         _this.initNodeTree(node[children], node[key], false);
       }
@@ -49,9 +41,7 @@ export default class Store {
    * @param {Boolean} checked
    */
   addNode(nodeId, parentId, title, type, open, plain, checked) {
-    this.nodeMaps.push(
-      new Node(nodeId, parentId, title, type, open, plain, checked)
-    );
+    this.nodeMaps.push(new Node(nodeId, parentId, title, type, open, plain, checked));
   }
   /**
    * 获取默认打开状态
@@ -100,13 +90,16 @@ export default class Store {
     return this.nodeMaps.filter((node) => node.getParentId() === pid);
   }
   /**
-   * 检测是否含有子节点
+   * 检测是否有子节点
    * @param {String} nodeId
    */
   checkNodeHasChildren(nodeId) {
     return this.nodeMaps.some((n) => n.parentId === nodeId);
   }
-
+  /**
+   * 更新根节点的checked状态
+   * @param {*} values 
+   */
   updateRootNodeCheckedState(values) {
     const nodeList = this.getNodeTreeMap(this.rootKey);
     nodeList.forEach((node) => {
@@ -134,7 +127,7 @@ export default class Store {
       if (node.getParentId() !== this.rootId) {
         this.updateParentNodeState(node.getParentId());
       } else {
-        this.emit("asyncChange", this.getCheckedNode());
+        this.emit("async:change", this.getCheckedNode());
       }
     }
   }
@@ -152,7 +145,7 @@ export default class Store {
     if (pNode.getParentId() !== this.rootId) {
       this.updateParentNodeState(pNode.getParentId());
     } else {
-      this.emit("asyncChange", this.getCheckedNode());
+      this.emit("async:change", this.getCheckedNode());
     }
   }
   /**
@@ -190,9 +183,20 @@ export default class Store {
    * @param {*} isLoading
    */
   updateNodeLoadingState(nId, isLoading) {
-    const node = this.nodeMaps.find((n) => n.getNodeId() === nid);
+    const node = this.nodeMaps.find((n) => n.getNodeId() === nId);
     if (node) {
       node.updateLoadingState(isLoading);
+    }
+  }
+  /**
+   * 更新节点的是否有子节点
+   * @param {*} nId 
+   * @param {*} isParent 
+   */
+  updateNodeHasChidren(nId,isParent){
+    const node = this.nodeMaps.find((n) => n.getNodeId() === nId);
+    if (node) {
+      node.setNodeHasChildren(isParent);
     }
   }
   /**

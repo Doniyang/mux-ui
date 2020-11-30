@@ -37,7 +37,12 @@ export default {
         style:{
           zIndex:this.nextZIndex
         }
-      }, [this.genMatteContext(), this.genContext('header', [this.genTitleContext()]), this.genContext('main', [this.genSlotContext('default', '')]), this.genContext('footer', [this.genSlotContext('footer', '')])])
+      }, [
+        this.genMatteContext(), 
+        this.genContext('header', [this.genTitleContext()]), 
+        this.genContext('main', [this.genSlotContext('default', '')]), 
+        this.genContext('footer', [this.genSlotContext('footer', '')])
+      ])
     },
     genMatteContext () {
       return this.$createElement(Matte, {

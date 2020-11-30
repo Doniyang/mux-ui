@@ -59,14 +59,14 @@ export default {
       isPlain: false,
       isOpen: this.open,
     });
-    this.nodeStore.on("asyncChange", this.handleAsyncChange);
+    this.nodeStore.on("async:change", this.handleAsyncChange);
   },
   beforeMount() {
     this.nodeStore.updateRootNodeCheckedState(this.value);
   },
   beforeDestroy() {
     if (this.nodeStore) {
-      this.nodeStore.off("asyncChange", this.handleAsyncChange);
+      this.nodeStore.off("async:change", this.handleAsyncChange);
       this.nodeStore = null;
     }
   },
@@ -94,23 +94,17 @@ export default {
           .then((children) => {
             thid.nodeStore.updateNodeLoadingState(nodeId, false);
             children.forEach((item) => {
-              this.nodeStore.addNode(
-                item[this.itemValue],
-                nodeId,
-                item[this.itemText],
-                "leaf",
-                false,
-                false,
-                isChecked
-              );
+              this.nodeStore.addNode(item[this.itemValue],nodeId,item[this.itemText],"leaf",false,false,isChecked);
             });
             this.nodeStore.updateNodeOpenState(nodeId, !isOpen);
+            this.nodeStore.updateNodeHasChidren(nodeId,!!children.length)
           })
           .catch((e) => {
             console.log(e);
             thid.nodeStore.updateNodeLoadingState(nodeId, false);
           });
       } else {
+        this.nodeStore.updateNodeHasChidren(nodeId,this.nodeStore.checkNodeHasChildren(nodeId))
         this.nodeStore.updateNodeOpenState(nodeId, !isOpen);
         this.nodeStore.updateChildrenNodeCheckedState(nodeId, isChecked);
       }
@@ -136,57 +130,31 @@ export default {
           attrs: {
             ariaLevel: level,
           },
-        },
-        this.genTreeNodeContext(pId)
-      );
+        },this.genTreeNodeContext(pId));
     },
     genTreeNodeContext(pId) {
       const nodeMap = this.nodeStore.getNodeTreeMap(pId);
       return nodeMap.map((node) =>
-        this.$createElement("li",
-          {
+        this.$createElement("li",{
             staticClass: "mux-tree-item",
             key: node.getNodeId(),
-          },
-          [
+          },[
             this.genNodeContentContext(node),
-            node.isOpen
-              ? this.genTreeWrapContext(node.getNodeId(), "leaf")
-              : null,
-          ]
-        )
-      );
+            node.isOpen? this.genTreeWrapContext(node.getNodeId(), "leaf") : null,
+          ]));
     },
     genNodeContentContext(node) {
-      return this.$createElement(
-        "div",
-        {
+      return this.$createElement("div",{
           staticClass: "mux-tree-container",
-        },
-        [
-          node.isParent
-            ? this.genIconWrapContext(
-              node.getNodeId(),
-              node.isOpen,
-              node.isLoading,
-              node.isChildrenChecked
-            )
-            : null,
-          this.useCheckbox
-            ? this.genCheckboxWrapContext(
-              node.isChecked,
-              node.isPlain,
-              node.getNodeId()
-            )
-            : null,
+        },[
+          node.hasChildrenNode() ? this.genIconWrapContext(node.getNodeId(),node.isOpen,node.isLoading,node.isChildrenChecked)  : null,
+          this.useCheckbox ? this.genCheckboxWrapContext(node.isChecked,node.isPlain,node.getNodeId()): null,
           this.genContentWrapContext(node.title),
         ]
       );
     },
     genIconWrapContext(nId, isOpen, isLoading, isChildrenChecked) {
-      return this.$createElement(
-        "a",
-        {
+      return this.$createElement("a",{
           staticClass: "mux-tree-icon-box",
           class: {
             "mux-tree-icon--is-open": isOpen,
@@ -202,30 +170,20 @@ export default {
               this.handleClick(nId, isOpen, isChildrenChecked);
             },
           },
-        },
-        [isLoading ? this.genLoaingContext() : this.genIconContext()]
-      );
+        },[isLoading ? this.genLoaingContext() : this.genIconContext()]);
     },
     genCheckboxWrapContext(isChecked, isPlain, value) {
-      return this.$createElement(
-        "div",
-        {
+      return this.$createElement("div",{
           staticClass: "mux-tree-checkbox",
           attrs: {
             role: "checkbox",
           },
-        },
-        [this.genCheckboxContext(isChecked, isPlain, value)]
-      );
+        },[this.genCheckboxContext(isChecked, isPlain, value)]);
     },
     genContentWrapContext(text) {
-      return this.$createElement(
-        "p",
-        {
+      return this.$createElement("p",{
           staticClass: "mux-tree-title",
-        },
-        text
-      );
+        },text);
     },
     genCheckboxContext(isChecked, isPlain, value) {
       return this.$createElement(Checkbox, {
@@ -253,12 +211,8 @@ export default {
     },
   },
   render(h) {
-    return h(
-      "div",
-      {
+    return h("div",{
         staticClass: "component mux-tree",
-      },
-      [this.genTreeWrapContext(this.parentId, "root")]
-    );
+      },[this.genTreeWrapContext(this.parentId, "root")]);
   },
 };
