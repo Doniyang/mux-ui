@@ -1,3 +1,13 @@
+.component.mux-align-left {
+  text-align: left !important;
+}
+.component.mux-align-right {
+  text-align: right !important;
+}
+.component.mux-align-center {
+  text-align: center !important;
+}
+
 @keyframes swoosh {
   from {
     opacity: 0.5;
@@ -1213,6 +1223,136 @@
 }
 .component.mux-tab-item--is-actived {
   color: #2ab7ff;
+}
+
+.component.mux-table {
+  position: relative;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+.component.mux-table-table-panel--is-full {
+  height: 100%;
+  width: 100%;
+}
+.component.mux-table .mux-table-caption {
+  position: relative;
+}
+.component.mux-table .mux-table-container {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.component.mux-table .mux-table-is-stripe-header table thead th, .component.mux-table .mux-table-is-stripe-header--wrap table thead th {
+  background-color: #f7f7f7;
+}
+.component.mux-table .mux-table-is-stripe-header-body table tbody > tr:nth-child(even), .component.mux-table .mux-table-is-stripe-header-body--wrap table tbody > tr:nth-child(even), .component.mux-table .mux-table-is-stripe-header--wrap-body table tbody > tr:nth-child(even), .component.mux-table .mux-table-is-stripe-header--wrap-body--wrap table tbody > tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-fixed-header {
+  overflow-y: hidden;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-fixed-header-body {
+  overflow-y: auto;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-is-xscroll {
+  overflow-x: auto;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-is-xscroll-fixed-header {
+  overflow-x: hidden;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-is-xscroll-fixed-header-body {
+  overflow-x: auto;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripecontainer--is-fixed {
+  position: absolute;
+  top: 0;
+  right: auto;
+  left: auto;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripeheader {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.1s;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripebody {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripebody-wrap {
+  margin-top: -1px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripeheader--wrap {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.1s;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripeheader--wrap table thead tr:only-child th[rowspan="2"] {
+  height: 80px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-body--wrap {
+  position: relative;
+  overflow: hidden;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-body--wrap-wrap {
+  margin-top: -1px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  transition: all 0.1s;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap[skin=line] th, .component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap[skin=line] td {
+  border-width: 0;
+  border-bottom-width: 1px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap[skin=row] th, .component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap[skin=row] td {
+  border-width: 0;
+  border-right-width: 1px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap[skin=none] th, .component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap[skin=none] td {
+  border: none;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap tr {
+  transition: all 0.3s;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap th {
+  font-weight: 400;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+  position: relative;
+  padding: 5px 15px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-wrap td {
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+  position: relative;
+  padding: 9px 0;
+  font-size: 14px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe--is-empty {
+  color: rgba(0, 0, 0, 0.38);
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe--is-loading {
+  padding: 0 0;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-cell {
+  width: 100%;
+  min-height: 29px;
+  line-height: 29px;
+}
+.component.mux-table .mux-table-is-stripe .mux-table .mux-table-is-stripe-pagination {
+  position: relative;
 }
 
 @keyframes swoosh {

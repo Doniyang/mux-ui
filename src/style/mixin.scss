@@ -170,3 +170,11 @@
     transform: translate3d(-50%, -50%, 0) rotate(-45deg);
   }
 }
+
+@mixin word-align($list,$prefix) {
+  @each $prop in $list {
+    @include prefix($prefix,string.unquote("-align-") + $prop) {
+      text-align: $prop !important;
+    }
+  }
+}

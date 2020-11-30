@@ -4,7 +4,7 @@ import Table from './utils/Table';
 import VPanel from './VPanel';
 import VScrollPanel from './VScrollPanel';
 export default {
-    name: 'VTable',
+    name: 'v-table',
     props: {
         colgroup: {
             type: Array,
@@ -119,7 +119,7 @@ export default {
                     osnap: 3,
                     full: false
                 },
-                staticClass: "v-table-pagination--wrap"
+                staticClass: "mux-table-pagination"
             }, this.$scopedSlots.pagination()) : null;
         },
         genCaptionContext() {
@@ -128,7 +128,7 @@ export default {
                     osnap: 1,
                     full: false
                 },
-                staticClass: "v-table-caption"
+                staticClass: "mux-table-caption"
             }, this.$scopedSlots.caption ? this.$scopedSlots.caption() : this.caption);
         },
         genMainContext() {
@@ -136,7 +136,7 @@ export default {
             const columns = Table.makeCell(this.columns, this.cellMinWidth);
             console.log(colgroup)
             return this.$createElement("main", {
-                staticClass: "v-table-container",
+                staticClass: "mux-table-container",
                 class: {
                     "v-table--is-stripe": this.stripe,
                     "v-table-fixed-header": this.fixedHeader,
@@ -273,12 +273,12 @@ export default {
             ])
         },
         genSlotContext(slot, key, callback) {
-            if (this.$scopedSlots[slot]) { callback.apply(this, [key, props => this.$scopedSlots[slot].call(this,props)]) }
+            if (this.$scopedSlots[slot]) { callback.apply(this, [key, props => this.$scopedSlots[slot].call(this, props)]) }
         }
     },
     render(h) {
         return h(VPanel, {
-            staticClass: "components v-table v-table-wrap",
+            staticClass: "component mux-table",
             style: {
                 height: this.full ? (undefined) : (isNaN(this.height) ? this.height : this.height + 'px')
             },
