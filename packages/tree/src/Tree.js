@@ -147,18 +147,19 @@ export default {
       return this.$createElement("div",{
           staticClass: "mux-tree-container",
         },[
-          node.hasChildrenNode() ? this.genIconWrapContext(node.getNodeId(),node.isOpen,node.isLoading,node.isChildrenChecked)  : null,
+         this.genIconWrapContext(node.getNodeId(),node.hasChildrenNode(), node.isOpen,node.isLoading,node.isChildrenChecked),
           this.useCheckbox ? this.genCheckboxWrapContext(node.isChecked,node.isPlain,node.getNodeId()): null,
           this.genContentWrapContext(node.title),
         ]
       );
     },
-    genIconWrapContext(nId, isOpen, isLoading, isChildrenChecked) {
+    genIconWrapContext(nId,isParent,isOpen, isLoading, isChildrenChecked) {
       return this.$createElement("a",{
           staticClass: "mux-tree-icon-box",
           class: {
             "mux-tree-icon--is-open": isOpen,
             "mux-tree-icon--is-loading": isLoading,
+            "mux-tree-icon--is-hide":!isParent
           },
           attrs: {
             href: "javascript:void(0)",

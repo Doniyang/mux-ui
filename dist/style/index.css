@@ -1231,7 +1231,7 @@
   background-color: #ffffff;
   box-sizing: border-box;
 }
-.component.mux-table-table-panel--is-full {
+.component.mux-table-panel--is-full {
   height: 100%;
   width: 100%;
 }
@@ -1433,6 +1433,9 @@
 }
 .component.mux-tree .mux-tree-icon--is-open {
   transform: rotate(90deg);
+}
+.component.mux-tree .mux-tree-icon--is-hide {
+  visibility: hidden;
 }
 .component.mux-tree .mux-tree-icon--is-loading {
   animation: spinner 1.2s linear infinite;

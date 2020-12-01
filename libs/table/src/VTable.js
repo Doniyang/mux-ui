@@ -5,26 +5,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _vue = _interopRequireDefault(require("vue"));
-
 var _VThead = _interopRequireDefault(require("./VThead"));
 
 var _VTbody = _interopRequireDefault(require("./VTbody"));
 
-var _VTfoot = _interopRequireDefault(require("./VTfoot"));
+var _Table = _interopRequireDefault(require("./utils/Table"));
 
-var _ScroolBar = _interopRequireDefault(require("../util/ScroolBar"));
+var _VPanel = _interopRequireDefault(require("./VPanel"));
+
+var _VScrollPanel = _interopRequireDefault(require("./VScrollPanel"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default2 = _vue.default.extend({
-  name: 'VTable',
+var _default2 = {
+  name: 'v-table',
   props: {
-    colums: {
+    colgroup: {
       type: Array,
       default: () => []
     },
-    colgroup: {
+    columns: {
       type: Array,
       default: () => []
     },
@@ -32,23 +32,24 @@ var _default2 = _vue.default.extend({
       type: Array,
       default: () => []
     },
+    skin: {
+      type: String,
+      default: 'default',
+
+      validator(v) {
+        return ['default', 'row', 'line', 'none'].indexOf(v) > -1;
+      }
+
+    },
     cellMinWidth: {
       type: Number,
       default: 60
     },
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    loadingText: {
+    caption: {
       type: String,
-      default: '数据加载中...'
+      default: ''
     },
-    noDataText: {
-      type: String,
-      default: '暂无数据'
-    },
-    full: {
+    stripe: {
       type: Boolean,
       default: false
     },
@@ -56,160 +57,313 @@ var _default2 = _vue.default.extend({
       type: Boolean,
       default: false
     },
-    skin: {
-      type: String,
-      default: ''
-    },
-    allowScrollX: {
+    hScroll: {
       type: Boolean,
       default: false
     },
-    stripe: {
+    loading: {
       type: Boolean,
       default: false
     },
-    footerRole: {
+    loadingText: {
       type: String,
-      default: 'table'
+      default: '数据在努力加载中...'
+    },
+    full: {
+      type: Boolean,
+      default: false
+    },
+    noDataText: {
+      type: String,
+      default: '暂无数据'
+    },
+    height: {
+      type: [Number, String],
+      default: 0
     }
+  },
+
+  provide() {
+    return {
+      smartTable: this
+    };
   },
 
   data() {
     return {
-      scroll: null,
-      barwidth: 0,
-      posX: 0
+      scrollbar: {
+        height: 0,
+        width: 0
+      },
+      wrapHeight: 0,
+      captionHeight: 0,
+      headerHeight: 0,
+      pagiantionHeight: 0
     };
   },
 
-  mounted() {
-    this.scroll = new _ScroolBar.default(this.$el, '.v-table-container', width => {
-      this.barwidth = width;
-    });
-    window.addEventListener('resize', this.handleResize.bind(this), false);
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize.bind(this), false);
-    if (this.scroll) this.scroll.distory();
-    this.scroll = null;
-  },
-
   methods: {
-    handleResize() {
-      if (this.scroll) {
-        this.barwidth = this.scroll.getBarWidth();
-      } else {
-        this.scroll = new _ScroolBar.default(this.$el, '.v-table-container', width => {
-          this.barwidth = width;
-        });
+    setClientHeight(osnap, height) {
+      switch (osnap) {
+        case 0:
+          {
+            this.wrapHeight = height;
+            break;
+          }
+
+        case 1:
+          {
+            this.captionHeight = height;
+            break;
+          }
+
+        case 2:
+          {
+            this.headerHeight = height;
+            break;
+          }
+
+        case 3:
+          {
+            this.pagiantionHeight = height;
+            break;
+          }
+
+        default:
+          break;
       }
     },
 
-    genHeaderContext() {
-      var scopedOpts = {};
+    setScrollbar(height, width) {
+      this.$set(this.scrollbar, 'height', height);
+      this.$set(this.scrollbar, 'width', width);
+    },
 
-      if (this.$scopedSlots.header) {
-        scopedOpts.default = props => this.$scopedSlots.header(Object.assign(props, {
-          dataItems: this.dataItems
-        }));
+    handleScroll(e) {
+      var target = e.target || e.srcElement;
+      var headerEle = this.$refs.tHeader.$el;
+      var fixedLeftEle = this.$refs.fixedBodyLeft;
+      var fixedRightEle = this.$refs.fixedBodyRight;
+
+      if (headerEle) {
+        headerEle.scrollLeft = target.scrollLeft;
       }
 
-      return this.$createElement(_VThead.default, {
+      if (fixedLeftEle) {
+        fixedLeftEle.scrollTop = target.scrollTop;
+      }
+
+      if (fixedRightEle) {
+        fixedRightEle.scrollTop = target.scrollTop;
+      }
+    },
+
+    genPagiantionContext() {
+      return this.$scopedSlots.pagination ? this.$createElement(_VPanel.default, {
         props: {
-          colums: this.colums,
-          skin: this.skin,
-          colgroup: this.colgroup,
-          cellMinWidth: this.cellMinWidth,
-          barWidth: this.barwidth,
-          scrollPosX: this.posX
+          osnap: 3,
+          full: false
         },
-        scopedSlots: scopedOpts
-      });
+        staticClass: "mux-table-pagination"
+      }, this.$scopedSlots.pagination()) : null;
     },
 
-    genBodyContext() {
+    genCaptionContext() {
+      return this.$createElement(_VPanel.default, {
+        props: {
+          osnap: 1,
+          full: false
+        },
+        staticClass: "mux-table-caption"
+      }, this.$scopedSlots.caption ? this.$scopedSlots.caption() : this.caption);
+    },
+
+    genMainContext() {
+      var colgroup = _Table.default.makeCell(this.colgroup, this.cellMinWidth);
+
+      var columns = _Table.default.makeCell(this.columns, this.cellMinWidth);
+
+      console.log(colgroup);
+      return this.$createElement("main", {
+        staticClass: "mux-table-container",
+        class: {
+          "v-table--is-stripe": this.stripe,
+          "v-table-fixed-header": this.fixedHeader,
+          "v-table-is-xscroll": this.hScroll
+        }
+      }, [this.genHeaderContext(colgroup, columns), this.genBodyContext(colgroup, columns), !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, false) || _Table.default.isFixed(columns, false)) ? this.genFixedTableContext(colgroup, columns, false) : null, !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, true) || _Table.default.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null]);
+    },
+
+    genHeaderContext(colgroup, columns) {
+      var scopeSlots = {};
+      this.genSlotContext('header', 'default', (key, vnode) => scopeSlots[key] = vnode);
+      return this.$createElement(_VPanel.default, {
+        staticClass: 'v-table-header',
+        props: {
+          osnap: 2,
+          full: false,
+          tag: 'header'
+        },
+        attrs: {
+          role: 'header'
+        },
+        ref: 'tHeader'
+      }, [this.genTHeadContext({
+        colgroup: colgroup,
+        columns: columns,
+        gutter: this.scrollbar.width > 0,
+        barWidth: this.scrollbar.width
+      }, scopeSlots)]);
+    },
+
+    genBodyContext(colgroup, columns) {
       var scopedOpts = {};
       var slots = [{
-        scoped: 'process',
-        slot: 'loading'
+        scoped: "process",
+        slot: "loading"
       }, {
-        scoped: 'default',
-        slot: 'body'
+        scoped: "default",
+        slot: "body"
       }, {
-        scoped: 'empty',
-        slot: 'noData'
+        scoped: "empty",
+        slot: "noData"
       }];
       slots.forEach(item => {
-        this.genSlotContext(scopedOpts, item.scoped, item.slot);
+        this.genSlotContext(item.slot, item.scoped, (scoped, vnode) => {
+          scopedOpts[scoped] = vnode;
+        });
       });
-      this.colgroup.forEach(item => {
+      colgroup.forEach(item => {
         if (item.slotable) {
-          this.genSlotContext(scopedOpts, item.slot, item.slot);
+          this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
+            scopedOpts[scoped] = vnode;
+          });
         }
       });
-      this.colums.forEach(item => {
+      columns.forEach(item => {
         if (item.slotable) {
-          this.genSlotContext(scopedOpts, item.slot, item.slot);
+          this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
+            scopedOpts[scoped] = vnode;
+          });
         }
       });
-      return this.$createElement(_VTbody.default, {
+      return this.$createElement(_VScrollPanel.default, {
+        staticClass: 'v-table-body',
         props: {
-          colums: this.colums,
-          skin: this.skin,
-          dataItems: this.dataItems,
-          colgroup: this.colgroup,
-          cellMinWidth: this.cellMinWidth,
-          allowScrollX: this.allowScrollX,
-          loadingState: this.loading,
-          loadingStateText: this.loadingText,
-          noDataText: this.noDataText
+          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
         },
-        on: {
-          scrollPosX: posx => {
-            this.posX = posx;
+        nativeOn: {
+          scroll: e => {
+            this.handleScroll(e);
           }
         },
-        scopedSlots: scopedOpts
+        attrs: {
+          role: 'body'
+        }
+      }, [this.genTBodyContext({
+        skin: this.skin,
+        colgroup: colgroup,
+        columns: columns,
+        dataItems: this.dataItems,
+        loading: this.loading,
+        loadingText: this.loadingText,
+        noDataText: this.noDataText,
+        activeIndex: this.activeIndex
+      }, scopedOpts)]);
+    },
+
+    genTHeadContext(props, slots) {
+      return this.$createElement(_VThead.default, {
+        props: props,
+        scopedSlots: slots
       });
     },
 
-    genSlotContext(context, scoped, slot) {
-      if (this.$scopedSlots[slot]) {
-        context[scoped] = props => this.$scopedSlots[slot](props);
-      }
+    genTBodyContext(props, slots) {
+      return this.$createElement(_VTbody.default, {
+        props: props,
+        scopedSlots: slots
+      });
     },
 
-    genFooterContext() {
-      if (this.$scopedSlots.footer) {
-        return this.$createElement(_VTfoot.default, {
-          props: {
-            skin: this.skin,
-            role: this.footerRole
-          }
-        }, this.$scopedSlots.footer({
-          colums: this.colums,
-          dataItems: this.dataItems
-        }));
-      } else {
-        return null;
+    genFixedTableContext(colgroup, columns, rtl) {
+      var fixedColgroup = _Table.default.makeFrozenCols(colgroup, rtl);
+
+      var fixedColumns = _Table.default.makeFrozenCols(columns, rtl);
+
+      var width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.colspan === 1 ? next.width : 0), 0);
+      return this.$createElement('div', {
+        staticClass: 'v-table-container--is-fixed',
+        style: {
+          left: rtl ? undefined : 0,
+          right: rtl ? this.scrollbar.width + 'px' : undefined,
+          width: width + 'px',
+          bottom: this.scrollbar.height + 'px'
+        }
+      }, [this.genFixedTheadContext(fixedColgroup, fixedColumns), this.genFixedTBodyContext(fixedColgroup, fixedColumns, rtl)]);
+    },
+
+    genFixedTheadContext(colgroup, columns) {
+      return this.$createElement('div', {
+        staticClass: 'v-table-header--wrap'
+      }, [this.genTHeadContext({
+        colgroup: colgroup,
+        columns: columns,
+        gutter: false
+      }, null)]);
+    },
+
+    genFixedTBodyContext(colgroup, columns, rtl) {
+      var scopedOpts = {};
+      colgroup.forEach(item => {
+        if (item.slotable) {
+          this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
+            scopedOpts[scoped] = vnode;
+          });
+        }
+      });
+      columns.forEach(item => {
+        if (item.slotable) {
+          this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
+            scopedOpts[scoped] = vnode;
+          });
+        }
+      });
+      return this.$createElement('div', {
+        staticClass: 'v-table-body--wrap',
+        style: {
+          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.height + 'px'
+        },
+        ref: 'fixedBody' + (rtl ? 'Right' : 'Left')
+      }, [this.genTBodyContext({
+        skin: this.skin,
+        colgroup: colgroup,
+        columns: columns,
+        dataItems: this.dataItems,
+        activeIndex: this.activeIndex
+      }, scopedOpts)]);
+    },
+
+    genSlotContext(slot, key, callback) {
+      if (this.$scopedSlots[slot]) {
+        callback.apply(this, [key, props => this.$scopedSlots[slot].call(this, props)]);
       }
     }
 
   },
 
   render(h) {
-    return h('div', {
-      staticClass: 'components table v-table-wrap',
-      class: {
-        'v-table-full--wrap': this.full,
-        'v-table-fixed-header': this.fixedHeader,
-        'v-table-scroll-cross': this.allowScrollX,
-        'v-table--is-stripe': this.stripe
+    return h(_VPanel.default, {
+      staticClass: "component mux-table",
+      style: {
+        height: this.full ? undefined : isNaN(this.height) ? this.height : this.height + 'px'
+      },
+      props: {
+        full: this.full,
+        osnap: 0
       }
-    }, [this.genHeaderContext(), this.genBodyContext(), this.genFooterContext()]);
+    }, [this.genCaptionContext(), this.genMainContext(), this.genPagiantionContext()]);
   }
 
-});
-
+};
 exports.default = _default2;

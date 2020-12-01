@@ -126,7 +126,7 @@ class Store {
     return this.nodeMaps.filter(node => node.getParentId() === pid);
   }
   /**
-   * 检测是否含有子节点
+   * 检测是否有子节点
    * @param {String} nodeId
    */
 
@@ -134,6 +134,11 @@ class Store {
   checkNodeHasChildren(nodeId) {
     return this.nodeMaps.some(n => n.parentId === nodeId);
   }
+  /**
+   * 更新根节点的checked状态
+   * @param {*} values 
+   */
+
 
   updateRootNodeCheckedState(values) {
     var nodeList = this.getNodeTreeMap(this.rootKey);
@@ -163,7 +168,7 @@ class Store {
       if (node.getParentId() !== this.rootId) {
         this.updateParentNodeState(node.getParentId());
       } else {
-        this.emit("asyncChange", this.getCheckedNode());
+        this.emit("async:change", this.getCheckedNode());
       }
     }
   }
@@ -184,7 +189,7 @@ class Store {
     if (pNode.getParentId() !== this.rootId) {
       this.updateParentNodeState(pNode.getParentId());
     } else {
-      this.emit("asyncChange", this.getCheckedNode());
+      this.emit("async:change", this.getCheckedNode());
     }
   }
   /**
@@ -225,16 +230,30 @@ class Store {
   }
   /**
    * 更新节点加载状态
-   * @param {*} nId 
-   * @param {*} isLoading 
+   * @param {*} nId
+   * @param {*} isLoading
    */
 
 
   updateNodeLoadingState(nId, isLoading) {
-    var node = this.nodeMaps.find(n => n.getNodeId() === nid);
+    var node = this.nodeMaps.find(n => n.getNodeId() === nId);
 
     if (node) {
       node.updateLoadingState(isLoading);
+    }
+  }
+  /**
+   * 更新节点的是否有子节点
+   * @param {*} nId 
+   * @param {*} isParent 
+   */
+
+
+  updateNodeHasChidren(nId, isParent) {
+    var node = this.nodeMaps.find(n => n.getNodeId() === nId);
+
+    if (node) {
+      node.setNodeHasChildren(isParent);
     }
   }
   /**
