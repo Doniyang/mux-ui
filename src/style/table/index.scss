@@ -27,13 +27,13 @@
       & #{$parent}-header,
       #{$parent}-header--wrap {
         & table thead th {
-          background-color: rgba(247, 247, 247, 1);
+          background-color:$table-stripe-color;
         }
       }
       & #{$parent}-body,
       & #{$parent}-body--wrap {
         & table tbody > tr:nth-child(even) {
-          background-color: rgba(247, 247, 247, 1);
+          background-color: $table-stripe-color;
         }
       }
     }
@@ -78,7 +78,7 @@
       overflow-y: hidden;
 
       & #{$parent}-wrap {
-        margin-top: -1px;
+        margin-top: -1 * $table-border-width;
       }
     }
 
@@ -88,7 +88,7 @@
       transition: all 0.1s;
 
       table thead tr:only-child th[rowspan="2"] {
-        height: 80px;
+        height: $table-header-row-height * 2;
       }
     }
 
@@ -97,7 +97,7 @@
       overflow: hidden;
 
       & #{$parent}-wrap {
-        margin-top: -1px;
+        margin-top: -1 * $table-border-width;
       }
     }
 
@@ -112,7 +112,7 @@
         th,
         td {
           border-width: 0;
-          border-bottom-width: 1px;
+          border-bottom-width: $table-border-width;
         }
       }
 
@@ -120,7 +120,7 @@
         th,
         td {
           border-width: 0;
-          border-right-width: 1px;
+          border-right-width: $table-border-width;
         }
       }
 
@@ -137,28 +137,28 @@
 
       th {
         font-weight: 400;
-        border-width: 1px;
+        border-width: $table-border-width;
         border-style: solid;
-        border-color: rgba(0, 0, 0, 0.12);
+        border-color:$table-border-color;
         position: relative;
-        padding: 5px 15px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 14px;
+        padding: $table-header-cell-gap;
+        height: $table-header-row-height;
+        line-height: $table-header-row-height;
+        font-size: $table-font-size;
       }
 
       td {
-        border-width: 1px;
+        border-width: $table-border-width;
         border-style: solid;
-        border-color: rgba(0, 0, 0, 0.12);
+        border-color: $table-border-color;
         position: relative;
-        padding: 9px 0;
-        font-size: 14px;
+        padding: $table-body-cell-gap;
+        font-size: $table-font-size;
       }
     }
 
     @include subclass("--is-empty") {
-      color: rgba(0, 0, 0, 0.38);
+      color: $table-empty-color;
     }
 
     @include subclass("--is-loading") {
@@ -171,17 +171,17 @@
 
     @include subclass("-cell") {
       width: 100%;
-      min-height: 29px;
-      line-height: 29px;
+      min-height: $table-cell-height;
+      line-height: $table-cell-height;
 
       &[aria-sort="desc"] {
         #{$parent}-icon-desc {
-          border-top-color: rgba(0, 0, 0, 0.87);
+          border-top-color: $table-sort-active-color;
         }
       }
       &[aria-sort="asc"] {
         #{$parent}-icon-asc {
-          border-bottom-color: rgba(0, 0, 0, 0.87);
+          border-bottom-color:$table-sort-active-color;
         }
       }
     }
@@ -200,16 +200,16 @@
       display: inline-block;
       position: relative;
       padding: 0 0;
-      width: 10px;
-      height: 22px;
-      margin: 0 2px;
+      width: $table-icon-size * 2;
+      height: $table-icon-size * 4 + $table-icon-gap;
+      margin: 0 $table-icon-gap;
       vertical-align: middle;
     }
 
     @include subclass("-icon") {
       position: absolute;
       left: 0px;
-      border-width: 5px;
+      border-width: $table-icon-size;
       border-style: solid;
       border-color: transparent;
       display: inline-block;
@@ -219,11 +219,11 @@
 
     @include subclass("-icon-asc") {
       top: 0px;
-      border-bottom-color: rgb(164, 164, 164);
+      border-bottom-color: $table-sort-color;
     }
     @include subclass("-icon-desc") {
       bottom: 0px;
-      border-top-color: rgb(164, 164, 164);
+      border-top-color:$table-sort-color;
     }
 
     @include subclass("-pagination") {
