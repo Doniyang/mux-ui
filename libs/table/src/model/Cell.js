@@ -10,14 +10,14 @@ class Cell {
     this.text = null;
     this.field = null;
     this.width = width;
-    this.align = 'center';
+    this.align = "center";
     this.style = null;
     this.class = null;
     this.colspan = 1;
     this.rowspan = 1;
     this.slot = null;
     this.editable = false;
-    this.sort = false;
+    this.sortable = false;
     this.fixed = false;
     this.slotable = false;
 
@@ -30,6 +30,10 @@ class Cell {
 
   set(context, key, value) {
     context[key] = value;
+  }
+
+  isSole() {
+    return this.colspan === 1;
   }
 
 }

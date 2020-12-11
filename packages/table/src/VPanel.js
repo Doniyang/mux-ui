@@ -47,7 +47,7 @@ export default {
 	},
 	render(h) {
 		return h(this.tag, {
-			class: {"v-table-panel--is-full": this.full},
+			class: {"mux-table-panel--is-full": this.full},
 		}, this.$slots.default);
 	}
 }

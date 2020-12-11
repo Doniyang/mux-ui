@@ -1,5 +1,4 @@
 @use './variable.scss' as *;
 @use './mixin.scss' as *;
-.component{
-@include word-align($text-align,$prefix)
-}
+
+@include word-align($text-align,$prefix); 

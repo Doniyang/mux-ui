@@ -1,17 +1,18 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
+@use 'sass:selector';
 .component {
   @include prefix($prefix, "-table") {
     position: relative;
     overflow: hidden;
     background-color: #ffffff;
     box-sizing: border-box;
-     
-    &-panel--is-full{
+
+    &-panel--is-full {
       height: 100%;
-      width:100%;
+      width: 100%;
     }
-    
+
     @include subclass("-caption") {
       position: relative;
     }
@@ -21,40 +22,43 @@
       overflow-x: hidden;
       overflow-y: auto;
     }
-
-    @include subclass('-is-stripe'){
-      &-header, &-header--wrap {
+    $parent: selector.replace(&, ".component", "*");
+    @include subclass("-is-stripe") {
+      & #{$parent}-header,
+      #{$parent}-header--wrap {
         & table thead th {
           background-color: rgba(247, 247, 247, 1);
         }
-        &-body, &-body--wrap {
-          & table tbody>tr:nth-child(even) {
-            background-color: rgba(247, 247, 247, 1);
-          }
+      }
+      & #{$parent}-body,
+      & #{$parent}-body--wrap {
+        & table tbody > tr:nth-child(even) {
+          background-color: rgba(247, 247, 247, 1);
         }
-    }
-
-    @include subclass('-fixed-header '){
-      overflow-y: hidden;
-
-      &-body{
-          overflow-y: auto;
       }
     }
 
-    @include subclass('-is-xscroll') {
+    @include subclass("-header--is-fixed") {
+      overflow-y: hidden;
+
+      & #{$parent}-body {
+        overflow-y: auto;
+      }
+    }
+
+    @include subclass("-is-xscroll") {
       overflow-x: auto;
 
-      &-fixed-header {
+      &#{$parent}-header--is-fixed {
         overflow-x: hidden;
 
-        &-body {
+        & #{$parent}-body {
           overflow-x: auto;
         }
       }
     }
 
-    @include subclass('container--is-fixed'){
+    @include subclass("-container--is-fixed") {
       position: absolute;
       top: 0;
       right: auto;
@@ -62,72 +66,75 @@
       background-color: #ffffff;
       overflow: hidden;
     }
-    @include subclass('header'){
+    @include subclass("-header") {
       position: relative;
       overflow: hidden;
       transition: all 0.1s;
     }
-  
-    @include subclass('body') {
+
+    @include subclass("-body") {
       position: relative;
       overflow-x: hidden;
       overflow-y: hidden;
-  
-      &-wrap {
+
+      & #{$parent}-wrap {
         margin-top: -1px;
       }
     }
-  
-    @include subclass('header--wrap'){
+
+    @include subclass("header--wrap") {
       position: relative;
       overflow: hidden;
       transition: all 0.1s;
-      
-      table thead tr:only-child th[rowspan="2"]{
-          height:80px
+
+      table thead tr:only-child th[rowspan="2"] {
+        height: 80px;
       }
     }
-  
-    @include subclass('-body--wrap') {
+
+    @include subclass("-body--wrap") {
       position: relative;
       overflow: hidden;
-  
-      &-wrap {
+
+      & #{$parent}-wrap {
         margin-top: -1px;
       }
     }
-  
-    @include  subclass('-wrap') {
+
+    @include subclass("-wrap") {
       width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
       border-spacing: 0;
       transition: all 0.1s;
-  
-      &[skin='line'] {
-        th, td {
+
+      &[skin="line"] {
+        th,
+        td {
           border-width: 0;
           border-bottom-width: 1px;
         }
       }
-  
-      &[skin='row'] {
-        th, td {
+
+      &[skin="row"] {
+        th,
+        td {
           border-width: 0;
           border-right-width: 1px;
         }
       }
-  
-      &[skin='none'] {
-        th, td {
+
+      &[skin="none"] {
+        th,
+        td {
           border: none;
         }
       }
-  
+
       tr {
         transition: all 0.3s;
       }
-  
+
       th {
         font-weight: 400;
         border-width: 1px;
@@ -139,7 +146,7 @@
         line-height: 40px;
         font-size: 14px;
       }
-  
+
       td {
         border-width: 1px;
         border-style: solid;
@@ -150,23 +157,77 @@
       }
     }
 
-    @include subclass('--is-empty') {
+    @include subclass("--is-empty") {
       color: rgba(0, 0, 0, 0.38);
     }
 
-    @include subclass('--is-loading') {
+    @include subclass("--is-loading") {
       padding: 0 0;
     }
-  
-    @include subclass('-cell') {
+
+    @include subclass("--is-editable") {
+      cursor: pointer;
+    }
+
+    @include subclass("-cell") {
       width: 100%;
       min-height: 29px;
       line-height: 29px;
+
+      &[aria-sort="desc"] {
+        #{$parent}-icon-desc {
+          border-top-color: rgba(0, 0, 0, 0.87);
+        }
+      }
+      &[aria-sort="asc"] {
+        #{$parent}-icon-asc {
+          border-bottom-color: rgba(0, 0, 0, 0.87);
+        }
+      }
+    }
+
+    @include subclass("-cell-ellipsis") {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @include subclass("-cell-cursor") {
+      cursor: pointer;
+    }
+
+    @include subclass("-sort") {
+      display: inline-block;
+      position: relative;
+      padding: 0 0;
+      width: 10px;
+      height: 22px;
+      margin: 0 2px;
+      vertical-align: middle;
+    }
+
+    @include subclass("-icon") {
+      position: absolute;
+      left: 0px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent;
+      display: inline-block;
+      width: 0;
+      height: 0;
+    }
+
+    @include subclass("-icon-asc") {
+      top: 0px;
+      border-bottom-color: rgb(164, 164, 164);
+    }
+    @include subclass("-icon-desc") {
+      bottom: 0px;
+      border-top-color: rgb(164, 164, 164);
     }
 
     @include subclass("-pagination") {
       position: relative;
-    }   
-   }
+    }
   }
 }

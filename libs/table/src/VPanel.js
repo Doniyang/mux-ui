@@ -67,7 +67,7 @@ var _default = {
   render(h) {
     return h(this.tag, {
       class: {
-        "v-table-panel--is-full": this.full
+        "mux-table-panel--is-full": this.full
       }
     }, this.$slots.default);
   }

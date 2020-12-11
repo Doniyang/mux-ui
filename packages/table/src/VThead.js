@@ -7,7 +7,7 @@ export default {
 			type: Array,
 			default: () => []
 		},
-		isSealed: {
+		sealed: {
 			type: Boolean,
 			default: false
 		},
@@ -67,7 +67,7 @@ export default {
 		},
 		genColContext(item, key) {
 			return this.$createElement('th', {
-				staticClass: "v-text-" + (item.align || "center"),
+				staticClass: "mux-text-" + (item.align || "center"),
 				style: item.style,
 				class: item.class,
 				attrs: {
@@ -79,8 +79,8 @@ export default {
 		},
 		genCellContext(item) {
 			return this.$createElement("div", {
-				staticClass: "v-table-cell",
-				class: {'v-table-cell-ellipsis': this.isSealed},
+				staticClass: "mux-table-cell",
+				class: {'mux-table-cell-ellipsis': this.sealed},
 				domProps: {
 					ariaSort: 'none'
 				},
@@ -93,18 +93,18 @@ export default {
 		},
 		genTextContext(text, sortable) {
 			return this.$createElement('span', {
-				class: {'v-table-cell-cursor': sortable}
+				class: {'mux-table-cell-cursor': sortable}
 			}, text)
 		},
 		genSortContext() {
 			return this.$createElement('span', {
-				staticClass: 'v-table-sort v-table-cell-cursor'
+				staticClass: 'mux-table-sort mux-table-cell-cursor'
 			}, [this.genIconContext(false), this.genIconContext(true)])
 		},
 		genIconContext(isDesc) {
 			return this.$createElement('i', {
-				staticClass: 'v-table-icon',
-				class: {"v-table-icon-asc": !isDesc, 'v-table-icon-desc': isDesc}
+				staticClass: 'mux-table-icon',
+				class: {"mux-table-icon-asc": !isDesc, 'mux-table-icon-desc': isDesc}
 			})
 		},
 		genSlotContext(slot, props) {
@@ -113,7 +113,7 @@ export default {
 	},
 	render(h) {
 		return h("table", {
-			staticClass: "v-table-box",
+			staticClass: "mux-table-wrap",
 			attrs: {
 				cellpadding: 0,
 				cellspacing: 0,

@@ -111,6 +111,12 @@ Object.defineProperty(exports, "TabItem", {
     return _tabItem.default;
   }
 });
+Object.defineProperty(exports, "Table", {
+  enumerable: true,
+  get: function get() {
+    return _table.default;
+  }
+});
 Object.defineProperty(exports, "Tree", {
   enumerable: true,
   get: function get() {
@@ -153,6 +159,8 @@ var _switch = _interopRequireDefault(require("./switch"));
 var _tab = _interopRequireDefault(require("./tab"));
 
 var _tabItem = _interopRequireDefault(require("./tab-item"));
+
+var _table = _interopRequireDefault(require("./table"));
 
 var _tree = _interopRequireDefault(require("./tree"));
 

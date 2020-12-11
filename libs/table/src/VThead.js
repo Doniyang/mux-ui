@@ -16,6 +16,10 @@ var _default2 = {
       type: Array,
       default: () => []
     },
+    sealed: {
+      type: Boolean,
+      default: false
+    },
     columns: {
       type: Array,
       default: () => []
@@ -30,6 +34,22 @@ var _default2 = {
     }
   },
   methods: {
+    handleSort(e, data) {
+      e.stopPropagation();
+
+      if (!data.sortable) {
+        return false;
+      }
+
+      var target = e.currentTarget || e.target || e.srcElement;
+      var description = target.ariaSort === 'desc' ? 'asc' : 'desc';
+      target.ariaSort = description;
+      this.$emit('sort:update', {
+        sortKey: data.field,
+        sortDirection: description
+      });
+    },
+
     genColgroupContext() {
       return this.$createElement(_VColgroup.default, {
         props: {
@@ -68,7 +88,7 @@ var _default2 = {
 
     genColContext(item, key) {
       return this.$createElement('th', {
-        staticClass: "v-text-" + (item.align || "center"),
+        staticClass: "mux-text-" + (item.align || "center"),
         style: item.style,
         class: item.class,
         attrs: {
@@ -76,13 +96,48 @@ var _default2 = {
           rowspan: item.rowspan
         },
         key: "TH_".concat(key)
-      }, [this.genCellContext(item.text)]);
+      }, [this.genCellContext(item)]);
     },
 
-    genCellContext(text) {
+    genCellContext(item) {
       return this.$createElement("div", {
-        staticClass: "v-table-cell"
+        staticClass: "mux-table-cell",
+        class: {
+          'mux-table-cell-ellipsis': this.sealed
+        },
+        domProps: {
+          ariaSort: 'none'
+        },
+        on: {
+          click: e => {
+            this.handleSort(e, item);
+          }
+        }
+      }, [this.genTextContext(item.text, item.sortable), item.sortable ? this.genSortContext() : null]);
+    },
+
+    genTextContext(text, sortable) {
+      return this.$createElement('span', {
+        class: {
+          'mux-table-cell-cursor': sortable
+        }
       }, text);
+    },
+
+    genSortContext() {
+      return this.$createElement('span', {
+        staticClass: 'mux-table-sort mux-table-cell-cursor'
+      }, [this.genIconContext(false), this.genIconContext(true)]);
+    },
+
+    genIconContext(isDesc) {
+      return this.$createElement('i', {
+        staticClass: 'mux-table-icon',
+        class: {
+          "mux-table-icon-asc": !isDesc,
+          'mux-table-icon-desc': isDesc
+        }
+      });
     },
 
     genSlotContext(slot, props) {
@@ -93,7 +148,7 @@ var _default2 = {
 
   render(h) {
     return h("table", {
-      staticClass: "v-table-box",
+      staticClass: "mux-table-wrap",
       attrs: {
         cellpadding: 0,
         cellspacing: 0,

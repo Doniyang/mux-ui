@@ -111,9 +111,9 @@ var _default2 = {
 
     genColContext(row, cols) {
       return cols.map((item, dx) => this.$createElement('td', {
-        staticClass: "v-text-" + item.align,
+        staticClass: "mux-text-" + item.align,
         class: {
-          "v-editable-wrap": item.editable
+          "mux-table--is-editable": item.editable
         },
         on: {
           click: () => {
@@ -128,7 +128,7 @@ var _default2 = {
 
     genLoadingContext(colspan, txt) {
       return [this.$createElement('td', {
-        staticClass: "v-text-center v-loading-wrap",
+        staticClass: "mux-text-center mux-table--is-loading",
         attrs: {
           colspan: colspan
         }
@@ -139,7 +139,7 @@ var _default2 = {
 
     genNoDataContext(colspan, txt) {
       return [this.$createElement('td', {
-        staticClass: "v-text-center v-loading-wrap",
+        staticClass: "mux-text-center mux-table--is-empty",
         attrs: {
           colspan: colspan
         }
@@ -150,7 +150,7 @@ var _default2 = {
 
     genCellContext(txt) {
       return this.$createElement("div", {
-        staticClass: "v-table-cell"
+        staticClass: "mux-table-cell"
       }, txt);
     },
 
@@ -162,7 +162,7 @@ var _default2 = {
 
   render(h) {
     return h('table', {
-      staticClass: "v-table-box",
+      staticClass: "mux-table-wrap",
       attrs: {
         skin: this.skin,
         cellpadding: 0,

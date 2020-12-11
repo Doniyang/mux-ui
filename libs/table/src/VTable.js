@@ -15,10 +15,14 @@ var _VPanel = _interopRequireDefault(require("./VPanel"));
 
 var _VScrollPanel = _interopRequireDefault(require("./VScrollPanel"));
 
+var _Scrollbar = _interopRequireDefault(require("./model/Scrollbar"));
+
+var _Roll = _interopRequireDefault(require("./utils/Roll"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default2 = {
-  name: 'v-table',
+  name: 'VTable',
   props: {
     colgroup: {
       type: Array,
@@ -42,7 +46,7 @@ var _default2 = {
 
     },
     cellMinWidth: {
-      type: Number,
+      type: [Number, String],
       default: 60
     },
     caption: {
@@ -80,6 +84,10 @@ var _default2 = {
     height: {
       type: [Number, String],
       default: 0
+    },
+    activeIndex: {
+      type: Number,
+      default: -1
     }
   },
 
@@ -89,12 +97,16 @@ var _default2 = {
     };
   },
 
+  directives: {
+    roll: {
+      inserted: _Roll.default,
+      update: _Roll.default
+    }
+  },
+
   data() {
     return {
-      scrollbar: {
-        height: 0,
-        width: 0
-      },
+      scrollbar: new _Scrollbar.default(),
       wrapHeight: 0,
       captionHeight: 0,
       headerHeight: 0,
@@ -103,6 +115,20 @@ var _default2 = {
   },
 
   methods: {
+    handleSort(key, direction) {
+      this.dataItems.sort(function (a, b) {
+        var va = a[key],
+            vb = b[key];
+        var dir = direction === 'asc' ? 1 : -1;
+
+        if (!isNaN(va) && !isNaN(vb)) {
+          return (va - vb) * dir;
+        }
+
+        return String(va).localeCompare(String(vb)) * dir;
+      });
+    },
+
     setClientHeight(osnap, height) {
       switch (osnap) {
         case 0:
@@ -135,27 +161,14 @@ var _default2 = {
     },
 
     setScrollbar(height, width) {
-      this.$set(this.scrollbar, 'height', height);
-      this.$set(this.scrollbar, 'width', width);
+      this.scrollbar.setHeight(height);
+      this.scrollbar.setWidth(width);
     },
 
     handleScroll(e) {
       var target = e.target || e.srcElement;
-      var headerEle = this.$refs.tHeader.$el;
-      var fixedLeftEle = this.$refs.fixedBodyLeft;
-      var fixedRightEle = this.$refs.fixedBodyRight;
-
-      if (headerEle) {
-        headerEle.scrollLeft = target.scrollLeft;
-      }
-
-      if (fixedLeftEle) {
-        fixedLeftEle.scrollTop = target.scrollTop;
-      }
-
-      if (fixedRightEle) {
-        fixedRightEle.scrollTop = target.scrollTop;
-      }
+      this.scrollbar.setTop(target.scrollTop);
+      this.scrollbar.setLeft(target.scrollLeft);
     },
 
     genPagiantionContext() {
@@ -183,13 +196,18 @@ var _default2 = {
 
       var columns = _Table.default.makeCell(this.columns, this.cellMinWidth);
 
-      console.log(colgroup);
+      console.log(colgroup, columns);
       return this.$createElement("main", {
         staticClass: "mux-table-container",
         class: {
-          "v-table--is-stripe": this.stripe,
-          "v-table-fixed-header": this.fixedHeader,
-          "v-table-is-xscroll": this.hScroll
+          "mux-table--is-stripe": this.stripe,
+          "mux-table-header--is-fixed": this.fixedHeader,
+          "mux-table-is-xscroll": this.hScroll
+        },
+        on: {
+          scroll: e => {
+            this.handleScroll(e);
+          }
         }
       }, [this.genHeaderContext(colgroup, columns), this.genBodyContext(colgroup, columns), !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, false) || _Table.default.isFixed(columns, false)) ? this.genFixedTableContext(colgroup, columns, false) : null, !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, true) || _Table.default.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null]);
     },
@@ -198,7 +216,7 @@ var _default2 = {
       var scopeSlots = {};
       this.genSlotContext('header', 'default', (key, vnode) => scopeSlots[key] = vnode);
       return this.$createElement(_VPanel.default, {
-        staticClass: 'v-table-header',
+        staticClass: 'mux-table-header',
         props: {
           osnap: 2,
           full: false,
@@ -207,12 +225,20 @@ var _default2 = {
         attrs: {
           role: 'header'
         },
-        ref: 'tHeader'
+        directives: [{
+          name: 'roll',
+          value: this.scrollbar.getLeft(),
+          arg: 'horizontal',
+          modifiers: {
+            enable: this.fixedHeader
+          }
+        }]
       }, [this.genTHeadContext({
         colgroup: colgroup,
         columns: columns,
-        gutter: this.scrollbar.width > 0,
-        barWidth: this.scrollbar.width
+        gutter: this.scrollbar.hasVScrollBar(),
+        barWidth: this.scrollbar.getWidth(),
+        sealed: !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && _Table.default.sealed(colgroup, columns)
       }, scopeSlots)]);
     },
 
@@ -248,7 +274,7 @@ var _default2 = {
         }
       });
       return this.$createElement(_VScrollPanel.default, {
-        staticClass: 'v-table-body',
+        staticClass: 'mux-table-body',
         props: {
           height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
         },
@@ -275,14 +301,24 @@ var _default2 = {
     genTHeadContext(props, slots) {
       return this.$createElement(_VThead.default, {
         props: props,
-        scopedSlots: slots
+        scopedSlots: slots,
+        on: {
+          'sort:update': data => {
+            this.handleSort(data.sortKey, data.sortDirection);
+          }
+        }
       });
     },
 
     genTBodyContext(props, slots) {
       return this.$createElement(_VTbody.default, {
         props: props,
-        scopedSlots: slots
+        scopedSlots: slots,
+        on: {
+          'click:cell': item => {
+            this.$emit('click:cell', item);
+          }
+        }
       });
     },
 
@@ -291,29 +327,30 @@ var _default2 = {
 
       var fixedColumns = _Table.default.makeFrozenCols(columns, rtl);
 
-      var width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.colspan === 1 ? next.width : 0), 0);
+      var width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0);
       return this.$createElement('div', {
-        staticClass: 'v-table-container--is-fixed',
+        staticClass: 'mux-table-container--is-fixed',
         style: {
           left: rtl ? undefined : 0,
-          right: rtl ? this.scrollbar.width + 'px' : undefined,
+          right: rtl ? this.scrollbar.getWidth() + 'px' : undefined,
           width: width + 'px',
-          bottom: this.scrollbar.height + 'px'
+          bottom: this.scrollbar.getHeight() + 'px'
         }
-      }, [this.genFixedTheadContext(fixedColgroup, fixedColumns), this.genFixedTBodyContext(fixedColgroup, fixedColumns, rtl)]);
+      }, [this.genFixedTheadContext(fixedColgroup, fixedColumns), this.genFixedTBodyContext(fixedColgroup, fixedColumns)]);
     },
 
     genFixedTheadContext(colgroup, columns) {
       return this.$createElement('div', {
-        staticClass: 'v-table-header--wrap'
+        staticClass: 'mux-table-header--wrap'
       }, [this.genTHeadContext({
         colgroup: colgroup,
         columns: columns,
-        gutter: false
+        gutter: false,
+        isSealed: true
       }, null)]);
     },
 
-    genFixedTBodyContext(colgroup, columns, rtl) {
+    genFixedTBodyContext(colgroup, columns) {
       var scopedOpts = {};
       colgroup.forEach(item => {
         if (item.slotable) {
@@ -330,11 +367,18 @@ var _default2 = {
         }
       });
       return this.$createElement('div', {
-        staticClass: 'v-table-body--wrap',
+        staticClass: 'mux-table-body--wrap',
         style: {
-          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.height + 'px'
+          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight() + 'px'
         },
-        ref: 'fixedBody' + (rtl ? 'Right' : 'Left')
+        directives: [{
+          name: 'roll',
+          value: this.scrollbar.getTop(),
+          arg: 'vertical',
+          modifiers: {
+            enable: true
+          }
+        }]
       }, [this.genTBodyContext({
         skin: this.skin,
         colgroup: colgroup,
@@ -354,7 +398,7 @@ var _default2 = {
 
   render(h) {
     return h(_VPanel.default, {
-      staticClass: "component mux-table",
+      staticClass: "components mux-table",
       style: {
         height: this.full ? undefined : isNaN(this.height) ? this.height : this.height + 'px'
       },

@@ -23,6 +23,10 @@ class Table {
     return false;
   }
 
+  static sealed(colgroup, columns) {
+    return [...colgroup, ...columns].some(col => col.fixed);
+  }
+
   static makeFrozenCols(ary, rtl) {
     if (ary.length) {
       var len = ary.length;
@@ -48,7 +52,7 @@ class Table {
       var cols = [];
       var copyCols = columns.slice(0);
       colgroup.forEach(item => {
-        if (item.colspan === 1) {
+        if (item.isSole()) {
           Array.prototype.push.call(cols, item);
         } else {
           Array.prototype.push.apply(cols, copyCols.splice(0, item.colspan));

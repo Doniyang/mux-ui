@@ -141,7 +141,7 @@ export default {
 					osnap: 3,
 					full: false
 				},
-				staticClass: "v-table-pagination--wrap"
+				staticClass: "mux-table-pagination"
 			}, this.$scopedSlots.pagination()) : null;
 		},
 		genCaptionContext() {
@@ -150,7 +150,7 @@ export default {
 					osnap: 1,
 					full: false
 				},
-				staticClass: "v-table-caption"
+				staticClass: "mux-table-caption"
 			}, this.$scopedSlots.caption ? this.$scopedSlots.caption() : this.caption);
 		},
 		genMainContext() {
@@ -158,11 +158,11 @@ export default {
 			const columns = Table.makeCell(this.columns, this.cellMinWidth);
 			console.log(colgroup, columns);
 			return this.$createElement("main", {
-				staticClass: "v-table-container",
+				staticClass: "mux-table-container",
 				class: {
-					"v-table--is-stripe": this.stripe,
-					"v-table-fixed-header": this.fixedHeader,
-					"v-table-is-xscroll": this.hScroll
+					"mux-table--is-stripe": this.stripe,
+					"mux-table-header--is-fixed": this.fixedHeader,
+					"mux-table-is-xscroll": this.hScroll
 				},
 				on: {
 					scroll: e => {
@@ -180,7 +180,7 @@ export default {
 			let scopeSlots = {}
 			this.genSlotContext('header', 'default', (key, vnode) => scopeSlots[key] = vnode)
 			return this.$createElement(VPanel, {
-				staticClass: 'v-table-header',
+				staticClass: 'mux-table-header',
 				props: {
 					osnap: 2,
 					full: false,
@@ -200,7 +200,7 @@ export default {
 				columns: columns,
 				gutter: this.scrollbar.hasVScrollBar(),
 				barWidth: this.scrollbar.getWidth(),
-				isSealed: (!Table.has(this.$scopedSlots, ['header', 'body'])) && (!!this.dataItems.length) && (Table.sealed(colgroup, columns))
+				sealed: (!Table.has(this.$scopedSlots, ['header', 'body'])) && (!!this.dataItems.length) && (Table.sealed(colgroup, columns))
 			}, scopeSlots),]);
 		},
 		genBodyContext(colgroup, columns) {
@@ -230,7 +230,7 @@ export default {
 				}
 			});
 			return this.$createElement(VScrollPanel, {
-				staticClass: 'v-table-body',
+				staticClass: 'mux-table-body',
 				props: {
 					height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
 				},
@@ -282,7 +282,7 @@ export default {
 			let fixedColumns = Table.makeFrozenCols(columns, rtl);
 			let width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0)
 			return this.$createElement('div', {
-				staticClass: 'v-table-container--is-fixed',
+				staticClass: 'mux-table-container--is-fixed',
 				style: {
 					left: rtl ? undefined : 0,
 					right: rtl ? this.scrollbar.getWidth() + 'px' : undefined,
@@ -293,7 +293,7 @@ export default {
 		},
 		genFixedTheadContext(colgroup, columns) {
 			return this.$createElement('div', {
-				staticClass: 'v-table-header--wrap',
+				staticClass: 'mux-table-header--wrap',
 			}, [this.genTHeadContext({
 				colgroup: colgroup,
 				columns: columns,
@@ -318,7 +318,7 @@ export default {
 				}
 			});
 			return this.$createElement('div', {
-				staticClass: 'v-table-body--wrap',
+				staticClass: 'mux-table-body--wrap',
 				style: {
 					height: (this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight()) + 'px'
 				},
@@ -341,7 +341,7 @@ export default {
 	},
 	render(h) {
 		return h(VPanel, {
-			staticClass: "components table v-table-wrap",
+			staticClass: "components mux-table",
 			style: {
 				height: this.full ? (undefined) : (isNaN(this.height) ? this.height : this.height + 'px')
 			},

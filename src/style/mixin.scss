@@ -173,8 +173,16 @@
 
 @mixin word-align($list,$prefix) {
   @each $prop in $list {
-    @include prefix($prefix,string.unquote("-align-") + $prop) {
+    @include prefix-no-parent($prefix,string.unquote("-align-") + $prop) {
       text-align: $prop !important;
     }
+  }
+}
+
+@mixin prefix-no-parent($prefix, $name) {
+  $prefixselector: string.unquote(".") +
+    string.unquote(string.to-lower-case($prefix));
+  #{selector.append($prefixselector,$name)} {
+    @content;
   }
 }
