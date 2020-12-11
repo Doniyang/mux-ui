@@ -40,7 +40,7 @@ class Node {
   }
   /**
     * 设置点击时间以便更新子节点状态
-    * @param {DateTime} isParent
+    * @param {DateTime} time
     */
 
 
@@ -104,6 +104,14 @@ class Node {
 
   updateLoadingState(isLoading) {
     this.isLoading = isLoading;
+  }
+  /**
+   * 判断是否是父节点
+   */
+
+
+  hasChildrenNode() {
+    return this.isParent;
   }
 
 }

@@ -69,6 +69,10 @@
       transform: rotate(90deg);
     }
 
+    @include subclass('-icon--is-hide'){
+      visibility: hidden;
+    }
+
     @include subclass("-icon--is-loading"){
       animation: spinner 1.2s linear infinite;
     }

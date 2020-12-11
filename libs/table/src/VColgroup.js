@@ -5,14 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _vue = _interopRequireDefault(require("vue"));
+var _Table = _interopRequireDefault(require("./utils/Table"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default2 = _vue.default.extend({
-  name: 'VColgroup',
+var _default2 = {
+  functional: true,
   props: {
-    colums: {
+    columns: {
       type: Array,
       default: () => []
     },
@@ -20,71 +20,38 @@ var _default2 = _vue.default.extend({
       type: Array,
       default: () => []
     },
-    cellMinWidth: {
-      type: Number
-    },
     gutter: {
       type: Boolean,
       default: false
     },
     barWidth: {
       type: Number,
-      default: 0
+      defalut: 0
     }
   },
-  methods: {
-    genColContext() {
-      return this.colgroup.length > 0 ? this.genColgroupContext() : this.genColumsContext();
-    },
+  name: 'VColgroup',
 
-    genColgroupContext() {
-      var colgroup = this.colgroup.reduce((previous, current) => {
-        current.hasOwnProperty('colspan') ? Array.prototype.push.apply(previous, Array.from({
-          length: current.colspan
-        }, item => ({
-          width: current.width
-        }))) : previous.push(current);
-        return previous;
-      }, []);
-      return colgroup.map((it, index, ary) => {
-        var wid = Math.max(10, 100 / ary.length);
-        return this.$createElement('col', {
-          attrs: {
-            name: 'g-col-' + index,
-            align: 'center',
-            width: it.width ? it.width : wid + '%'
-          }
-        });
-      });
-    },
+  render(h, context) {
+    var {
+      props
+    } = context;
 
-    genColumsContext() {
-      return this.colums.map((item, index) => {
-        return this.$createElement('col', {
-          attrs: {
-            name: 'g-col-' + index,
-            align: item.align || 'center',
-            width: item.width || this.cellMinWidth
-          }
-        });
-      });
-    },
+    var columns = _Table.default.make(props.colgroup, props.columns);
 
-    genBarContext() {
-      return this.$createElement('col', {
-        attrs: {
-          name: 'gutter',
-          width: this.barWidth
-        }
-      });
-    }
-
-  },
-
-  render(h) {
-    return h('colgroup', {}, [...this.genColContext(), this.gutter && this.barWidth > 0 ? this.genBarContext() : null]);
+    return h("colgroup", {}, [...columns.map((d, dx) => h('col', {
+      attrs: {
+        name: "c-col-" + dx,
+        align: d.align,
+        width: d.width
+      }
+    })), props.gutter ? h('col', {
+      attrs: {
+        name: "col-gutter",
+        align: 'center',
+        width: props.barWidth
+      }
+    }) : null]);
   }
 
-});
-
+};
 exports.default = _default2;

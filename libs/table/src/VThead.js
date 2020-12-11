@@ -5,115 +5,102 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _vue = _interopRequireDefault(require("vue"));
-
 var _VColgroup = _interopRequireDefault(require("./VColgroup"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default2 = _vue.default.extend({
-  name: 'VThead',
+var _default2 = {
+  name: "VThead",
   props: {
-    colums: {
-      type: Array,
-      default: () => []
-    },
     colgroup: {
       type: Array,
       default: () => []
     },
-    cellMinWidth: {
-      type: Number,
-      default: 60
+    columns: {
+      type: Array,
+      default: () => []
     },
-    skin: {
-      type: String,
-      default: ''
+    gutter: {
+      type: Boolean,
+      default: false
     },
     barWidth: {
-      type: Number,
-      default: 0
-    },
-    scrollPosX: {
       type: Number,
       default: 0
     }
   },
   methods: {
-    genWrapContext() {
-      return this.$createElement('div', {
-        staticClass: 'v-table-header-inner',
-        style: {
-          MsTransform: "translate(-".concat(this.scrollPosX, "px,0)"),
-          MozTransform: "translate(-".concat(this.scrollPosX, "px,0)"),
-          WebkitTransform: "translate(-".concat(this.scrollPosX, "px,0)"),
-          OTransform: "translate(-".concat(this.scrollPosX, "px,0)"),
-          transform: "translate(-".concat(this.scrollPosX, "px,0)")
-        }
-      }, [this.genTableContext()]);
-    },
-
-    genTableContext() {
-      return this.$createElement('table', {
-        staticClass: 'v-table-wrap',
-        attrs: {
-          skin: this.skin
-        }
-      }, [this.genColController(), this.genTHeadContext()]);
-    },
-
-    genColController() {
+    genColgroupContext() {
       return this.$createElement(_VColgroup.default, {
         props: {
-          colums: this.colums,
+          columns: this.columns,
           colgroup: this.colgroup,
-          gutter: true,
-          barWidth: this.barWidth,
-          cellMinWidth: this.cellMinWidth
+          gutter: this.gutter,
+          barWidth: this.barWidth
         }
       });
     },
 
     genTHeadContext() {
-      return this.$createElement('thead', {}, this.genHeadChildrenContext());
+      return this.$createElement('thead', {}, this.genHeaderChildrenContext());
     },
 
-    genHeadChildrenContext() {
-      return this.$scopedSlots.default ? [this.$scopedSlots.default({
-        colums: this.colums,
-        colgroup: this.colgroup
-      })] : [this.colgroup.length > 0 ? this.genRowContext(this.colgroup) : null, this.genRowContext(this.colums)];
+    genHeaderChildrenContext() {
+      return this.$scopedSlots.default ? [this.genSlotContext('default', {
+        colgroup: this.colgroup,
+        columns: this.columns
+      })] : this.genItemsContext();
     },
 
-    genRowContext(props) {
-      return this.$createElement('tr', {}, this.genColContext(props));
+    genItemsContext() {
+      return [this.colgroup, this.columns].reduce((current, next) => {
+        if (next.length > 0) {
+          current.push(this.genRowContext(next, this.genColContext));
+        }
+
+        return current;
+      }, []);
     },
 
-    genColContext(colums) {
-      return colums.map((item, index) => this.$createElement('th', {
-        staticClass: 'v-text-' + (item.align || 'center'),
+    genRowContext(cols, callback) {
+      return this.$createElement('tr', {}, [].map.call(cols, (item, dx) => callback.apply(this, [item, dx])));
+    },
+
+    genColContext(item, key) {
+      return this.$createElement('th', {
+        staticClass: "v-text-" + (item.align || "center"),
+        style: item.style,
+        class: item.class,
         attrs: {
-          colspan: item.colspan || 1,
-          rowspan: item.rowspan || 1
+          colspan: item.colspan,
+          rowspan: item.rowspan
         },
-        key: "TH_".concat(index)
-      }, [this.genContentWrap(item.text)]));
+        key: "TH_".concat(key)
+      }, [this.genCellContext(item.text)]);
     },
 
-    genContentWrap(text) {
-      return this.$createElement('div', {
-        staticClass: 'v-table-cell'
+    genCellContext(text) {
+      return this.$createElement("div", {
+        staticClass: "v-table-cell"
       }, text);
+    },
+
+    genSlotContext(slot, props) {
+      return this.$scopedSlots[slot].call(this, props);
     }
 
   },
 
   render(h) {
-    return h('div', {
-      staticClass: 'v-table-header--wrap'
-    }, [this.genWrapContext()]);
+    return h("table", {
+      staticClass: "v-table-box",
+      attrs: {
+        cellpadding: 0,
+        cellspacing: 0,
+        border: 0
+      }
+    }, [this.genColgroupContext(), this.genTHeadContext()]);
   }
 
-});
-
+};
 exports.default = _default2;

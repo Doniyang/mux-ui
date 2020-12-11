@@ -1,4 +1,5 @@
 export default {
+  name:'v-tab-item',
   props: {
     actived: {
       type: Boolean,
