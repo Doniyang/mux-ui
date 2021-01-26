@@ -67,13 +67,9 @@ export default {
       this.width = isfill ? cwidth : dwidth;
     },
     genTabContext() {
-      return this.$createElement(
-        "div",
-        {
+      return this.$createElement("div",{
           staticClass: "mux-tabs-container",
-        },
-        this.$slots.default
-      );
+        },this.$slots.default);
     },
     genTabBarContext() {
       return this.$createElement(TabSlider, {
@@ -87,12 +83,8 @@ export default {
     },
   },
   render(h) {
-    return h(
-      "div",
-      {
+    return h("div",{
         staticClass: "component mux-tabs",
-      },
-      [this.genTabContext(), this.hideSlider ? null : this.genTabBarContext()]
-    );
+      },[this.genTabContext(), this.hideSlider ? null : this.genTabBarContext()]);
   },
 };

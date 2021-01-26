@@ -23,7 +23,7 @@ var _default = {
   watch: {
     isActived(nv, ov) {
       if (nv !== ov) {
-        this.updateParentState();
+        this.updateParentState(nv);
       }
     }
 
@@ -39,8 +39,10 @@ var _default = {
       this.updateActivedState(true);
     },
 
-    updateParentState() {
-      this.MuxTab.updateState(this);
+    updateParentState(isSelected) {
+      if (isSelected) {
+        this.MuxTab.updateState(this);
+      }
     },
 
     updateActivedState(isActived) {

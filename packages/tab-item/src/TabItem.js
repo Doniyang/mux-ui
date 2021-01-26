@@ -8,14 +8,14 @@ export default {
   },
   data() {
     return {
-      isActived: false,
+      isActived: false
     };
   },
   inject: ["MuxTab"],
   watch: {
     isActived(nv, ov) {
       if (nv !== ov) {
-        this.updateParentState();
+        this.updateParentState(nv);
       }
     },
   },
@@ -28,17 +28,17 @@ export default {
       e.stopPropagation();
       this.updateActivedState(true);
     },
-    updateParentState() {
-      this.MuxTab.updateState(this);
+    updateParentState(isSelected) {
+      if(isSelected){
+        this.MuxTab.updateState(this);
+      }
     },
     updateActivedState(isActived) {
       this.isActived = isActived;
     },
   },
   render(h) {
-    return h(
-      "div",
-      {
+    return h("div", {
         staticClass: "component mux-tab-item",
         class: {
           "mux-tab-item--is-actived": this.isActived,
@@ -51,8 +51,6 @@ export default {
             this.handleClick(e);
           },
         },
-      },
-      this.$slots.default
-    );
+      },this.$slots.default);
   },
 };
