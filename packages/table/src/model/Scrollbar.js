@@ -1,39 +1,52 @@
 export default class Scrollbar {
-  constructor() {
-    this.width = 0;
-    this.height = 0;
-    this.top = 0;
-    this.left = 0;
+  constructor () {
+    this.width = 0
+    this.height = 0
+    this.top = 0
+    this.left = 0
   }
 
-  setWidth(width) {
-    this.width = width;
+  setWidth (width) {
+    this.width = width
   }
 
-  setHeight(height) {
-    this.height = height;
+  setHeight (height) {
+    this.height = height
   }
 
-  setTop(top) {
-    this.top = top;
+  setTop (top) {
+    this.top = top
   }
 
-  setLeft(left) {
-    this.left = left;
+  setLeft (left) {
+    this.left = left
   }
-  getWidth() {
-    return this.width;
+
+  getWidth () {
+    return this.width
   }
-  getHeight() {
-    return this.height;
+
+  getHeight () {
+    return this.height
   }
-  getTop() {
-    return this.top;
+
+  getTop () {
+    return this.top
   }
-  getLeft() {
-    return this.left;
+
+  getLeft () {
+    return this.left
   }
-  hasVScrollBar() {
-    return this.width > 0;
+
+  hasVScrollBar () {
+    return this.width > 0
+  }
+
+  hasHScrollBar () {
+    return this.height > 0
+  }
+
+  isFreeScroll () {
+    return this.hasVScrollBar() && this.hasHScrollBar()
   }
 }
