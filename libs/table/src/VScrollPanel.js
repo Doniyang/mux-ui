@@ -60,10 +60,10 @@ var _default = {
   },
 
   render(h) {
-    return h('div', {
+    return h("div", {
       style: {
-        height: isNaN(this.height) ? this.height : this.height + 'px',
-        maxHeight: isNaN(this.maxHeight) ? this.maxHeight : this.maxHeight + 'px'
+        height: isNaN(this.height) ? this.height : this.height + "px",
+        maxHeight: isNaN(this.maxHeight) ? this.maxHeight : this.maxHeight + "px"
       }
     }, this.$slots.default);
   }

@@ -1,6 +1,7 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
 @use 'sass:list';
+@use "sass:math";
 .component {
   @include prefix($prefix, "-checkbox") {
     display: flex;
@@ -73,8 +74,8 @@
           position: absolute;
           top: 50%;
           left: 50%;
-          margin-left: 0 - (list.nth($checkbox-clip-list, 1) + 2)/2;
-          margin-top: 0 - (list.nth($checkbox-clip-list, 1) + 2)/2;
+          margin-left: 0 - math.div(list.nth($checkbox-clip-list, 1) + 2, 2);
+          margin-top: 0 - math.div(list.nth($checkbox-clip-list, 1) + 2, 2);
           background: transparent;
           border: {
             width: 1px;

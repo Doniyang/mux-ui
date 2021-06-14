@@ -21,73 +21,230 @@ var _Roll = _interopRequireDefault(require("./utils/Roll"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * @name VTable
+ * @description 表格组件，实现静态表格，复杂表头、固定表头，横向滚动及固定前(连续)几列及后(连续)几列的表格
+ * @slots
+ *   caption @params 无
+ *   pagination @params 无
+ *   header @params {colgroup,columns}
+ *   body @params {columns,loading,loadingText,dataItems,noDataText}
+ *   loading @params {loadingText}
+ *   noData @params {noDataText}
+ *   colgroup或columns中slotable为true的slot项,参数item
+ */
 var _default2 = {
-  name: 'VTable',
+  name: "VTable",
   props: {
+    /**
+     *@description 复杂表头设置
+     * @type Array<Cell>,其中text必须配置,colspan和rowspan其中一个必须配置
+     * @example [{
+     *             width:可以是数字、百分比、css值,
+     *             text:表头文字，String类型,
+     *             field？:单元格的映射值,String类型,
+     *             align: 单元格对齐方式,可以为："left","center","right"。默认值是:'center',
+     *             style:css样式,可有可无,
+     *             class:css类名，可以是Array<String>和String
+     *             colspan:数字，表示跨n列，默认是1,
+     *             rowspan:数字表示跨n行，默认是1,
+     *             slot:String,插槽名，
+     *             weight:数字,权重,用于创建三级及以上的表头，默认为1
+     *             editable:Boolean,是否可编辑,默认false,
+     *             sortable:Boolean, 是否可排序，默认false,
+     *             fixed:Boolean,是否固定,默认false,
+     *             slotable:Boolean,是否是插槽，默认false,
+     *             formator:Function 返回string 参数 item,field;默认function(row,field){return row[field]}
+     *           }]
+     */
     colgroup: {
       type: Array,
       default: () => []
     },
+
+    /**
+     * @description 表头配置
+     * @type Array<Cell>,其中text、field必须配
+     */
     columns: {
       type: Array,
       default: () => []
     },
+
+    /**
+     *@description 数据项
+     * @type Array<object>
+     */
     dataItems: {
       type: Array,
       default: () => []
     },
+
+    /**
+     *@description 表格单元格分割线 default:显示所有的分割线
+     *                           row:列割线
+     *                           line:行割线
+     *                           none:无
+     * @type string
+     */
     skin: {
       type: String,
-      default: 'default',
+      default: "default",
 
       validator(v) {
-        return ['default', 'row', 'line', 'none'].indexOf(v) > -1;
+        return ["default", "row", "line", "none"].indexOf(v) > -1;
       }
 
     },
+
+    /**
+     *@description 表格尺寸 通过调节表格的字体，间隔
+     */
+    size: {
+      type: String,
+      default: "normal",
+
+      validator(v) {
+        return ["small", "normal", "large"].indexOf(v) > -1;
+      }
+
+    },
+
+    /**
+     * @description 单元格最小宽,当colgroup及columns的配置中没有width项时有用
+     */
     cellMinWidth: {
       type: [Number, String],
       default: 60
     },
+
+    /**
+     *@description 表格的caption
+     */
     caption: {
       type: String,
-      default: ''
+      default: ""
     },
+
+    /**
+     * @description 是否开启条纹显示
+     */
     stripe: {
       type: Boolean,
       default: false
     },
+
+    /**
+     * @description 是否是自动完成高度计算，也就是静态表格
+     */
+    autocomplete: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * @description 是否固定表头
+     */
     fixedHeader: {
       type: Boolean,
       default: false
     },
+
+    /**
+     * @description 是否开启横向滚动
+     */
     hScroll: {
       type: Boolean,
       default: false
     },
+
+    /**
+     * @description 是否正在加载数据 本组件仅实现文字展示。加载动画需要自己在process插槽中实现
+     */
     loading: {
       type: Boolean,
       default: false
     },
+
+    /**
+     * @description 加载中文字描述
+     */
     loadingText: {
       type: String,
-      default: '数据在努力加载中...'
+      default: "数据在努力加载中..."
     },
+
+    /**
+     * @description 最大化显示
+     * @example full为true时,会添加v-table-panel--is-full样式，将组件的宽、高设为100%
+     */
     full: {
       type: Boolean,
       default: false
     },
+
+    /**
+     * @description 无数据时显示
+     */
     noDataText: {
       type: String,
-      default: '暂无数据'
+      default: "暂无数据"
     },
+
+    /**
+     * @description 表格高度,当full或者autocomplete为true时可以不指定，否则必须指定
+     */
     height: {
       type: [Number, String],
       default: 0
     },
+
+    /**
+     * @description 此项是为农电云-态势分析表格而加，不常用
+     */
     activeIndex: {
       type: Number,
       default: -1
+    },
+
+    /**
+     * @description 是否开启选择 目前仅实现checkbox类型
+     */
+    selectable: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * @description checkbox的宽
+     */
+    checkboxSize: {
+      type: [Number, String],
+      default: 40
+    },
+
+    /**
+     * @description checkbox的样式
+     */
+    checkboxClass: {
+      type: [String, Array],
+      default: () => []
+    },
+
+    /**
+     * @description 选择key值
+     */
+    selectKey: {
+      type: String,
+      default: "id"
+    },
+
+    /**
+     * @description 选择值
+     */
+    value: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -117,9 +274,9 @@ var _default2 = {
   methods: {
     handleSort(key, direction) {
       this.dataItems.sort(function (a, b) {
-        var va = a[key],
-            vb = b[key];
-        var dir = direction === 'asc' ? 1 : -1;
+        var va = a[key];
+        var vb = b[key];
+        var dir = direction === "asc" ? 1 : -1;
 
         if (!isNaN(va) && !isNaN(vb)) {
           return (va - vb) * dir;
@@ -127,6 +284,11 @@ var _default2 = {
 
         return String(va).localeCompare(String(vb)) * dir;
       });
+    },
+
+    handleSelectAll(isSelected) {
+      var value = isSelected ? this.dataItems.map(item => item[this.selectKey]) : [];
+      this.$emit("input", value);
     },
 
     setClientHeight(osnap, height) {
@@ -196,9 +358,8 @@ var _default2 = {
 
       var columns = _Table.default.makeCell(this.columns, this.cellMinWidth);
 
-      console.log(colgroup, columns);
       return this.$createElement("main", {
-        staticClass: "mux-table-container",
+        staticClass: "mux-table-wrap",
         class: {
           "mux-table--is-stripe": this.stripe,
           "mux-table-header--is-fixed": this.fixedHeader,
@@ -209,36 +370,48 @@ var _default2 = {
             this.handleScroll(e);
           }
         }
-      }, [this.genHeaderContext(colgroup, columns), this.genBodyContext(colgroup, columns), !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, false) || _Table.default.isFixed(columns, false)) ? this.genFixedTableContext(colgroup, columns, false) : null, !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, true) || _Table.default.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null]);
+      }, [this.genHeaderContext(colgroup, columns), this.genBodyContext(colgroup, columns), !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, false) || _Table.default.isFixed(columns, false)) ? this.genFixedTableContext(colgroup, columns, false) : null, !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, true) || _Table.default.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null]);
     },
 
     genHeaderContext(colgroup, columns) {
       var scopeSlots = {};
-      this.genSlotContext('header', 'default', (key, vnode) => scopeSlots[key] = vnode);
+      var hasBorderLine = ["default", "row"].indexOf(this.skin) > -1;
+      this.genSlotContext("header", "default", (key, vnode) => {
+        scopeSlots[key] = vnode;
+      });
       return this.$createElement(_VPanel.default, {
-        staticClass: 'mux-table-header',
+        staticClass: "mux-table-header",
         props: {
           osnap: 2,
           full: false,
-          tag: 'header'
+          tag: "header",
+          hasXYBar: this.scrollbar.isFreeScroll(),
+          barWidth: this.scrollbar.getWidth() - (hasBorderLine ? 1 : 0)
         },
         attrs: {
-          role: 'header'
+          role: "header"
         },
         directives: [{
-          name: 'roll',
+          name: "roll",
           value: this.scrollbar.getLeft(),
-          arg: 'horizontal',
+          arg: "horizontal",
           modifiers: {
             enable: this.fixedHeader
           }
         }]
       }, [this.genTHeadContext({
+        skin: this.skin,
+        size: this.size,
         colgroup: colgroup,
         columns: columns,
         gutter: this.scrollbar.hasVScrollBar(),
         barWidth: this.scrollbar.getWidth(),
-        sealed: !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && _Table.default.sealed(colgroup, columns)
+        selectable: this.selectable,
+        checkboxSize: this.checkboxSize,
+        checkboxClass: this.checkboxClass,
+        value: _Table.default.checkAllState(this.value, this.dataItems, this.selectKey),
+        indeterminate: _Table.default.checkSomeState(this.value, this.dataItems, this.selectKey),
+        sealed: !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && _Table.default.sealed(colgroup, columns)
       }, scopeSlots)]);
     },
 
@@ -274,7 +447,7 @@ var _default2 = {
         }
       });
       return this.$createElement(_VScrollPanel.default, {
-        staticClass: 'mux-table-body',
+        staticClass: "mux-table-body",
         props: {
           height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
         },
@@ -284,17 +457,23 @@ var _default2 = {
           }
         },
         attrs: {
-          role: 'body'
+          role: "body"
         }
       }, [this.genTBodyContext({
         skin: this.skin,
+        size: this.size,
         colgroup: colgroup,
         columns: columns,
         dataItems: this.dataItems,
         loading: this.loading,
         loadingText: this.loadingText,
         noDataText: this.noDataText,
-        activeIndex: this.activeIndex
+        activeIndex: this.activeIndex,
+        selectable: this.selectable,
+        checkboxSize: this.checkboxSize,
+        selectKey: this.selectKey,
+        value: this.value,
+        sealed: !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && _Table.default.sealed(colgroup, columns)
       }, scopedOpts)]);
     },
 
@@ -303,8 +482,11 @@ var _default2 = {
         props: props,
         scopedSlots: slots,
         on: {
-          'sort:update': data => {
+          "sort:update": data => {
             this.handleSort(data.sortKey, data.sortDirection);
+          },
+          change: isSelected => {
+            this.handleSelectAll(isSelected);
           }
         }
       });
@@ -315,8 +497,14 @@ var _default2 = {
         props: props,
         scopedSlots: slots,
         on: {
-          'click:cell': item => {
-            this.$emit('click:cell', item);
+          "click:cell": item => {
+            this.$emit("click:cell", item);
+          },
+          "cell:input": data => {
+            this.$emit("cell:input", data);
+          },
+          change: val => {
+            this.$emit("input", val);
           }
         }
       });
@@ -327,26 +515,35 @@ var _default2 = {
 
       var fixedColumns = _Table.default.makeFrozenCols(columns, rtl);
 
+      var hasBorderLine = ["default", "row"].indexOf(this.skin) > -1;
       var width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0);
-      return this.$createElement('div', {
-        staticClass: 'mux-table-container--is-fixed',
+      return this.$createElement("div", {
+        staticClass: "mux-table-container",
+        class: {
+          "mux-table-container--has-scrollbar": rtl && this.scrollbar.hasVScrollBar()
+        },
         style: {
           left: rtl ? undefined : 0,
-          right: rtl ? this.scrollbar.getWidth() + 'px' : undefined,
-          width: width + 'px',
-          bottom: this.scrollbar.getHeight() + 'px'
+          right: rtl ? this.scrollbar.getWidth() - (this.scrollbar.isFreeScroll() && hasBorderLine ? 1 : 0) + "px" : undefined,
+          width: width + (this.scrollbar.isFreeScroll() && hasBorderLine ? 1 : 0) + "px",
+          bottom: this.scrollbar.getHeight() + "px"
         }
       }, [this.genFixedTheadContext(fixedColgroup, fixedColumns), this.genFixedTBodyContext(fixedColgroup, fixedColumns)]);
     },
 
     genFixedTheadContext(colgroup, columns) {
-      return this.$createElement('div', {
-        staticClass: 'mux-table-header--wrap'
+      return this.$createElement("div", {
+        staticClass: "mux-table-header--wrap"
       }, [this.genTHeadContext({
         colgroup: colgroup,
         columns: columns,
         gutter: false,
-        isSealed: true
+        sealed: true,
+        selectable: this.selectable,
+        checkboxSize: this.checkboxSize,
+        checkboxClass: this.checkboxClass,
+        value: _Table.default.checkAllState(this.value, this.dataItems, this.selectKey),
+        indeterminate: _Table.default.checkSomeState(this.value, this.dataItems, this.selectKey)
       }, null)]);
     },
 
@@ -366,15 +563,15 @@ var _default2 = {
           });
         }
       });
-      return this.$createElement('div', {
-        staticClass: 'mux-table-body--wrap',
+      return this.$createElement("div", {
+        staticClass: "mux-table-body--wrap",
         style: {
-          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight() + 'px'
+          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight() + "px"
         },
         directives: [{
-          name: 'roll',
+          name: "roll",
           value: this.scrollbar.getTop(),
-          arg: 'vertical',
+          arg: "vertical",
           modifiers: {
             enable: true
           }
@@ -384,7 +581,12 @@ var _default2 = {
         colgroup: colgroup,
         columns: columns,
         dataItems: this.dataItems,
-        activeIndex: this.activeIndex
+        activeIndex: this.activeIndex,
+        sealed: true,
+        selectable: this.selectable,
+        checkboxSize: this.checkboxSize,
+        selectKey: this.selectKey,
+        value: this.value
       }, scopedOpts)]);
     },
 
@@ -398,9 +600,9 @@ var _default2 = {
 
   render(h) {
     return h(_VPanel.default, {
-      staticClass: "components mux-table",
+      staticClass: "component mux-table",
       style: {
-        height: this.full ? undefined : isNaN(this.height) ? this.height : this.height + 'px'
+        height: this.autocomplete || this.full ? undefined : isNaN(this.height) ? this.height : this.height + "px"
       },
       props: {
         full: this.full,

@@ -1,12 +1,14 @@
-.mux-align-left {
+/*************************************************/
+/*************************************************/
+.mux-text-left {
   text-align: left !important;
 }
 
-.mux-align-right {
+.mux-text-right {
   text-align: right !important;
 }
 
-.mux-align-center {
+.mux-text-center {
   text-align: center !important;
 }
 
@@ -30,6 +32,8 @@
     transform: rotate(360deg);
   }
 }
+/*************************************************/
+/*************************************************/
 .mux-fade-enter {
   opacity: 0;
   -webkit-transform: translate3d(0, 100%, 0);
@@ -76,6 +80,8 @@
   transform: translate3d(-50%, -50%, 0) scale(0.9);
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-actionsheet {
   position: fixed;
   background: #e0e0e0;
@@ -120,6 +126,8 @@
   display: block;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-avatar {
   display: block;
   position: relative;
@@ -163,6 +171,8 @@
   align-items: center;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-alert {
   overflow: hidden;
 }
@@ -179,6 +189,8 @@
   border: none;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-btn {
   position: relative;
   overflow: hidden;
@@ -291,6 +303,8 @@
   border-radius: 6px;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-card {
   position: relative;
   display: block;
@@ -355,6 +369,8 @@
   margin: 0;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-cell {
   display: flex;
   position: relative;
@@ -445,6 +461,8 @@
   transform: translate3d(-50%, -50%, 0) rotate(-45deg);
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-checkbox {
   display: flex;
   flex-wrap: nowrap;
@@ -550,6 +568,8 @@
   color: #0c0c0c;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-confirm {
   overflow: hidden;
 }
@@ -580,6 +600,8 @@
   background-color: #dcdcdc;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-dialog {
   position: fixed;
   top: 50%;
@@ -629,6 +651,8 @@
   font-size: 16px;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-field {
   position: relative;
   width: 100%;
@@ -811,6 +835,8 @@
   position: relative;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-fold {
   display: block;
   position: relative;
@@ -882,6 +908,8 @@
   transition: all 0.2s;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-header {
   position: relative;
   overflow: hidden;
@@ -971,6 +999,8 @@
   vertical-align: super;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-matte {
   position: fixed;
   top: 0;
@@ -981,6 +1011,8 @@
   opacity: 0.5;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-prompt {
   overflow: hidden;
 }
@@ -1011,6 +1043,8 @@
   background-color: #dcdcdc;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-radio {
   flex: 1;
   display: flex;
@@ -1088,6 +1122,8 @@
   color: #0c0c0c;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-radio-group {
   position: relative;
   display: flex;
@@ -1121,10 +1157,14 @@
   }
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-sticky {
   position: sticky;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-switch {
   position: relative;
   min-width: 60px;
@@ -1166,6 +1206,8 @@
   transform: scale(1.2);
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-tabs {
   position: relative;
   overflow: hidden;
@@ -1199,6 +1241,8 @@
   top: 0;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-tab-item {
   display: block;
   flex: 1;
@@ -1227,53 +1271,77 @@
   color: #2ab7ff;
 }
 
+/*************************************************/
+/*************************************************/
 .component.mux-table {
   position: relative;
   overflow: hidden;
-  background-color: #ffffff;
+  max-width: 100%;
+  background-color: #FFFFFF;
   box-sizing: border-box;
 }
-.component.mux-table-panel--is-full {
-  height: 100%;
+.component.mux-table.mux-table-panel--is-full {
   width: 100%;
+  height: 100%;
 }
 .component.mux-table .mux-table-caption {
   position: relative;
 }
-.component.mux-table .mux-table-container {
+.component.mux-table .mux-table--is-stripe .mux-table-header table thead th, .component.mux-table .mux-table--is-stripe .mux-table-header--wrap table thead th {
+  background-color: #f7f7f7;
+}
+.component.mux-table .mux-table--is-stripe .mux-table-body table tbody > tr:nth-child(even), .component.mux-table .mux-table--is-stripe .mux-table-body--wrap table tbody > tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+.component.mux-table .mux-table-wrap {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
 }
-.component.mux-table .mux-table-is-stripe .mux-table-header table thead th,
-.component.mux-table .mux-table-is-stripe .mux-table-header--wrap table thead th {
-  background-color: #f7f7f7;
-}
-.component.mux-table .mux-table-is-stripe .mux-table-body table tbody > tr:nth-child(even), .component.mux-table .mux-table-is-stripe .mux-table-body--wrap table tbody > tr:nth-child(even) {
-  background-color: #f7f7f7;
-}
-.component.mux-table .mux-table-header--is-fixed {
+.component.mux-table .mux-table-wrap.mux-table-header--is-fixed {
   overflow-y: hidden;
 }
-.component.mux-table .mux-table-header--is-fixed .mux-table-body {
-  overflow-y: auto;
-}
-.component.mux-table .mux-table-is-xscroll {
+.component.mux-table .mux-table-wrap.mux-table-header--is-fixed .mux-table-body {
   overflow-x: auto;
 }
-.component.mux-table .mux-table-is-xscroll.mux-table-header--is-fixed {
+.component.mux-table .mux-table-wrap.mux-table-is-xscroll {
+  overflow-x: auto;
+}
+.component.mux-table .mux-table-wrap.mux-table-is-xscroll.mux-table-header--is-fixed {
   overflow-x: hidden;
 }
-.component.mux-table .mux-table-is-xscroll.mux-table-header--is-fixed .mux-table-body {
+.component.mux-table .mux-table-wrap.mux-table-is-xscroll.mux-table-header--is-fixed .mux-table-body {
   overflow-x: auto;
 }
-.component.mux-table .mux-table-container--is-fixed {
+.component.mux-table .mux-table-container {
   position: absolute;
+  background-color: #FFFFFF;
+  overflow: hidden;
   top: 0;
   right: auto;
+  bottom: auto;
   left: auto;
-  background-color: #ffffff;
+}
+.component.mux-table .mux-table-header--wrap {
+  position: relative;
   overflow: hidden;
+  transition: all 0.1s;
+}
+.component.mux-table .mux-table-header--wrap .mux-table-meta[size=small] thead tr:only-child th[rowspan="2"] {
+  height: 50px;
+}
+.component.mux-table .mux-table-header--wrap .mux-table-meta[size=large] thead tr:only-child th[rowspan="2"] {
+  height: 110px;
+}
+.component.mux-table .mux-table-header--wrap .mux-table-meta thead tr:only-child th[rowspan="2"] {
+  height: 96px;
+}
+.component.mux-table .mux-table-body--wrap {
+  position: relative;
+  overflow: hidden;
+}
+.component.mux-table .mux-table-body--wrap .mux-table-meta {
+  margin-top: -1px;
 }
 .component.mux-table .mux-table-header {
   position: relative;
@@ -1285,66 +1353,82 @@
   overflow-x: hidden;
   overflow-y: hidden;
 }
-.component.mux-table .mux-table-body .mux-table-wrap {
+.component.mux-table .mux-table-body .mux-table-meta {
   margin-top: -1px;
 }
-.component.mux-table .mux-tableheader--wrap {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.1s;
-}
-.component.mux-table .mux-tableheader--wrap table thead tr:only-child th[rowspan="2"] {
-  height: 80px;
-}
-.component.mux-table .mux-table-body--wrap {
-  position: relative;
-  overflow: hidden;
-}
-.component.mux-table .mux-table-body--wrap .mux-table-wrap {
-  margin-top: -1px;
-}
-.component.mux-table .mux-table-wrap {
-  width: 100%;
+.component.mux-table .mux-table-meta {
   table-layout: fixed;
   border-collapse: collapse;
   border-spacing: 0;
   transition: all 0.1s;
 }
-.component.mux-table .mux-table-wrap[skin=line] th,
-.component.mux-table .mux-table-wrap[skin=line] td {
+.component.mux-table .mux-table-meta[skin=line] th, .component.mux-table .mux-table-meta[skin=line] td {
   border-width: 0;
   border-bottom-width: 1px;
 }
-.component.mux-table .mux-table-wrap[skin=row] th,
-.component.mux-table .mux-table-wrap[skin=row] td {
+.component.mux-table .mux-table-meta[skin=row] th, .component.mux-table .mux-table-meta[skin=row] td {
   border-width: 0;
   border-right-width: 1px;
 }
-.component.mux-table .mux-table-wrap[skin=none] th,
-.component.mux-table .mux-table-wrap[skin=none] td {
+.component.mux-table .mux-table-meta[skin=none] th, .component.mux-table .mux-table-meta[skin=none] td {
   border: none;
 }
-.component.mux-table .mux-table-wrap tr {
+.component.mux-table .mux-table-meta[size=small] th {
+  padding: 5px 7px;
+  font-size: 13px;
+}
+.component.mux-table .mux-table-meta[size=small] td {
+  padding: 5px 0;
+  font-size: 13px;
+}
+.component.mux-table .mux-table-meta[size=small] .mux-table-cell {
+  min-height: 15px;
+  line-height: 15px;
+}
+.component.mux-table .mux-table-meta[size=large] th {
+  padding: 12px 7px;
+  font-size: 18px;
+}
+.component.mux-table .mux-table-meta[size=large] td {
+  padding: 12px 0;
+  font-size: 18px;
+}
+.component.mux-table .mux-table-meta[size=large] .mux-table-cell {
+  min-height: 31px;
+  line-height: 31px;
+}
+.component.mux-table .mux-table-meta.mux-table--is-fix[size=small] th {
+  height: 25px;
+  line-height: 25px;
+}
+.component.mux-table .mux-table-meta.mux-table--is-fix[size=large] th {
+  height: 55px;
+  line-height: 55px;
+}
+.component.mux-table .mux-table-meta.mux-table--is-fix th {
+  height: 48px;
+  line-height: 48px;
+}
+.component.mux-table .mux-table-meta tr {
   transition: all 0.3s;
 }
-.component.mux-table .mux-table-wrap th {
+.component.mux-table .mux-table-meta th {
   font-weight: 400;
   border-width: 1px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.12);
+  border-color: rgba(200, 200, 200, 0.78);
   position: relative;
-  padding: 5px 15px;
-  height: 40px;
-  line-height: 40px;
-  font-size: 14px;
+  padding: 9px 15px;
+  font-size: 16px;
 }
-.component.mux-table .mux-table-wrap td {
+.component.mux-table .mux-table-meta td {
   border-width: 1px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.12);
+  border-color: rgba(200, 200, 200, 0.78);
   position: relative;
   padding: 9px 0;
-  font-size: 14px;
+  font-size: 16px;
+  color: #5e5e5e;
 }
 .component.mux-table .mux-table--is-empty {
   color: rgba(0, 0, 0, 0.38);
@@ -1352,13 +1436,13 @@
 .component.mux-table .mux-table--is-loading {
   padding: 0 0;
 }
-.component.mux-table .mux-table--is-editable {
-  cursor: pointer;
-}
 .component.mux-table .mux-table-cell {
   width: 100%;
   min-height: 29px;
   line-height: 29px;
+  user-select: none;
+  white-space: normal;
+  word-break: break-all;
 }
 .component.mux-table .mux-table-cell[aria-sort=desc] .mux-table-icon-desc {
   border-top-color: rgba(0, 0, 0, 0.87);
@@ -1366,13 +1450,25 @@
 .component.mux-table .mux-table-cell[aria-sort=asc] .mux-table-icon-asc {
   border-bottom-color: rgba(0, 0, 0, 0.87);
 }
-.component.mux-table .mux-table-cell-ellipsis {
+.component.mux-table .mux-table-cell.mux-table-cell-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  word-break: keep-all;
 }
-.component.mux-table .mux-table-cell-cursor {
-  cursor: pointer;
+.component.mux-table .mux-table-cell.mux-table-cell-cursor {
+  cursor: pointer !important;
+}
+.component.mux-table.mux-cell--is-editable {
+  cursor: pointer !important;
+}
+.component.mux-table.mux-cell--is-editable[aria-modal=true] .mux-editor {
+  display: block;
+}
+.component.mux-table .mux-table-cell--is-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .component.mux-table .mux-table-sort {
   display: inline-block;
@@ -1385,7 +1481,7 @@
 }
 .component.mux-table .mux-table-icon {
   position: absolute;
-  left: 0px;
+  left: 0;
   border-width: 5px;
   border-style: solid;
   border-color: transparent;
@@ -1393,18 +1489,53 @@
   width: 0;
   height: 0;
 }
-.component.mux-table .mux-table-icon-asc {
-  top: 0px;
+.component.mux-table .mux-table-icon.mux-table-icon-asc {
+  top: 0;
   border-bottom-color: #a4a4a4;
 }
-.component.mux-table .mux-table-icon-desc {
-  bottom: 0px;
+.component.mux-table .mux-table-icon.mux-table-icon-desc {
+  bottom: 0;
   border-top-color: #a4a4a4;
 }
 .component.mux-table .mux-table-pagination {
   position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.component.mux-editor {
+  display: none;
+  position: absolute;
+  top: 50%;
+  padding: 8px 12px;
+  background-color: #FFFFFF;
+  z-index: 2;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+.component.mux-editor.mux-editor--is-left {
+  left: 0;
+}
+.component.mux-editor.mux-editor--is-center {
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.component.mux-editor.mux-editor--is-right {
+  right: 0;
+}
+.component.mux-editor .mux-editor-field {
+  outline: none;
+  text-indent: 4px;
+  padding: 4px 0;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  max-width: 200px;
+}
+.component.mux-editor .mux-editor-field:focus {
+  border: 1px solid #1a96dc;
 }
 
+/*************************************************/
+/*************************************************/
 @keyframes swoosh {
   from {
     opacity: 0.5;

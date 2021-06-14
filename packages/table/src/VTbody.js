@@ -1,7 +1,7 @@
 import Table from "./utils/Table"
 import VColgroup from "./VColgroup"
 import Editor from "./Editor"
-
+import Checkbox from "../../checkbox"
 export default {
   name: "VTbody",
   props: {
@@ -133,9 +133,9 @@ export default {
     },
     genColItemContext (row, item, dx, max) {
       return this.$createElement("td", {
-        staticClass: "v-text-" + item.align,
+        staticClass: "mux-text-" + item.align,
         class: {
-          "v-editable-wrap": item.editable
+          "mux-table-cell--is-editable": item.editable
         },
         domProps: {
           ariaColIndex: dx,
@@ -151,18 +151,18 @@ export default {
     },
     genColCheckboxContext (row, key) {
       return this.$createElement("td", {
-        staticClass: "v-text-center",
+        staticClass: "mux-text-center",
         key: "TD_CHECKBOX"
       }, [this.genCheckboxWrapContext(row, key)])
     },
     genCheckboxWrapContext (row, key) {
       return this.$createElement("div", {
-        staticClass: "v-table-cell v-table-checkbox",
+        staticClass: "mux-table-cell mux-table-cell--is-checkbox",
         domProps: { role: "checkbox" }
       }, [this.genCheckboxContext(row, key)])
     },
     genCheckboxContext (row, key) {
-      return this.$createElement("v-checkbox", {
+      return this.$createElement(Checkbox, {
         props: {
           hideDetails: true,
           color: "primary",
@@ -196,7 +196,7 @@ export default {
     },
     genLoadingContext (colspan, txt) {
       return [this.$createElement("td", {
-        staticClass: "v-text-center v-loading-wrap",
+        staticClass: "mux-text-center mux-table--is-loading",
         attrs: {
           colspan: colspan
         }
@@ -204,7 +204,7 @@ export default {
     },
     genNoDataContext (colspan, txt) {
       return [this.$createElement("td", {
-        staticClass: "v-text-center v-empty-wrap",
+        staticClass: "mux-text-center mux-table--is-empty",
         attrs: {
           colspan: colspan
         }
@@ -212,8 +212,8 @@ export default {
     },
     genCellContext (txt) {
       return this.$createElement("div", {
-        staticClass: "v-table-cell",
-        class: { "v-table-cell-ellipsis": this.sealed }
+        staticClass: "mux-table-cell",
+        class: { "mux-table-cell-ellipsis": this.sealed }
       }, txt)
     },
     genSlotContext (slot, props) {
@@ -222,7 +222,7 @@ export default {
   },
   render (h) {
     return h("table", {
-      staticClass: "v-table-box",
+      staticClass: "mux-table-meta",
       attrs: {
         skin: this.skin,
         size: this.size,

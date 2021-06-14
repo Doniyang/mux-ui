@@ -55,7 +55,7 @@ export default {
   },
   render (h) {
     return h(this.tag, {
-      class: { "v-table-panel--is-full": this.full, "v-table-panel--has-free-scrollbar": this.hasXYBar },
+      class: { "mux-table-panel--is-full": this.full, "mux-table-panel--has-free-scrollbar": this.hasXYBar },
       style: { marginRight: this.hasXYBar ? (this.barWidth + "px") : undefined },
       on: {
         resize: e => {

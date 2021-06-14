@@ -5,8 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _default = {
-  name: 'VPanel',
-  inject: ['smartTable'],
+  name: "VPanel",
+  inject: ["smartTable"],
   props: {
     osnap: {
       type: Number,
@@ -14,18 +14,26 @@ var _default = {
     },
     tag: {
       type: String,
-      default: 'div'
+      default: "div"
     },
     full: {
       type: Boolean,
       default: false
+    },
+    hasXYBar: {
+      type: Boolean,
+      default: false
+    },
+    barWidth: {
+      type: Number,
+      default: 0
     }
   },
 
   created() {
     var _this = this;
 
-    window.addEventListener('resize', function onResize(e) {
+    window.addEventListener("resize", function onResize(e) {
       e.stopPropagation();
 
       _this.updateClientHeight();
@@ -47,7 +55,7 @@ var _default = {
   beforeDestroy() {
     var _this = this;
 
-    window.removeEventListener('resize', function onResize(e) {
+    window.removeEventListener("resize", function onResize(e) {
       e.stopPropagation();
 
       _this.updateClientHeight();
@@ -67,7 +75,17 @@ var _default = {
   render(h) {
     return h(this.tag, {
       class: {
-        "mux-table-panel--is-full": this.full
+        "mux-table-panel--is-full": this.full,
+        "mux-table-panel--has-free-scrollbar": this.hasXYBar
+      },
+      style: {
+        marginRight: this.hasXYBar ? this.barWidth + "px" : undefined
+      },
+      on: {
+        resize: e => {
+          e.stopPropagation();
+          this.updateClientHeight();
+        }
       }
     }, this.$slots.default);
   }

@@ -24,12 +24,20 @@ var _default2 = {
       type: Boolean,
       default: false
     },
+    selectable: {
+      type: Boolean,
+      default: false
+    },
+    checkboxSize: {
+      type: [Number, String],
+      default: 70
+    },
     barWidth: {
       type: Number,
       defalut: 0
     }
   },
-  name: 'VColgroup',
+  name: "VColgroup",
 
   render(h, context) {
     var {
@@ -38,16 +46,22 @@ var _default2 = {
 
     var columns = _Table.default.make(props.colgroup, props.columns);
 
-    return h("colgroup", {}, [...columns.map((d, dx) => h('col', {
+    return h("colgroup", {}, [props.selectable ? h("col", {
+      attrs: {
+        name: "col-checkbox",
+        align: "center",
+        width: props.checkboxSize
+      }
+    }) : null, ...columns.map((d, dx) => h("col", {
       attrs: {
         name: "c-col-" + dx,
         align: d.align,
         width: d.width
       }
-    })), props.gutter ? h('col', {
+    })), props.gutter ? h("col", {
       attrs: {
         name: "col-gutter",
-        align: 'center',
+        align: "center",
         width: props.barWidth
       }
     }) : null]);

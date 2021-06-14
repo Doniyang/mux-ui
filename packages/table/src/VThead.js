@@ -1,5 +1,5 @@
 import VColgroup from "./VColgroup"
-
+import Checkbox from "../../checkbox"
 export default {
   name: "VThead",
   props: {
@@ -91,14 +91,14 @@ export default {
       sortList.forEach(weight => {
         groupList.unshift(this.colgroup.filter(d => d.weight === weight))
       })
-      return groupList.reduce((current, next) => {
-        if (next.length > 0) { current.push(this.genRowContext(next, this.genColContext)) }
+      return groupList.reduce((current, next,idx) => {
+        if (next.length > 0) { current.push(this.genRowContext(next,idx===0,this.genColContext)) }
         return current
       }, [])
     },
-    genRowContext (cols, callback) {
+    genRowContext (cols,scalable,callback) {
       const children = []
-      if (this.selectable) {
+      if (this.selectable && scalable) {
         children.push(this.genColCheckboxContext())
       }
       return this.$createElement("tr", {}, cols.reduce((accum, current, dx) => {
@@ -108,7 +108,7 @@ export default {
     },
     genColContext (item, key) {
       return this.$createElement("th", {
-        staticClass: "v-text-" + (item.align || "center"),
+        staticClass: "mux-text-" + (item.align || "center"),
         style: item.style,
         class: item.class,
         attrs: {
@@ -120,8 +120,8 @@ export default {
     },
     genCellContext (item) {
       return this.$createElement("div", {
-        staticClass: "v-table-cell",
-        class: { "v-table-cell-ellipsis": this.sealed },
+        staticClass: "mux-table-cell",
+        class: { "mux-table-cell-ellipsis": this.sealed },
         domProps: {
           ariaSort: "none"
         },
@@ -133,23 +133,25 @@ export default {
       }, [this.genTextContext(item.text, item.sortable), item.sortable ? this.genSortContext() : null])
     },
     genColCheckboxContext () {
+      const sortList = new Set(this.colgroup.map(it => it.weight));
+      const rowspan = sortList.size +(this.columns.length?1:0);
       return this.$createElement("th", {
-        staticClass: "v-text-center",
+        staticClass: "mux-text-center",
         class: this.checkboxClass,
         attrs: {
-          rowspan: Math.max(1, ...this.colgroup.map(item => item.rowspan))
+          rowspan: rowspan
         },
         key: "TH_CHECKBOX"
       }, [this.genCheckboxWrapContext()])
     },
     genCheckboxWrapContext () {
       return this.$createElement("div", {
-        staticClass: "v-table-cell v-table-checkbox",
+        staticClass: "mux-table-cell mux-table-cell--is-checkbox",
         domProps: { role: "checkbox" }
       }, [this.genCheckboxContext()])
     },
     genCheckboxContext () {
-      return this.$createElement("v-checkbox", {
+      return this.$createElement(Checkbox, {
         props: {
           hideDetails: true,
           color: "primary",
@@ -159,7 +161,6 @@ export default {
         },
         on: {
           change: val => {
-            console.log(this)
             this.handleChange(val)
           }
         }
@@ -167,18 +168,18 @@ export default {
     },
     genTextContext (text, sortable) {
       return this.$createElement("span", {
-        class: { "v-table-cell-cursor": sortable }
+        class: { "mux-table-cell-cursor": sortable }
       }, text)
     },
     genSortContext () {
       return this.$createElement("span", {
-        staticClass: "v-table-sort v-table-cell-cursor"
+        staticClass: "mux-table-sort mux-table-cell-cursor"
       }, [this.genIconContext(false), this.genIconContext(true)])
     },
     genIconContext (isDesc) {
       return this.$createElement("i", {
-        staticClass: "v-table-icon",
-        class: { "v-table-icon-asc": !isDesc, "v-table-icon-desc": isDesc }
+        staticClass: "mux-table-icon",
+        class: { "mux-table-icon-asc": !isDesc, "mux-table-icon-desc": isDesc }
       })
     },
     genSlotContext (slot, props) {
@@ -187,7 +188,7 @@ export default {
   },
   render (h) {
     return h("table", {
-      staticClass: "v-table-box",
+      staticClass: "mux-table-meta",
       attrs: {
         skin: this.skin,
         size: this.size,

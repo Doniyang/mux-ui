@@ -49,6 +49,14 @@ class Scrollbar {
     return this.width > 0;
   }
 
+  hasHScrollBar() {
+    return this.height > 0;
+  }
+
+  isFreeScroll() {
+    return this.hasVScrollBar() && this.hasHScrollBar();
+  }
+
 }
 
 exports.default = Scrollbar;

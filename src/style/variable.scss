@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $prefix:MUX;
 
 $base-color:#FFFFFF;
@@ -70,7 +72,7 @@ $dialog-radius:6px;
 $dialog-width:75%;
 $dialog-font-size:16px;
 $dialog-bgcolor:$base-color;
-$dialog-header-padding:$gap 0 $gap/2;
+$dialog-header-padding:$gap 0   math.div($gap,2);
 $dialog-content-min-height:40px;
 $dialog-content-padding: 0 $gap;
 $dialog-border-color:$border-color;
@@ -147,19 +149,33 @@ $tab-slider-size:3px;
 $tab-slider-radius:5px;
 $tab-slider-bgcolor:linear-gradient(to right, #7956ee, #2eb7fd);
 
-$table-stripe-color: rgba(247, 247, 247, 1);
-$table-empty-color:rgba(0, 0, 0, 0.38);
-$table-sort-color: rgba(164, 164, 164,1);
-$table-sort-active-color: rgba(0, 0, 0, 0.87);
-$table-cell-height:29px;
-$table-border-width:1px;
-$table-border-color: rgba(0, 0, 0, 0.12);
-$table-font-size:14px;
-$table-header-row-height:40px;
-$table-header-cell-gap:5px 15px;
-$table-body-cell-gap:9px 0;
-$table-icon-size:5px;
-$table-icon-gap:2px;
+$component-table-bgcolor:$base-color;
+$component-table-stripe-color:rgba(247, 247, 247, 1);
+$component-table-border-size:1px;
+$component-table-border-color:rgba(200, 200, 200, 0.78);
+$component-table-font-size:16px;
+$component-table-header-height:48px;
+$component-table-header-gap:9px 15px;
+$component-table-body-gap:9px 0;
+$component-table-empty-color:rgba(0, 0, 0, 0.38);
+$component-table-cell-size:29px;
+$component-table-cell-color:rgba(94, 94, 94, 1);
+$component-table-icon-size:5px;
+$component-table-icon-gap:2px;
+$component-table-icon-color:rgb(164, 164, 164);
+$component-table-icon-active-color:rgba(0, 0, 0, .87);
+/*************************************************/
+$component-table-small-font-size:13px;
+$component-table-header-small-height:25px;
+$component-table-cell-small-size:15px;
+$component-table-header-small-gap:5px 7px;
+$component-table-body-small-gap:5px 0;
+/*************************************************/
+$component-table-large-font-size:18px;
+$component-table-header-large-height:55px;
+$component-table-cell-large-size:31px;
+$component-table-header-large-gap:12px 7px;
+$component-table-body-large-gap:12px 0;
 
 
 

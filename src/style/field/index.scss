@@ -1,6 +1,7 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
 @use '../common' as lib;
+@use "sass:math";
 .component {
   @include prefix($prefix, "-field") {
     position: relative;
@@ -88,7 +89,7 @@
 
     @include subclass("-help") {
       position: absolute;
-      right: $field-gap/4;
+      right: math.div($field-gap,4);
       top: 50%;
       color: $field-help-color;
       font-size: $field-help-font-size;

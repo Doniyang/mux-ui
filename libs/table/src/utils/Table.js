@@ -52,7 +52,7 @@ class Table {
       var cols = [];
       var copyCols = columns.slice(0);
       colgroup.forEach(item => {
-        if (item.isSole()) {
+        if (item.isOverlap()) {
           Array.prototype.push.call(cols, item);
         } else {
           Array.prototype.push.apply(cols, copyCols.splice(0, item.colspan));
@@ -62,6 +62,16 @@ class Table {
     } else {
       return columns;
     }
+  }
+
+  static checkAllState(selectList, dataItems, key) {
+    var list = dataItems.map(item => item[key]);
+    return list.length > 0 && list.every(li => selectList.includes(li)) && selectList.every(it => list.includes(it));
+  }
+
+  static checkSomeState(selectList, dataItems, key) {
+    var list = dataItems.map(item => item[key]);
+    return selectList.length > 0 && list.some(one => !selectList.includes(one));
   }
 
 }

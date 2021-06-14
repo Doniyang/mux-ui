@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+/**
+ * @description 用于格式化表头
+ * @author niyang
+ */
 class Cell {
   constructor(width, options) {
     this.text = null;
@@ -13,6 +17,12 @@ class Cell {
     this.align = "center";
     this.style = null;
     this.class = null;
+    /**
+     * @description 从1开始,值愈大,权重愈大,在表头的位置越靠前
+     * @type {number}
+     */
+
+    this.weight = 1;
     this.colspan = 1;
     this.rowspan = 1;
     this.slot = null;
@@ -21,7 +31,7 @@ class Cell {
     this.fixed = false;
     this.slotable = false;
 
-    this.formator = txt => txt;
+    this.formator = (row, key) => row[key];
 
     for (var key in options) {
       this.set(this, key, options[key]);
@@ -34,6 +44,10 @@ class Cell {
 
   isSole() {
     return this.colspan === 1;
+  }
+
+  isOverlap() {
+    return this.rowspan > Math.max(this.weight, 1);
   }
 
 }

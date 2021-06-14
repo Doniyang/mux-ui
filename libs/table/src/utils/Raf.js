@@ -7,11 +7,11 @@ exports.cancelAnimationFrame = exports.requestAnimationFrame = void 0;
 
 var requestAnimationFrame = function () {
   var start = 0;
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
+  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (fn) {
     var now = Date.now();
     var delay = Math.max(0, 16.7 - (now - start));
     var tId = window.setTimeout(function () {
-      callback(now + delay);
+      fn(now + delay);
     }, delay);
     start = now + delay;
     return tId;

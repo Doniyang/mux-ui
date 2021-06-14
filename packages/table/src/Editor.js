@@ -52,7 +52,7 @@ export default {
     },
     genInputContext () {
       return this.$createElement("input", {
-        staticClass: "v-editor-field",
+        staticClass: "mux-editor-field",
         domProps: {
           value: this.editVal
         },
@@ -81,7 +81,7 @@ export default {
   },
   render (h) {
     return h("div", {
-      staticClass: "v-editor-container",
+      staticClass: "component mux-editor",
       class: [this.position],
       domProps: {
         ariaLabel: this.editVal

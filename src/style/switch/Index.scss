@@ -1,11 +1,12 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as *;
+@use "sass:math";
 .component {
   @include prefix($prefix, "-switch") {
     position: relative;
     min-width: $switch-min-width;
     display: inline-block;
-    border-radius: $switch-size/2;
+    border-radius: math.div($switch-size,2);
     text-align: left;
     background-color: $switch-track-bgcolor;
     transition: all 360ms;
