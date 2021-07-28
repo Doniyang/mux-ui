@@ -1302,7 +1302,7 @@
   overflow-y: hidden;
 }
 .component.mux-table .mux-table-wrap.mux-table-header--is-fixed .mux-table-body {
-  overflow-x: auto;
+  overflow-y: auto;
 }
 .component.mux-table .mux-table-wrap.mux-table-is-xscroll {
   overflow-x: auto;
@@ -1429,6 +1429,9 @@
   padding: 9px 0;
   font-size: 16px;
   color: #5e5e5e;
+}
+.component.mux-table .mux-table--is-fill-width {
+  width: 100%;
 }
 .component.mux-table .mux-table--is-empty {
   color: rgba(0, 0, 0, 0.38);

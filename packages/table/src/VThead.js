@@ -1,5 +1,7 @@
+import Table from "./utils/Table"
 import VColgroup from "./VColgroup"
 import Checkbox from "../../checkbox"
+
 export default {
   name: "VThead",
   props: {
@@ -41,6 +43,10 @@ export default {
       type: Boolean,
       default: false
     },
+    fillWidth:{
+      type:Boolean,
+      default:false
+    },
     gutter: {
       type: Boolean,
       default: false
@@ -61,8 +67,9 @@ export default {
       target.ariaSort = description
       this.$emit("sort:update", { sortKey: data.field, sortDirection: description })
     },
-    handleChange (isSelected) {
-      this.$emit("change", isSelected)
+    handleChange (e) {
+      const target = e.target || e.srcElement;
+      this.$emit("change", target.checked)
     },
     genColgroupContext () {
       return this.$createElement(VColgroup, {
@@ -86,12 +93,7 @@ export default {
       })] : this.genItemsContext()
     },
     genItemsContext () {
-      const groupList = [this.columns]
-      const sortList = new Set(this.colgroup.map(it => it.weight).sort((a, b) => a - b))
-      sortList.forEach(weight => {
-        groupList.unshift(this.colgroup.filter(d => d.weight === weight))
-      })
-      return groupList.reduce((current, next,idx) => {
+      return Table.merge(this.colgroup,this.columns).reduce((current, next,idx) => {
         if (next.length > 0) { current.push(this.genRowContext(next,idx===0,this.genColContext)) }
         return current
       }, [])
@@ -153,15 +155,12 @@ export default {
     genCheckboxContext () {
       return this.$createElement(Checkbox, {
         props: {
-          hideDetails: true,
-          color: "primary",
-          multiple: false,
-          inputValue: this.value,
-          indeterminate: this.indeterminate
+          checked:this.value,
+          partial: this.indeterminate
         },
         on: {
-          change: val => {
-            this.handleChange(val)
+          change: e => {
+            this.handleChange(e)
           }
         }
       })
@@ -196,7 +195,7 @@ export default {
         cellspacing: 0,
         border: 0
       },
-      class: { "v-table--is-fix": this.sealed }
+      class: { "mux-table--is-fix": this.sealed,'mux-table--is-fill-width':this.fillWidth }
     }, [this.genColgroupContext(), this.genTHeadContext()])
   }
 }

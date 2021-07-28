@@ -6,7 +6,7 @@
     position: relative;
     overflow: hidden;
     max-width: 100%;
-    background-color: $component-table-bgcolor;
+    background-color: $table-bgcolor;
     box-sizing: border-box;
     
     @include prefix($prefix,'-table-panel--is-full'){
@@ -20,13 +20,13 @@
     @include subclass('--is-stripe'){
       & .mux-table-header, & .mux-table-header--wrap {
         & table thead th {
-          background-color: $component-table-stripe-color;
+          background-color: $table-stripe-color;
         }
       }
   
      & .mux-table-body, & .mux-table-body--wrap {
         & table tbody > tr:nth-child(even) {
-          background-color: $component-table-stripe-color;
+          background-color: $table-stripe-color;
         }
       }  
     }
@@ -40,7 +40,7 @@
            overflow-y: hidden;
 
            & .mux-table-body{
-            overflow-x: auto;
+            overflow-y: auto;
           }
       }
 
@@ -58,7 +58,7 @@
 
     @include subclass('-container'){
       position: absolute;
-		  background-color: $component-table-bgcolor;
+		  background-color: $table-bgcolor;
 		  overflow: hidden;
       @include setposition(0,auto,auto,auto);
     }
@@ -71,18 +71,18 @@
       & .mux-table-meta {
         &[size='small'] {
           thead tr:only-child th[rowspan='2'] {
-            height: $component-table-header-small-height * 2;
+            height: $table-header-small-height * 2;
           }
         }
   
         &[size='large'] {
           thead tr:only-child th[rowspan='2'] {
-            height: $component-table-header-large-height * 2;
+            height: $table-header-large-height * 2;
           }
         }
   
         thead tr:only-child th[rowspan='2'] {
-          height: $component-table-header-height * 2;
+          height: $table-header-height * 2;
         }
       }
     } 
@@ -92,7 +92,7 @@
       overflow: hidden;
   
       & .mux-table-meta {
-        margin-top: -1 * $component-table-border-size;
+        margin-top: -1 * $table-border-size;
       }
     }
 
@@ -108,7 +108,7 @@
 	   	overflow-y: hidden;
 
        & .mux-table-meta{
-        margin-top: -1 * $component-table-border-size;
+        margin-top: -1 * $table-border-size;
        }
     }
    
@@ -117,18 +117,18 @@
       border-collapse: collapse;
       border-spacing: 0;
       transition: all 0.1s;
-  
+      
       &[skin='line'] {
         th, td {
           border-width: 0;
-          border-bottom-width: $component-table-border-size;
+          border-bottom-width: $table-border-size;
         }
       }
   
       &[skin='row'] {
         th, td {
           border-width: 0;
-          border-right-width: $component-table-border-size;
+          border-right-width: $table-border-size;
         }
       }
   
@@ -140,56 +140,56 @@
   
       &[size='small'] {
         th {
-          padding: $component-table-header-small-gap;
-          font-size: $component-table-small-font-size;
+          padding: $table-header-small-gap;
+          font-size: $table-small-font-size;
         }
   
         td {
-          padding: $component-table-body-small-gap;
-          font-size: $component-table-small-font-size;
+          padding: $table-body-small-gap;
+          font-size: $table-small-font-size;
         }
   
         .mux-table-cell {
-          min-height: $component-table-cell-small-size;
-          line-height: $component-table-cell-small-size;
+          min-height: $table-cell-small-size;
+          line-height: $table-cell-small-size;
         }
       }
   
       &[size='large'] {
         th {
-          padding: $component-table-header-large-gap;
-          font-size: $component-table-large-font-size;
+          padding: $table-header-large-gap;
+          font-size: $table-large-font-size;
         }
   
         td {
-          padding: $component-table-body-large-gap;
-          font-size: $component-table-large-font-size;
+          padding: $table-body-large-gap;
+          font-size: $table-large-font-size;
         }
   
         .mux-table-cell {
-          min-height: $component-table-cell-large-size;
-          line-height: $component-table-cell-large-size;
+          min-height: $table-cell-large-size;
+          line-height: $table-cell-large-size;
         }
       }
   
       &.mux-table--is-fix {
         &[size='small'] {
           th {
-            height: $component-table-header-small-height;
-            line-height: $component-table-header-small-height;
+            height: $table-header-small-height;
+            line-height: $table-header-small-height;
           }
         }
   
         &[size='large'] {
           th {
-            height: $component-table-header-large-height;
-            line-height: $component-table-header-large-height;
+            height: $table-header-large-height;
+            line-height: $table-header-large-height;
           }
         }
   
         th {
-          height: $component-table-header-height;
-          line-height: $component-table-header-height;
+          height: $table-header-height;
+          line-height: $table-header-height;
         }
       }
   
@@ -199,27 +199,31 @@
   
       th {
         font-weight: 400;
-        border-width: $component-table-border-size;
+        border-width: $table-border-size;
         border-style: solid;
-        border-color: $component-table-border-color;
+        border-color: $table-border-color;
         position: relative;
-        padding: $component-table-header-gap;
-        font-size: $component-table-font-size;
+        padding: $table-header-gap;
+        font-size: $table-font-size;
       }
   
       td {
-        border-width: $component-table-border-size;
+        border-width: $table-border-size;
         border-style: solid;
-        border-color: $component-table-border-color;
+        border-color: $table-border-color;
         position: relative;
-        padding: $component-table-body-gap;
-        font-size: $component-table-font-size;
-        color: $component-table-cell-color;
+        padding: $table-body-gap;
+        font-size: $table-font-size;
+        color: $table-cell-color;
       }
+    }
+   
+    @include subclass('--is-fill-width') {
+      width: 100%;
     }
 
     @include subclass('--is-empty') {
-      color: $component-table-empty-color;
+      color: $table-empty-color;
     }
 
     @include subclass('--is-loading'){
@@ -228,21 +232,21 @@
     
     @include subclass('-cell'){
       width: 100%;
-      min-height: $component-table-cell-size;
-      line-height: $component-table-cell-size;
+      min-height: $table-cell-size;
+      line-height: $table-cell-size;
       user-select: none;
       white-space: normal;
       word-break: break-all;
        
       &[aria-sort='desc'] {
         .mux-table-icon-desc {
-          border-top-color: $component-table-icon-active-color;
+          border-top-color: $table-icon-active-color;
         }
       }
   
       &[aria-sort='asc'] {
         .mux-table-icon-asc {
-          border-bottom-color: $component-table-icon-active-color;
+          border-bottom-color: $table-icon-active-color;
         }
       }
 
@@ -278,16 +282,16 @@
       display: inline-block;
       position: relative;
       padding: 0 0;
-      width: $component-table-icon-size * 2;
-      height: $component-table-icon-size * 4 + $component-table-icon-gap;
-      margin: 0 $component-table-icon-gap;
+      width: $table-icon-size * 2;
+      height: $table-icon-size * 4 + $table-icon-gap;
+      margin: 0 $table-icon-gap;
       vertical-align: middle;
     }
   
     @include subclass('-icon'){
       position: absolute;
       left: 0;
-      border-width: $component-table-icon-size;
+      border-width: $table-icon-size;
       border-style: solid;
       border-color: transparent;
       display: inline-block;
@@ -296,12 +300,12 @@
 
       @include prefix($prefix,'-table-icon-asc'){
         top: 0;
-        border-bottom-color: $component-table-icon-color;
+        border-bottom-color: $table-icon-color;
       }
 
       @include prefix($prefix,'-table-icon-desc'){
         bottom: 0;
-        border-top-color: $component-table-icon-color;
+        border-top-color: $table-icon-color;
       }
     }
 
@@ -317,7 +321,7 @@
     position: absolute;
     top: 50%;
     padding: 8px 12px;
-    background-color: $component-table-bgcolor;
+    background-color: $table-bgcolor;
     z-index: 2;
 
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);

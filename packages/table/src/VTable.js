@@ -205,6 +205,10 @@ export default {
     value: {
       type: Array,
       default: () => []
+    },
+    fillWidth:{
+      type:Boolean,
+      default:false
     }
   },
   provide () {
@@ -344,6 +348,7 @@ export default {
         size: this.size,
         colgroup: colgroup,
         columns: columns,
+        fillWidth:this.fillWidth,
         gutter: this.scrollbar.hasVScrollBar(),
         barWidth: this.scrollbar.getWidth(),
         selectable: this.selectable,
@@ -383,7 +388,7 @@ export default {
       return this.$createElement(VScrollPanel, {
         staticClass: "mux-table-body",
         props: {
-          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
+          height:this.autocomplete?"auto": (this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight)
         },
         nativeOn: {
           scroll: e => {
@@ -397,6 +402,7 @@ export default {
         this.genTBodyContext({
           skin: this.skin,
           size: this.size,
+          fillWidth:this.fillWidth,
           colgroup: colgroup,
           columns: columns,
           dataItems: this.dataItems,

@@ -71,6 +71,10 @@ var _default2 = {
     activeIndex: {
       type: Number,
       default: -1
+    },
+    fillWidth: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -213,14 +217,11 @@ var _default2 = {
     genCheckboxContext(row, key) {
       return this.$createElement(_checkbox.default, {
         props: {
-          hideDetails: true,
-          color: "primary",
-          value: row[key],
-          multiple: true,
-          inputValue: this.value
+          checkboxValue: row[key],
+          value: this.value
         },
         on: {
-          change: val => {
+          input: val => {
             this.$emit("change", val);
           }
         }
@@ -285,6 +286,9 @@ var _default2 = {
   render(h) {
     return h("table", {
       staticClass: "mux-table-meta",
+      class: {
+        'mux-table--is-fill-width': this.fillWidth
+      },
       attrs: {
         skin: this.skin,
         size: this.size,

@@ -53,13 +53,20 @@ export default class Table {
     }
   }
 
+  static merge(colgroup,columns){
+    return Array.from(new Set(colgroup.map(item=>item.weight))).sort((a,b)=>a-b).reduce((current,next)=>{
+         [].unshift.call(current,colgroup.filter(cell=>cell.weight === next))
+         return current;  
+    },[columns])
+  }
+
   static checkAllState (selectList, dataItems, key) {
     const list = dataItems.map(item => item[key])
-    return list.length > 0 && list.every(li => selectList.includes(li)) && selectList.every(it => list.includes(it))
+    return list.length  && list.every(li => selectList.includes(li)) && selectList.every(it => list.includes(it))
   }
 
   static checkSomeState (selectList, dataItems, key) {
     const list = dataItems.map(item => item[key])
-    return selectList.length > 0 && list.some(one => !selectList.includes(one))
+    return selectList.length && list.some(one => !selectList.includes(one))
   }
 }

@@ -52,6 +52,10 @@ var _default2 = {
       type: Boolean,
       default: false
     },
+    fillWidth: {
+      type: Boolean,
+      default: false
+    },
     gutter: {
       type: Boolean,
       default: false
@@ -78,8 +82,9 @@ var _default2 = {
       });
     },
 
-    handleChange(isSelected) {
-      this.$emit("change", isSelected);
+    handleChange(e) {
+      var target = e.target || e.srcElement;
+      this.$emit("change", target.checked);
     },
 
     genColgroupContext() {
@@ -189,15 +194,12 @@ var _default2 = {
     genCheckboxContext() {
       return this.$createElement(_checkbox.default, {
         props: {
-          hideDetails: true,
-          color: "primary",
-          multiple: false,
-          inputValue: this.value,
-          indeterminate: this.indeterminate
+          checked: this.value,
+          partial: this.indeterminate
         },
         on: {
-          change: val => {
-            this.handleChange(val);
+          change: e => {
+            this.handleChange(e);
           }
         }
       });
@@ -244,7 +246,8 @@ var _default2 = {
         border: 0
       },
       class: {
-        "v-table--is-fix": this.sealed
+        "mux-table--is-fix": this.sealed,
+        'mux-table--is-fill-width': this.fillWidth
       }
     }, [this.genColgroupContext(), this.genTHeadContext()]);
   }
