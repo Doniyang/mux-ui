@@ -229,6 +229,11 @@
     @include subclass('--is-loading'){
       padding: 0 0;
     }
+
+    @include subclass('-scrollbar-mask'){
+      position: absolute;
+      @include setposition(0,auto,auto,0)
+    }
     
     @include subclass('-cell'){
       width: 100%;

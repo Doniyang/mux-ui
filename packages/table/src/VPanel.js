@@ -13,14 +13,6 @@ export default {
     full: {
       type: Boolean,
       default: false
-    },
-    hasXYBar: {
-      type: Boolean,
-      default: false
-    },
-    barWidth: {
-      type: Number,
-      default: 0
     }
   },
   created () {
@@ -55,8 +47,7 @@ export default {
   },
   render (h) {
     return h(this.tag, {
-      class: { "mux-table-panel--is-full": this.full, "mux-table-panel--has-free-scrollbar": this.hasXYBar },
-      style: { marginRight: this.hasXYBar ? (this.barWidth + "px") : undefined },
+      class: { "mux-table-panel--is-full": this.full },
       on: {
         resize: e => {
           e.stopPropagation()

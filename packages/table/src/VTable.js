@@ -72,7 +72,7 @@ export default {
     skin: {
       type: String,
       default: "default",
-      validator (v) {
+      validator(v) {
         return ["default", "row", "line", "none"].indexOf(v) > -1
       }
     },
@@ -82,7 +82,7 @@ export default {
     size: {
       type: String,
       default: "normal",
-      validator (v) {
+      validator(v) {
         return ["small", "normal", "large"].indexOf(v) > -1
       }
     },
@@ -206,12 +206,12 @@ export default {
       type: Array,
       default: () => []
     },
-    fillWidth:{
-      type:Boolean,
-      default:false
+    fillWidth: {
+      type: Boolean,
+      default: false
     }
   },
-  provide () {
+  provide() {
     return {
       smartTable: this
     }
@@ -222,7 +222,7 @@ export default {
       update: roll
     }
   },
-  data () {
+  data() {
     return {
       scrollbar: new Scrollbar(),
       wrapHeight: 0,
@@ -233,7 +233,7 @@ export default {
     }
   },
   methods: {
-    handleSort (key, direction) {
+    handleSort(key, direction) {
       this.dataItems.sort(function (a, b) {
         const va = a[key]
         const vb = b[key]
@@ -244,11 +244,11 @@ export default {
         return String(va).localeCompare(String(vb)) * dir
       })
     },
-    handleSelectAll (isSelected) {
+    handleSelectAll(isSelected) {
       const value = isSelected ? (this.dataItems.map(item => item[this.selectKey])) : ([])
       this.$emit("input", value)
     },
-    setClientHeight (osnap, height) {
+    setClientHeight(osnap, height) {
       switch (osnap) {
         case 0: {
           this.wrapHeight = height
@@ -270,16 +270,16 @@ export default {
           break
       }
     },
-    setScrollbar (height, width) {
+    setScrollbar(height, width) {
       this.scrollbar.setHeight(height)
       this.scrollbar.setWidth(width)
     },
-    handleScroll (e) {
+    handleScroll(e) {
       const target = e.target || e.srcElement
       this.scrollbar.setTop(target.scrollTop)
       this.scrollbar.setLeft(target.scrollLeft)
     },
-    genPagiantionContext () {
+    genPagiantionContext() {
       return this.$scopedSlots.pagination ? this.$createElement(VPanel, {
         props: {
           osnap: 3,
@@ -288,7 +288,7 @@ export default {
         staticClass: "mux-table-pagination"
       }, this.$scopedSlots.pagination()) : null
     },
-    genCaptionContext () {
+    genCaptionContext() {
       return this.$createElement(VPanel, {
         props: {
           osnap: 1,
@@ -297,7 +297,7 @@ export default {
         staticClass: "mux-table-caption"
       }, this.$scopedSlots.caption ? this.$scopedSlots.caption() : this.caption)
     },
-    genMainContext () {
+    genMainContext() {
       const colgroup = Table.makeCell(this.colgroup, this.cellMinWidth)
       const columns = Table.makeCell(this.columns, this.cellMinWidth)
       return this.$createElement("main", {
@@ -316,12 +316,14 @@ export default {
         this.genHeaderContext(colgroup, columns),
         this.genBodyContext(colgroup, columns),
         (!Table.has(this.$scopedSlots, ["header", "body"])) && (!!this.dataItems.length) && (Table.isFixed(colgroup, false) || Table.isFixed(columns, false)) ? this.genFixedTableContext(colgroup, columns, false) : null,
-        (!Table.has(this.$scopedSlots, ["header", "body"])) && (!!this.dataItems.length) && (Table.isFixed(colgroup, true) || Table.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null
-      ])
+        [
+          this.scrollbar.hasVScrollBar() ? this.genScrollbarMask() : null,
+          (!Table.has(this.$scopedSlots, ["header", "body"])) && (!!this.dataItems.length) && (Table.isFixed(colgroup, true) || Table.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null
+        ]
+      ].flat())
     },
-    genHeaderContext (colgroup, columns) {
+    genHeaderContext(colgroup, columns) {
       const scopeSlots = {}
-      const hasBorderLine = ["default", "row"].indexOf(this.skin) > -1
       this.genSlotContext("header", "default", (key, vnode) => {
         scopeSlots[key] = vnode
       })
@@ -330,9 +332,7 @@ export default {
         props: {
           osnap: 2,
           full: false,
-          tag: "header",
-          hasXYBar: this.scrollbar.isFreeScroll(),
-          barWidth: this.scrollbar.getWidth() - (hasBorderLine ? 1 : 0)
+          tag: "header"
         },
         attrs: {
           role: "header"
@@ -348,7 +348,7 @@ export default {
         size: this.size,
         colgroup: colgroup,
         columns: columns,
-        fillWidth:this.fillWidth,
+        fillWidth: this.fillWidth,
         gutter: this.scrollbar.hasVScrollBar(),
         barWidth: this.scrollbar.getWidth(),
         selectable: this.selectable,
@@ -359,7 +359,7 @@ export default {
         sealed: (!Table.has(this.$scopedSlots, ["header", "body"])) && (!!this.dataItems.length) && (Table.sealed(colgroup, columns))
       }, scopeSlots)])
     },
-    genBodyContext (colgroup, columns) {
+    genBodyContext(colgroup, columns) {
       const scopedOpts = {}
       const slots = [
         { scoped: "process", slot: "loading" },
@@ -388,7 +388,7 @@ export default {
       return this.$createElement(VScrollPanel, {
         staticClass: "mux-table-body",
         props: {
-          height:this.autocomplete?"auto": (this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight)
+          height: this.autocomplete ? "auto" : (this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight)
         },
         nativeOn: {
           scroll: e => {
@@ -402,7 +402,7 @@ export default {
         this.genTBodyContext({
           skin: this.skin,
           size: this.size,
-          fillWidth:this.fillWidth,
+          fillWidth: this.fillWidth,
           colgroup: colgroup,
           columns: columns,
           dataItems: this.dataItems,
@@ -418,7 +418,7 @@ export default {
         }, scopedOpts)
       ])
     },
-    genTHeadContext (props, slots) {
+    genTHeadContext(props, slots) {
       return this.$createElement(VThead, {
         props: props,
         scopedSlots: slots,
@@ -432,7 +432,7 @@ export default {
         }
       })
     },
-    genTBodyContext (props, slots) {
+    genTBodyContext(props, slots) {
       return this.$createElement(VTbody, {
         props: props,
         scopedSlots: slots,
@@ -447,26 +447,36 @@ export default {
         }
       })
     },
-    genFixedTableContext (colgroup, columns, rtl) {
+    genScrollbarMask() {
+      return this.$createElement("div", {
+        staticClass: "mux-table-scrollbar-mask",
+        staticStyle:{
+          width:Table.pixel(this.scrollbar.getWidth()),
+          height:Table.pixel(this.headerHeight)
+        }
+      })
+    },
+    genFixedTableContext(colgroup, columns, rtl) {
       const fixedColgroup = Table.makeFrozenCols(colgroup, rtl)
       const fixedColumns = Table.makeFrozenCols(columns, rtl)
-      const hasBorderLine = ["default", "row"].indexOf(this.skin) > -1
-      const width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0)
+      const width = [fixedColgroup, fixedColumns].flat().reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0)
       return this.$createElement("div", {
         staticClass: "mux-table-container",
         class: { "mux-table-container--has-scrollbar": rtl && this.scrollbar.hasVScrollBar() },
         style: {
-          left: rtl ? undefined : 0,
-          right: rtl ? (this.scrollbar.getWidth() - (this.scrollbar.isFreeScroll() && hasBorderLine ? 1 : 0) + "px") : undefined,
-          width: width + (this.scrollbar.isFreeScroll() && hasBorderLine ? 1 : 0) + "px",
-          bottom: this.scrollbar.getHeight() + "px"
+          left: Table.pixel(rtl ? undefined : 0),
+          right: Table.pixel(rtl ? this.scrollbar.getWidth() : undefined),
+          width: Table.pixel(width + 0.5),
+          bottom: Table.pixel(this.scrollbar.getHeight())
         }
       }, [this.genFixedTheadContext(fixedColgroup, fixedColumns), this.genFixedTBodyContext(fixedColgroup, fixedColumns)])
     },
-    genFixedTheadContext (colgroup, columns) {
+    genFixedTheadContext(colgroup, columns) {
       return this.$createElement("div", {
         staticClass: "mux-table-header--wrap"
       }, [this.genTHeadContext({
+        skin: this.skin,
+        size: this.size,
         colgroup: colgroup,
         columns: columns,
         gutter: false,
@@ -478,7 +488,7 @@ export default {
         indeterminate: Table.checkSomeState(this.value, this.dataItems, this.selectKey)
       }, null)])
     },
-    genFixedTBodyContext (colgroup, columns) {
+    genFixedTBodyContext(colgroup, columns) {
       const scopedOpts = {}
       colgroup.forEach(item => {
         if (item.slotable) {
@@ -503,6 +513,7 @@ export default {
       }, [
         this.genTBodyContext({
           skin: this.skin,
+          size: this.size,
           colgroup: colgroup,
           columns: columns,
           dataItems: this.dataItems,
@@ -515,17 +526,17 @@ export default {
         }, scopedOpts)
       ])
     },
-    genSlotContext (slot, key, callback) {
+    genSlotContext(slot, key, callback) {
       if (this.$scopedSlots[slot]) {
         callback.apply(this, [key, props => this.$scopedSlots[slot].call(this, props)])
       }
     }
   },
-  render (h) {
+  render(h) {
     return h(VPanel, {
       staticClass: "component mux-table",
       style: {
-        height: (this.autocomplete || this.full) ? (undefined) : (isNaN(this.height) ? this.height : this.height + "px")
+        height: Table.pixel((this.autocomplete || this.full) ? undefined : this.height)
       },
       props: {
         full: this.full,

@@ -37,36 +37,44 @@ export default class Table {
   }
 
   static make (colgroup, columns) {
-    if (colgroup.length) {
-      const cols = []
-      const copyCols = columns.slice(0)
-      colgroup.forEach(item => {
-        if (item.isOverlap()) {
-          Array.prototype.push.call(cols, item)
-        } else {
-          Array.prototype.push.apply(cols, copyCols.splice(0, item.colspan))
-        }
-      })
-      return cols
-    } else {
-      return columns
-    }
+    let index = 0;
+    let cols = columns.slice(0);
+    colgroup.forEach(cell=>{
+      if(cell.isOverlap()){
+        cols.splice(index,0,cell)
+        index +=1
+      }else{
+        index += cell.colspan
+      }
+    })
+    return cols
+  }
+  
+  static merge(colgroup,columns){
+    return this.group(colgroup,false).reverse().reduce((a,c)=>{
+
+    },columns)  
   }
 
-  static merge(colgroup,columns){
+  static group(colgroup,columns){
+    let ary = Array.isArray(columns)?[columns.slice(0)]:[];
     return Array.from(new Set(colgroup.map(item=>item.weight))).sort((a,b)=>a-b).reduce((current,next)=>{
          [].unshift.call(current,colgroup.filter(cell=>cell.weight === next))
          return current;  
-    },[columns])
+    },ary)
   }
-
+  
+  static pixel(pixel){
+      return isNaN(pixel)?pixel:pixel+"px"  
+  }
+  
   static checkAllState (selectList, dataItems, key) {
     const list = dataItems.map(item => item[key])
-    return list.length  && list.every(li => selectList.includes(li)) && selectList.every(it => list.includes(it))
+    return Boolean(list.length)  && list.every(li => selectList.includes(li)) && selectList.every(it => list.includes(it))
   }
 
   static checkSomeState (selectList, dataItems, key) {
     const list = dataItems.map(item => item[key])
-    return selectList.length && list.some(one => !selectList.includes(one))
+    return Boolean(selectList.length) && list.some(one => !selectList.includes(one))
   }
 }

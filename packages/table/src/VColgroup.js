@@ -31,16 +31,24 @@ export default {
   name: "VColgroup",
   render (h, context) {
     const { props } = context
-    const columns = Table.make(props.colgroup, props.columns)
+    const columns = Table.merge(props.colgroup, props.columns)
     return h("colgroup", {}, [
       props.selectable ? h("col", {
+        staticStyle:{
+          width:Table.pixel(props.checkboxSize),
+          minWidth:Table.pixel(props.checkboxSize),
+        },
         attrs: {
           name: "col-checkbox",
           align: "center",
           width: props.checkboxSize
         }
       }) : null,
-      ...columns.map((d, dx) => h("col", {
+      columns.map((d, dx) => h("col", {
+        staticStyle:{
+          width:Table.pixel(d.width),
+          minWidth:Table.pixel(d.width),
+        },
         attrs: {
           name: "c-col-" + dx,
           align: d.align,
@@ -48,12 +56,16 @@ export default {
         }
       })),
       props.gutter ? h("col", {
+        staticStyle:{
+          width:Table.pixel(props.barWidth),
+          minWidth:Table.pixel(props.barWidth),
+        },
         attrs: {
           name: "col-gutter",
           align: "center",
           width: props.barWidth
         }
       }) : null
-    ])
+    ].flat())
   }
 }

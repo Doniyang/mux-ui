@@ -96,7 +96,7 @@ export default {
       return this.$createElement("tbody", {}, [this.genTBodyChildrenContext()])
     },
     genTBodyChildrenContext () {
-      const columns = Table.make(this.colgroup, this.columns)
+      const columns = Table.merge(this.colgroup, this.columns)
       const props = {
         columns: columns,
         loading: this.loading,
@@ -234,5 +234,4 @@ export default {
       }
     }, [this.genColgroupContext(), this.genTBodyContext()])
   }
-
 }

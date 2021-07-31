@@ -1,4 +1,5 @@
-import { requestAnimationFrame, cancelAnimationFrame } from "./utils/Raf"
+import { requestAnimationFrame, cancelAnimationFrame } from "./utils/Raf";
+import Table from "./utils/Table";
 export default {
   name: "VScrollPanel",
   inject: ["smartTable"],
@@ -38,8 +39,8 @@ export default {
   render (h) {
     return h("div", {
       style: {
-        height: isNaN(this.height) ? this.height : (this.height + "px"),
-        maxHeight: isNaN(this.maxHeight) ? this.maxHeight : (this.maxHeight + "px")
+        height: Table.pixel(this.height),
+        maxHeight: Table.pixel(this.maxHeight)
       }
     }, this.$slots.default)
   }

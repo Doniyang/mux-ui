@@ -93,7 +93,7 @@ export default {
       })] : this.genItemsContext()
     },
     genItemsContext () {
-      return Table.merge(this.colgroup,this.columns).reduce((current, next,idx) => {
+      return Table.group(this.colgroup,this.columns).reduce((current, next,idx) => {
         if (next.length > 0) { current.push(this.genRowContext(next,idx===0,this.genColContext)) }
         return current
       }, [])
