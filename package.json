@@ -4,6 +4,10 @@
   "description": "A Vue.js project",
   "author": "niyang",
   "private": false,
+
+
+
+
   "scripts": {
     "build:css": "sass src/style/index.scss:dist/style/index.css",
     "dev:css": "sass src/style:dist/style",
