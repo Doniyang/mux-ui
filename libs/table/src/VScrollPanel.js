@@ -7,9 +7,13 @@ exports.default = void 0;
 
 var _Raf = require("./utils/Raf");
 
+var _Table = _interopRequireDefault(require("./utils/Table"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var _default = {
-  name: "VScrollPanel",
-  inject: ["smartTable"],
+  name: 'VScrollPanel',
+  inject: ['smartTable'],
   props: {
     height: {
       type: [Number, String],
@@ -60,10 +64,10 @@ var _default = {
   },
 
   render(h) {
-    return h("div", {
+    return h('div', {
       style: {
-        height: isNaN(this.height) ? this.height : this.height + "px",
-        maxHeight: isNaN(this.maxHeight) ? this.maxHeight : this.maxHeight + "px"
+        height: _Table.default.pixel(this.height),
+        maxHeight: _Table.default.pixel(this.maxHeight)
       }
     }, this.$slots.default);
   }

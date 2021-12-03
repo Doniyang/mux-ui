@@ -6,23 +6,21 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 /**
+ * @format
  * @description 用于格式化表头
  * @author niyang
  */
 class Cell {
-  constructor(width, options) {
+  constructor(options, width, key, parentKey) {
+    this.key = key;
+    this.parentKey = parentKey;
+    this.width = width;
     this.text = null;
     this.field = null;
-    this.width = width;
-    this.align = "center";
+    this.align = 'center';
+    this.weight = 0;
     this.style = null;
     this.class = null;
-    /**
-     * @description 从1开始,值愈大,权重愈大,在表头的位置越靠前
-     * @type {number}
-     */
-
-    this.weight = 1;
     this.colspan = 1;
     this.rowspan = 1;
     this.slot = null;
@@ -30,16 +28,19 @@ class Cell {
     this.sortable = false;
     this.fixed = false;
     this.slotable = false;
+    this.cellStyle = null;
 
-    this.formator = (row, key) => row[key];
+    this.formatter = (row, key) => row[key];
 
-    for (var key in options) {
-      this.set(this, key, options[key]);
+    for (var _key in options) {
+      this.set(this, _key, options[_key]);
     }
   }
 
   set(context, key, value) {
-    context[key] = value;
+    if (['text', 'field', 'width', 'weight', 'align', 'style', 'class', 'colspan', 'rowspan', 'slot', 'editable', 'sortable', 'fixed', 'slotable', 'cellStyle', 'formatter'].includes(key)) {
+      context[key] = value;
+    }
   }
 
   isSole() {
@@ -47,7 +48,7 @@ class Cell {
   }
 
   isOverlap() {
-    return this.rowspan > Math.max(this.weight, 1);
+    return this.rowspan > Math.max(this.weight, 0);
   }
 
 }

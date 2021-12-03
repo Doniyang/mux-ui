@@ -5,14 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _default2 = {
-  name: "v-editor",
+  name: 'v-editor',
   props: {
     position: {
       type: String,
-      default: "center",
+      default: 'center',
 
       validator(v) {
-        return ["left", "center", "right"].indexOf(v) > -1;
+        return ['left', 'center', 'right'].indexOf(v) > -1;
       }
 
     },
@@ -27,18 +27,18 @@ var _default2 = {
 
   data() {
     return {
-      editVal: ""
+      edit: ''
     };
   },
 
   beforeMount() {
-    this.editVal = this.value[this.fieldKey];
+    this.edit = this.value[this.fieldKey];
   },
 
   watch: {
     value: {
       handler(val) {
-        this.editVal = val[this.fieldKey];
+        this.edit = val[this.fieldKey];
       },
 
       deep: true,
@@ -48,38 +48,38 @@ var _default2 = {
   methods: {
     handleInput(e) {
       var target = e.currentTarget || e.target || e.srcElement;
-      this.editVal = target.value;
+      this.edit = target.value;
     },
 
     handleClick(e, isCommit) {
       e.stopPropagation();
 
       if (isCommit) {
-        this.$emit("commit", {
+        this.$emit('commit', {
           data: this.value,
           key: this.fieldKey,
-          value: this.editVal
+          value: this.edit
         });
       }
 
-      this.$emit("close", {
+      this.$emit('close', {
         target: this.$el,
-        value: this.editVal,
+        value: this.edit,
         commit: isCommit
       });
     },
 
     genEditorContext() {
-      return this.$createElement("div", {
-        staticClass: "h-box vc"
-      }, [this.genInputContext(), this.genBtnContext(true, "primary", "mdi-check"), this.genBtnContext(false, "error", "mdi-close")]);
+      return this.$createElement('div', {
+        staticClass: 'h-box item-align-center'
+      }, [this.genInputContext(), this.genBtnContext(true, 'primary', 'check'), this.genBtnContext(false, 'error', 'close')]);
     },
 
     genInputContext() {
-      return this.$createElement("input", {
-        staticClass: "mux-editor-field",
+      return this.$createElement('input', {
+        staticClass: 'editor-field',
         domProps: {
-          value: this.editVal
+          value: this.edit
         },
         on: {
           input: e => {
@@ -93,14 +93,14 @@ var _default2 = {
     },
 
     genBtnContext(env, color, icon) {
-      return this.$createElement("v-btn", {
+      return this.$createElement('a-button', {
         class: {
           'mx-2': env
         },
         props: {
-          icon: true,
-          small: true,
-          color: color
+          ghost: true,
+          size: 'small',
+          type: color
         },
         on: {
           click: e => {
@@ -111,17 +111,19 @@ var _default2 = {
     },
 
     genIconContext(icon) {
-      return this.$createElement("v-icon", {}, icon);
+      return this.$createElement('a-icon', {
+        type: icon
+      }, null);
     }
 
   },
 
   render(h) {
-    return h("div", {
-      staticClass: "component mux-editor",
-      class: [this.position],
+    return h('div', {
+      staticClass: 'component mux-editor',
+      class: ['mux-editor--is-' + this.position],
       domProps: {
-        ariaLabel: this.editVal
+        ariaLabel: this.edit
       }
     }, [this.genEditorContext()]);
   }

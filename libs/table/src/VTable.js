@@ -17,7 +17,9 @@ var _VScrollPanel = _interopRequireDefault(require("./VScrollPanel"));
 
 var _Scrollbar = _interopRequireDefault(require("./model/Scrollbar"));
 
-var _Roll = _interopRequireDefault(require("./utils/Roll"));
+var _Roll = _interopRequireDefault(require("./directive/Roll"));
+
+var _Store = _interopRequireDefault(require("./model/Store"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,37 +33,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *   body @params {columns,loading,loadingText,dataItems,noDataText}
  *   loading @params {loadingText}
  *   noData @params {noDataText}
- *   colgroup或columns中slotable为true的slot项,参数item
+ *   columns中slotable为true的slot项,参数item
  */
 var _default2 = {
-  name: "VTable",
+  name: 'VTable',
   props: {
-    /**
-     *@description 复杂表头设置
-     * @type Array<Cell>,其中text必须配置,colspan和rowspan其中一个必须配置
-     * @example [{
-     *             width:可以是数字、百分比、css值,
-     *             text:表头文字，String类型,
-     *             field？:单元格的映射值,String类型,
-     *             align: 单元格对齐方式,可以为："left","center","right"。默认值是:'center',
-     *             style:css样式,可有可无,
-     *             class:css类名，可以是Array<String>和String
-     *             colspan:数字，表示跨n列，默认是1,
-     *             rowspan:数字表示跨n行，默认是1,
-     *             slot:String,插槽名，
-     *             weight:数字,权重,用于创建三级及以上的表头，默认为1
-     *             editable:Boolean,是否可编辑,默认false,
-     *             sortable:Boolean, 是否可排序，默认false,
-     *             fixed:Boolean,是否固定,默认false,
-     *             slotable:Boolean,是否是插槽，默认false,
-     *             formator:Function 返回string 参数 item,field;默认function(row,field){return row[field]}
-     *           }]
-     */
-    colgroup: {
-      type: Array,
-      default: () => []
-    },
-
     /**
      * @description 表头配置
      * @type Array<Cell>,其中text、field必须配
@@ -89,10 +65,10 @@ var _default2 = {
      */
     skin: {
       type: String,
-      default: "default",
+      default: 'default',
 
       validator(v) {
-        return ["default", "row", "line", "none"].indexOf(v) > -1;
+        return ['default', 'row', 'line', 'none'].indexOf(v) > -1;
       }
 
     },
@@ -102,10 +78,10 @@ var _default2 = {
      */
     size: {
       type: String,
-      default: "normal",
+      default: 'normal',
 
       validator(v) {
-        return ["small", "normal", "large"].indexOf(v) > -1;
+        return ['small', 'normal', 'large'].indexOf(v) > -1;
       }
 
     },
@@ -123,7 +99,7 @@ var _default2 = {
      */
     caption: {
       type: String,
-      default: ""
+      default: ''
     },
 
     /**
@@ -171,7 +147,7 @@ var _default2 = {
      */
     loadingText: {
       type: String,
-      default: "数据在努力加载中..."
+      default: '数据在努力加载中...'
     },
 
     /**
@@ -188,7 +164,7 @@ var _default2 = {
      */
     noDataText: {
       type: String,
-      default: "暂无数据"
+      default: '暂无数据'
     },
 
     /**
@@ -214,6 +190,10 @@ var _default2 = {
       type: Boolean,
       default: false
     },
+    hoverable: {
+      type: Boolean,
+      default: false
+    },
 
     /**
      * @description checkbox的宽
@@ -236,7 +216,7 @@ var _default2 = {
      */
     selectKey: {
       type: String,
-      default: "id"
+      default: 'id'
     },
 
     /**
@@ -249,6 +229,10 @@ var _default2 = {
     fillWidth: {
       type: Boolean,
       default: false
+    },
+    rowStyle: {
+      type: [Object, Function],
+      default: () => ({})
     }
   },
 
@@ -271,7 +255,9 @@ var _default2 = {
       wrapHeight: 0,
       captionHeight: 0,
       headerHeight: 0,
-      pagiantionHeight: 0
+      pagiantionHeight: 0,
+      rowActiveIndex: -1,
+      rowSelectIndex: -1
     };
   },
 
@@ -280,7 +266,7 @@ var _default2 = {
       this.dataItems.sort(function (a, b) {
         var va = a[key];
         var vb = b[key];
-        var dir = direction === "asc" ? 1 : -1;
+        var dir = direction === 'asc' ? 1 : -1;
 
         if (!isNaN(va) && !isNaN(vb)) {
           return (va - vb) * dir;
@@ -292,34 +278,26 @@ var _default2 = {
 
     handleSelectAll(isSelected) {
       var value = isSelected ? this.dataItems.map(item => item[this.selectKey]) : [];
-      this.$emit("input", value);
+      this.$emit('input', value);
     },
 
     setClientHeight(osnap, height) {
       switch (osnap) {
         case 0:
-          {
-            this.wrapHeight = height;
-            break;
-          }
+          this.wrapHeight = height;
+          break;
 
         case 1:
-          {
-            this.captionHeight = height;
-            break;
-          }
+          this.captionHeight = height;
+          break;
 
         case 2:
-          {
-            this.headerHeight = height;
-            break;
-          }
+          this.headerHeight = height;
+          break;
 
         case 3:
-          {
-            this.pagiantionHeight = height;
-            break;
-          }
+          this.pagiantionHeight = height;
+          break;
 
         default:
           break;
@@ -343,7 +321,7 @@ var _default2 = {
           osnap: 3,
           full: false
         },
-        staticClass: "mux-table-pagination"
+        staticClass: 'mux-table-pagination'
       }, this.$scopedSlots.pagination()) : null;
     },
 
@@ -353,52 +331,46 @@ var _default2 = {
           osnap: 1,
           full: false
         },
-        staticClass: "mux-table-caption"
+        staticClass: 'mux-table-caption'
       }, this.$scopedSlots.caption ? this.$scopedSlots.caption() : this.caption);
     },
 
     genMainContext() {
-      var colgroup = _Table.default.makeCell(this.colgroup, this.cellMinWidth);
-
-      var columns = _Table.default.makeCell(this.columns, this.cellMinWidth);
-
-      return this.$createElement("main", {
-        staticClass: "mux-table-wrap",
+      var store = new _Store.default(this.columns, this.cellMinWidth);
+      return this.$createElement('main', {
+        staticClass: 'mux-table-wrap',
         class: {
-          "mux-table--is-stripe": this.stripe,
-          "mux-table-header--is-fixed": this.fixedHeader,
-          "mux-table-is-xscroll": this.hScroll
+          'mux-table-header--is-fixed': this.fixedHeader,
+          'mux-table-is-xscroll': this.hScroll,
+          'mux-table--is-stripe': this.stripe
         },
         on: {
           scroll: e => {
             this.handleScroll(e);
           }
         }
-      }, [this.genHeaderContext(colgroup, columns), this.genBodyContext(colgroup, columns), !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, false) || _Table.default.isFixed(columns, false)) ? this.genFixedTableContext(colgroup, columns, false) : null, !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && (_Table.default.isFixed(colgroup, true) || _Table.default.isFixed(columns, true)) ? this.genFixedTableContext(colgroup, columns, true) : null]);
+      }, [this.genHeaderContext(store.colgroup(), store.columns()), this.genBodyContext(store.columns()), !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && store.isFrozen(false) ? this.genFixedTableContext(store.frozenColgroup(), store.frozenColumns(), false) : null, !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && store.isFrozen(true) ? [this.genFixedTableContext(store.frozenColgroup(), store.frozenColumns(), true), this.scrollbar.hasVScrollBar() ? this.genScrollBarMask() : null] : null].flat());
     },
 
     genHeaderContext(colgroup, columns) {
       var scopeSlots = {};
-      var hasBorderLine = ["default", "row"].indexOf(this.skin) > -1;
-      this.genSlotContext("header", "default", (key, vnode) => {
+      this.genSlotContext('header', 'default', (key, vnode) => {
         scopeSlots[key] = vnode;
       });
       return this.$createElement(_VPanel.default, {
-        staticClass: "mux-table-header",
+        staticClass: 'mux-table-header',
         props: {
           osnap: 2,
           full: false,
-          tag: "header",
-          hasXYBar: this.scrollbar.isFreeScroll(),
-          barWidth: this.scrollbar.getWidth() - (hasBorderLine ? 1 : 0)
+          tag: 'header'
         },
         attrs: {
-          role: "header"
+          role: 'header'
         },
         directives: [{
-          name: "roll",
+          name: 'roll',
           value: this.scrollbar.getLeft(),
-          arg: "horizontal",
+          arg: 'horizontal',
           modifiers: {
             enable: this.fixedHeader
           }
@@ -416,33 +388,26 @@ var _default2 = {
         checkboxClass: this.checkboxClass,
         value: _Table.default.checkAllState(this.value, this.dataItems, this.selectKey),
         indeterminate: _Table.default.checkSomeState(this.value, this.dataItems, this.selectKey),
-        sealed: !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && _Table.default.sealed(colgroup, columns)
+        sealed: !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && _Table.default.sealed(columns)
       }, scopeSlots)]);
     },
 
-    genBodyContext(colgroup, columns) {
+    genBodyContext(columns) {
       var scopedOpts = {};
       var slots = [{
-        scoped: "process",
-        slot: "loading"
+        scoped: 'process',
+        slot: 'loading'
       }, {
-        scoped: "default",
-        slot: "body"
+        scoped: 'default',
+        slot: 'body'
       }, {
-        scoped: "empty",
-        slot: "noData"
+        scoped: 'empty',
+        slot: 'noData'
       }];
       slots.forEach(item => {
         this.genSlotContext(item.slot, item.scoped, (scoped, vnode) => {
           scopedOpts[scoped] = vnode;
         });
-      });
-      colgroup.forEach(item => {
-        if (item.slotable) {
-          this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
-            scopedOpts[scoped] = vnode;
-          });
-        }
       });
       columns.forEach(item => {
         if (item.slotable) {
@@ -452,9 +417,9 @@ var _default2 = {
         }
       });
       return this.$createElement(_VScrollPanel.default, {
-        staticClass: "mux-table-body",
+        staticClass: 'mux-table-body',
         props: {
-          height: this.autocomplete ? "auto" : this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
+          height: this.autocomplete ? 'auto' : this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
         },
         nativeOn: {
           scroll: e => {
@@ -462,24 +427,25 @@ var _default2 = {
           }
         },
         attrs: {
-          role: "body"
+          role: 'body'
         }
       }, [this.genTBodyContext({
         skin: this.skin,
         size: this.size,
         fillWidth: this.fillWidth,
-        colgroup: colgroup,
         columns: columns,
         dataItems: this.dataItems,
         loading: this.loading,
         loadingText: this.loadingText,
         noDataText: this.noDataText,
-        activeIndex: this.activeIndex,
+        rowStyle: this.rowStyle,
+        activeIndex: _Table.default.parse(this.activeIndex, this.rowActiveIndex),
+        selectIndex: this.rowSelectIndex,
         selectable: this.selectable,
         checkboxSize: this.checkboxSize,
         selectKey: this.selectKey,
         value: this.value,
-        sealed: !_Table.default.has(this.$scopedSlots, ["header", "body"]) && !!this.dataItems.length && _Table.default.sealed(colgroup, columns)
+        sealed: !_Table.default.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && _Table.default.sealed(columns)
       }, scopedOpts)]);
     },
 
@@ -488,7 +454,7 @@ var _default2 = {
         props: props,
         scopedSlots: slots,
         on: {
-          "sort:update": data => {
+          'sort:update': data => {
             this.handleSort(data.sortKey, data.sortDirection);
           },
           change: isSelected => {
@@ -503,44 +469,56 @@ var _default2 = {
         props: props,
         scopedSlots: slots,
         on: {
-          "click:cell": item => {
-            this.$emit("click:cell", item);
+          'click:cell': item => {
+            this.$emit('click:cell', item);
           },
-          "cell:input": data => {
-            this.$emit("cell:input", data);
+          'cell:input': data => {
+            this.$emit('input:cell', data);
+          },
+          'row:click': index => {
+            this.rowSelectIndex = index;
+            this.$emit('click:row', this.dataItems[index]);
+          },
+          'row:hover': index => {
+            if (this.hoverable) {
+              this.rowActiveIndex = index;
+              this.$emit('update:activeIndex', index);
+            }
+          },
+          'row:leave': () => {
+            this.rowActiveIndex = -1;
+            this.$emit('update:activeIndex', -1);
           },
           change: val => {
-            this.$emit("input", val);
+            this.$emit('input', val);
           }
         }
       });
     },
 
     genFixedTableContext(colgroup, columns, rtl) {
-      var fixedColgroup = _Table.default.makeFrozenCols(colgroup, rtl);
-
-      var fixedColumns = _Table.default.makeFrozenCols(columns, rtl);
-
-      var hasBorderLine = ["default", "row"].indexOf(this.skin) > -1;
-      var width = [...fixedColgroup, ...fixedColumns].reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0);
-      return this.$createElement("div", {
-        staticClass: "mux-table-container",
+      var width = colgroup.flat().reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0);
+      return this.$createElement('div', {
+        staticClass: 'mux-table-container',
         class: {
-          "mux-table-container--has-scrollbar": rtl && this.scrollbar.hasVScrollBar()
+          'mux-table-container--has-scrollbar': rtl && this.scrollbar.hasVScrollBar()
         },
         style: {
-          left: rtl ? undefined : 0,
-          right: rtl ? this.scrollbar.getWidth() - (this.scrollbar.isFreeScroll() && hasBorderLine ? 1 : 0) + "px" : undefined,
-          width: width + (this.scrollbar.isFreeScroll() && hasBorderLine ? 1 : 0) + "px",
-          bottom: this.scrollbar.getHeight() + "px"
+          left: _Table.default.pixel(rtl ? undefined : 0),
+          right: _Table.default.pixel(rtl ? this.scrollbar.getWidth() : undefined),
+          width: _Table.default.pixel(width + 1),
+          bottom: _Table.default.pixel(this.scrollbar.getHeight())
         }
-      }, [this.genFixedTheadContext(fixedColgroup, fixedColumns), this.genFixedTBodyContext(fixedColgroup, fixedColumns)]);
+      }, [this.genFixedTheadContext(colgroup, columns), this.genFixedTBodyContext(columns)]);
     },
 
     genFixedTheadContext(colgroup, columns) {
-      return this.$createElement("div", {
-        staticClass: "mux-table-header--wrap"
+      return this.$createElement('div', {
+        staticClass: 'mux-table-header--wrap'
       }, [this.genTHeadContext({
+        skin: this.skin,
+        size: this.size,
+        fillWidth: this.fillWidth,
         colgroup: colgroup,
         columns: columns,
         gutter: false,
@@ -553,41 +531,50 @@ var _default2 = {
       }, null)]);
     },
 
-    genFixedTBodyContext(colgroup, columns) {
+    genScrollBarMask() {
+      return this.$createElement('div', {
+        staticClass: 'mux-table-scrollbar',
+        staticStyle: {
+          width: _Table.default.pixel(this.scrollbar.getWidth()),
+          height: _Table.default.pixel(this.headerHeight)
+        },
+        attrs: {
+          role: 'scrollbar'
+        }
+      });
+    },
+
+    genFixedTBodyContext(columns) {
       var scopedOpts = {};
-      colgroup.forEach(item => {
+      columns.flat().forEach(item => {
         if (item.slotable) {
           this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
             scopedOpts[scoped] = vnode;
           });
         }
       });
-      columns.forEach(item => {
-        if (item.slotable) {
-          this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
-            scopedOpts[scoped] = vnode;
-          });
-        }
-      });
-      return this.$createElement("div", {
-        staticClass: "mux-table-body--wrap",
+      return this.$createElement('div', {
+        staticClass: 'mux-table-body--wrap',
         style: {
-          height: this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight() + "px"
+          height: _Table.default.pixel(this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight())
         },
         directives: [{
-          name: "roll",
+          name: 'roll',
           value: this.scrollbar.getTop(),
-          arg: "vertical",
+          arg: 'vertical',
           modifiers: {
             enable: true
           }
         }]
       }, [this.genTBodyContext({
         skin: this.skin,
-        colgroup: colgroup,
+        size: this.size,
+        fillWidth: this.fillWidth,
         columns: columns,
         dataItems: this.dataItems,
-        activeIndex: this.activeIndex,
+        rowStyle: this.rowStyle,
+        activeIndex: _Table.default.parse(this.activeIndex, this.rowActiveIndex),
+        selectIndex: this.rowSelectIndex,
         sealed: true,
         selectable: this.selectable,
         checkboxSize: this.checkboxSize,
@@ -606,9 +593,9 @@ var _default2 = {
 
   render(h) {
     return h(_VPanel.default, {
-      staticClass: "component mux-table",
+      staticClass: 'component mux-table',
       style: {
-        height: this.autocomplete || this.full ? undefined : isNaN(this.height) ? this.height : this.height + "px"
+        height: _Table.default.pixel(this.autocomplete || this.full ? undefined : this.height)
       },
       props: {
         full: this.full,

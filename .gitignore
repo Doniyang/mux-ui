@@ -1,5 +1,9 @@
 .DS_Store
+#目录
 node_modules/
+dist/
+libs/
+#日志文件
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

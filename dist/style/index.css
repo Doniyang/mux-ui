@@ -1439,6 +1439,13 @@
 .component.mux-table .mux-table--is-loading {
   padding: 0 0;
 }
+.component.mux-table .mux-table-scrollbar-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+}
 .component.mux-table .mux-table-cell {
   width: 100%;
   min-height: 29px;

@@ -12,7 +12,7 @@ var _checkbox = _interopRequireDefault(require("../../checkbox"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default2 = {
-  name: "VThead",
+  name: 'VThead',
   props: {
     skin: {
       type: String
@@ -74,9 +74,9 @@ var _default2 = {
       }
 
       var target = e.currentTarget || e.target || e.srcElement;
-      var description = target.ariaSort === "desc" ? "asc" : "desc";
+      var description = target.ariaSort === 'desc' ? 'asc' : 'desc';
       target.ariaSort = description;
-      this.$emit("sort:update", {
+      this.$emit('sort:update', {
         sortKey: data.field,
         sortDirection: description
       });
@@ -84,14 +84,13 @@ var _default2 = {
 
     handleChange(e) {
       var target = e.target || e.srcElement;
-      this.$emit("change", target.checked);
+      this.$emit('change', target.checked);
     },
 
     genColgroupContext() {
       return this.$createElement(_VColgroup.default, {
         props: {
           columns: this.columns,
-          colgroup: this.colgroup,
           gutter: this.gutter,
           selectable: this.selectable,
           checkboxSize: this.checkboxSize,
@@ -101,24 +100,19 @@ var _default2 = {
     },
 
     genTHeadContext() {
-      return this.$createElement("thead", {}, this.genHeaderChildrenContext());
+      return this.$createElement('thead', {}, this.genHeaderChildrenContext());
     },
 
     genHeaderChildrenContext() {
-      return this.$scopedSlots.default ? [this.genSlotContext("default", {
+      return this.$scopedSlots.default ? this.genSlotContext('default', {
         colgroup: this.colgroup,
         columns: this.columns
-      })] : this.genItemsContext();
+      }) : this.genItemsContext();
     },
 
     genItemsContext() {
-      var groupList = [this.columns];
-      var sortList = new Set(this.colgroup.map(it => it.weight).sort((a, b) => a - b));
-      sortList.forEach(weight => {
-        groupList.unshift(this.colgroup.filter(d => d.weight === weight));
-      });
-      return groupList.reduce((current, next, idx) => {
-        if (next.length > 0) {
+      return this.colgroup.reduce((current, next, idx) => {
+        if (next.length) {
           current.push(this.genRowContext(next, idx === 0, this.genColContext));
         }
 
@@ -133,17 +127,20 @@ var _default2 = {
         children.push(this.genColCheckboxContext());
       }
 
-      return this.$createElement("tr", {}, cols.reduce((accum, current, dx) => {
+      return this.$createElement('tr', cols.reduce((accum, current, dx) => {
         accum.push(callback.apply(this, [current, dx]));
         return accum;
       }, children));
     },
 
     genColContext(item, key) {
-      return this.$createElement("th", {
-        staticClass: "mux-text-" + (item.align || "center"),
+      return this.$createElement('th', {
+        staticClass: 'mux-text-align-' + (item.align || 'center'),
         style: item.style,
         class: item.class,
+        domProps: {
+          ariaColIndex: key
+        },
         attrs: {
           colspan: item.colspan,
           rowspan: item.rowspan
@@ -153,13 +150,13 @@ var _default2 = {
     },
 
     genCellContext(item) {
-      return this.$createElement("div", {
-        staticClass: "mux-table-cell",
+      return this.$createElement('div', {
+        staticClass: 'mux-table-cell',
         class: {
-          "mux-table-cell-ellipsis": this.sealed
+          'mux-table-cell-ellipsis': this.sealed
         },
         domProps: {
-          ariaSort: "none"
+          ariaSort: 'none'
         },
         on: {
           click: e => {
@@ -170,23 +167,21 @@ var _default2 = {
     },
 
     genColCheckboxContext() {
-      var sortList = new Set(this.colgroup.map(it => it.weight));
-      var rowspan = sortList.size + (this.columns.length ? 1 : 0);
-      return this.$createElement("th", {
-        staticClass: "mux-text-center",
+      return this.$createElement('th', {
+        staticClass: 'mux-text-align-center',
         class: this.checkboxClass,
         attrs: {
-          rowspan: rowspan
+          rowspan: Math.max(this.colgroup.length, 1)
         },
-        key: "TH_CHECKBOX"
+        key: 'TH_CHECKBOX'
       }, [this.genCheckboxWrapContext()]);
     },
 
     genCheckboxWrapContext() {
-      return this.$createElement("div", {
-        staticClass: "mux-table-cell mux-table-cell--is-checkbox",
+      return this.$createElement('div', {
+        staticClass: 'mux-table-cell mux-table-cell--is-checkbox',
         domProps: {
-          role: "checkbox"
+          role: 'checkbox'
         }
       }, [this.genCheckboxContext()]);
     },
@@ -206,25 +201,28 @@ var _default2 = {
     },
 
     genTextContext(text, sortable) {
-      return this.$createElement("span", {
+      return this.$createElement('span', {
+        domProps: {
+          title: text
+        },
         class: {
-          "mux-table-cell-cursor": sortable
+          'mux-table-cell-cursor': sortable
         }
       }, text);
     },
 
     genSortContext() {
-      return this.$createElement("span", {
-        staticClass: "mux-table-sort mux-table-cell-cursor"
+      return this.$createElement('span', {
+        staticClass: 'table-sort table-cell-cursor'
       }, [this.genIconContext(false), this.genIconContext(true)]);
     },
 
     genIconContext(isDesc) {
-      return this.$createElement("i", {
-        staticClass: "mux-table-icon",
+      return this.$createElement('i', {
+        staticClass: 'mux-table-icon',
         class: {
-          "mux-table-icon-asc": !isDesc,
-          "mux-table-icon-desc": isDesc
+          'mux-table-icon-asc': !isDesc,
+          'mux-table-icon-desc': isDesc
         }
       });
     },
@@ -236,8 +234,8 @@ var _default2 = {
   },
 
   render(h) {
-    return h("table", {
-      staticClass: "mux-table-meta",
+    return h('table', {
+      staticClass: 'mux-table-meta',
       attrs: {
         skin: this.skin,
         size: this.size,
@@ -246,7 +244,7 @@ var _default2 = {
         border: 0
       },
       class: {
-        "mux-table--is-fix": this.sealed,
+        'mux-table--is-fix': this.sealed,
         'mux-table--is-fill-width': this.fillWidth
       }
     }, [this.genColgroupContext(), this.genTHeadContext()]);

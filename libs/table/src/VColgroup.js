@@ -16,10 +16,6 @@ var _default2 = {
       type: Array,
       default: () => []
     },
-    colgroup: {
-      type: Array,
-      default: () => []
-    },
     gutter: {
       type: Boolean,
       default: false
@@ -37,34 +33,40 @@ var _default2 = {
       defalut: 0
     }
   },
-  name: "VColgroup",
+  name: 'VColgroup',
 
   render(h, context) {
     var {
       props
     } = context;
-
-    var columns = _Table.default.make(props.colgroup, props.columns);
-
-    return h("colgroup", {}, [props.selectable ? h("col", {
+    return h('colgroup', {}, [props.selectable ? h('col', {
+      staticStyle: {
+        width: _Table.default.pixel(props.checkboxSize)
+      },
       attrs: {
-        name: "col-checkbox",
-        align: "center",
+        name: 'col-checkbox',
+        align: 'center',
         width: props.checkboxSize
       }
-    }) : null, ...columns.map((d, dx) => h("col", {
+    }) : null, props.columns.map((d, dx) => h('col', {
+      staticStyle: {
+        width: _Table.default.pixel(d.width)
+      },
       attrs: {
-        name: "c-col-" + dx,
+        name: 'c-col-' + dx,
         align: d.align,
         width: d.width
       }
-    })), props.gutter ? h("col", {
+    })), props.gutter ? h('col', {
+      staticStyle: {
+        width: _Table.default.pixel(props.barWidth)
+      },
       attrs: {
-        name: "col-gutter",
-        align: "center",
+        name: 'col-gutter',
+        align: 'center',
         width: props.barWidth
       }
-    }) : null]);
+    }) : null].flat());
   }
 
 };
