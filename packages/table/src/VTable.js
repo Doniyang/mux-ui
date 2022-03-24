@@ -5,7 +5,7 @@ import VPanel from './VPanel'
 import VScrollPanel from './VScrollPanel'
 import Scrollbar from './model/Scrollbar'
 import roll from './directive/Roll'
-import TableStore from './model/Store'
+import Store from './model/Store'
 /**
  * @name VTable
  * @description 表格组件，实现静态表格，复杂表头、固定表头，横向滚动及固定前(连续)几列及后(连续)几列的表格
@@ -47,7 +47,7 @@ export default {
         skin: {
             type: String,
             default: 'default',
-            validator(v) {
+            validator (v) {
                 return ['default', 'row', 'line', 'none'].indexOf(v) > -1
             }
         },
@@ -57,7 +57,7 @@ export default {
         size: {
             type: String,
             default: 'normal',
-            validator(v) {
+            validator (v) {
                 return ['small', 'normal', 'large'].indexOf(v) > -1
             }
         },
@@ -140,6 +140,13 @@ export default {
             default: 0
         },
         /**
+         * @description 表格高度,当full或者autocomplete为true时可以不指定，否则必须指定
+         */
+        maxHeight: {
+            type: [Number, String],
+            default: null
+        },
+        /**
          * @description 此项是为农电云-态势分析表格而加，不常用
          */
         activeIndex: {
@@ -153,6 +160,9 @@ export default {
             type: Boolean,
             default: false
         },
+        /**
+         * @description 是否高亮
+         */
         hoverable: {
             type: Boolean,
             default: false
@@ -194,9 +204,10 @@ export default {
             default: () => ({})
         }
     },
-    provide() {
+    provide () {
         return {
-            smartTable: this
+            updateScrollbarSize: this.setScrollbarSize,
+            updateClientHeight: this.setClientHeight
         }
     },
     directives: {
@@ -205,71 +216,82 @@ export default {
             update: roll
         }
     },
-    data() {
+    data () {
         return {
+            store: new Store(),
             scrollbar: new Scrollbar(),
             wrapHeight: 0,
             captionHeight: 0,
             headerHeight: 0,
             pagiantionHeight: 0,
-            rowActiveIndex: -1,
             rowSelectIndex: -1
         }
     },
+    beforeMount () {
+        this.store.update(this.columns, this.cellMinWidth)
+    },
+    watch: {
+        columns: {
+            handler (cols) { this.store.update(cols, this.cellMinWidth) },
+            deep: true
+        },
+        cellMinWidth (nv, ov) {
+            if (Table.isNotEqual(nv, ov)) { this.store.update(this.columns, nv) }
+        }
+    },
     methods: {
-        handleSort(key, direction) {
-            this.dataItems.sort(function(a, b) {
+        handleSort (key, direction) {
+            this.dataItems.sort(function (a, b) {
                 const va = a[key]
                 const vb = b[key]
                 const dir = direction === 'asc' ? 1 : -1
-                if (!isNaN(va) && !isNaN(vb)) {
-                    return (va - vb) * dir
-                }
+                if (!isNaN(va) && !isNaN(vb)) { return (va - vb) * dir }
                 return String(va).localeCompare(String(vb)) * dir
             })
         },
-        handleSelectAll(isSelected) {
+        handleSelectAll (isSelected) {
             const value = isSelected ? this.dataItems.map(item => item[this.selectKey]) : []
             this.$emit('input', value)
         },
-        setClientHeight(osnap, height) {
+        setClientHeight (osnap, height) {
             switch (osnap) {
-                case 0:
-                    this.wrapHeight = height
-                    break
-                case 1:
-                    this.captionHeight = height
-                    break
-                case 2:
-                    this.headerHeight = height
-                    break
-                case 3:
-                    this.pagiantionHeight = height
-                    break
-                default:
-                    break
+            case 0:
+                this.wrapHeight = height
+                break
+            case 1:
+                this.captionHeight = height
+                break
+            case 2:
+                this.headerHeight = height
+                break
+            case 3:
+                this.pagiantionHeight = height
+                break
+            default:
+                break
             }
         },
-        setScrollbar(height, width) {
+        setScrollbarSize (height, width) {
             this.scrollbar.setHeight(height)
             this.scrollbar.setWidth(width)
         },
-        handleScroll(e) {
+        handleScroll (e) {
             const target = e.target || e.srcElement
             this.scrollbar.setTop(target.scrollTop)
             this.scrollbar.setLeft(target.scrollLeft)
         },
-        genPagiantionContext() {
-            return this.$scopedSlots.pagination ?
-                this.$createElement(VPanel, {
+        genPagiantionContext () {
+            return this.$scopedSlots.pagination
+                ? this.$createElement(VPanel, {
                     props: {
                         osnap: 3,
                         full: false
                     },
                     staticClass: 'mux-table-pagination'
-                }, this.$scopedSlots.pagination()) : null
+                }, this.$scopedSlots.pagination())
+                : null
         },
-        genCaptionContext() {
+        genCaptionContext () {
             return this.$createElement(VPanel, {
                 props: {
                     osnap: 1,
@@ -278,36 +300,24 @@ export default {
                 staticClass: 'mux-table-caption'
             }, this.$scopedSlots.caption ? this.$scopedSlots.caption() : this.caption)
         },
-        genMainContext() {
-            const store = new TableStore(this.columns, this.cellMinWidth)
+        hasFixedTable (rtl) {
+            return !Table.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && this.store.isFrozen(rtl)
+        },
+        genMainContext () {
             return this.$createElement('main', {
                 staticClass: 'mux-table-wrap',
-                class: {
-                    'mux-table-header--is-fixed': this.fixedHeader,
-                        'mux-table-is-xscroll': this.hScroll,
-                        'mux-table--is-stripe': this.stripe
-                },
+                class: { 'mux-table-header--is-fixed': this.fixedHeader, 'mux-table-is-xscroll': this.hScroll, 'mux-table--is-stripe': this.stripe },
                 on: {
-                    scroll: e => {
-                        this.handleScroll(e)
-                    }
+                    scroll: e => { this.handleScroll(e) }
                 }
             }, [
-                this.genHeaderContext(store.colgroup(), store.columns()),
-                this.genBodyContext(store.columns()), !Table.has(this.$scopedSlots, ['header', 'body']) &&
-                !!this.dataItems.length &&
-                store.isFrozen(false) ?
-                this.genFixedTableContext(store.frozenColgroup(), store.frozenColumns(), false) :
-                null, !Table.has(this.$scopedSlots, ['header', 'body']) &&
-                !!this.dataItems.length &&
-                store.isFrozen(true) ? [
-                    this.genFixedTableContext(store.frozenColgroup(), store.frozenColumns(), true),
-                    this.scrollbar.hasVScrollBar() ? this.genScrollBarMask() : null
-                ] :
-                null
+                this.genHeaderContext(this.store.colgroup(), this.store.columns()),
+                this.genBodyContext(this.store.columns()),
+                this.hasFixedTable(false) ? this.genFixedTableContext(this.store.frozenColgroup(), this.store.frozenColumns(), false) : null,
+                this.hasFixedTable(true) ? [this.genFixedTableContext(this.store.frozenColgroup(), this.store.frozenColumns(), true), this.scrollbar.hasVScrollBar() ? this.genScrollBarMask() : null] : null
             ].flat())
         },
-        genHeaderContext(colgroup, columns) {
+        genHeaderContext (colgroup, columns) {
             const scopeSlots = {}
             this.genSlotContext('header', 'default', (key, vnode) => {
                 scopeSlots[key] = vnode
@@ -335,6 +345,7 @@ export default {
                     colgroup: colgroup,
                     columns: columns,
                     fillWidth: this.fillWidth,
+                    preline: this.preline,
                     gutter: this.scrollbar.hasVScrollBar(),
                     barWidth: this.scrollbar.getWidth(),
                     selectable: this.selectable,
@@ -342,14 +353,12 @@ export default {
                     checkboxClass: this.checkboxClass,
                     value: Table.checkAllState(this.value, this.dataItems, this.selectKey),
                     indeterminate: Table.checkSomeState(this.value, this.dataItems, this.selectKey),
-                    sealed:
-                        !Table.has(this.$scopedSlots, ['header', 'body']) &&
-                        !!this.dataItems.length &&
-                        Table.sealed(columns)
-                }, scopeSlots)
+                    sealed: !Table.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && Table.sealed(columns)
+                },
+                scopeSlots)
             ])
         },
-        genBodyContext(columns) {
+        genBodyContext (columns) {
             const scopedOpts = {}
             const slots = [
                 { scoped: 'process', slot: 'loading' },
@@ -371,7 +380,8 @@ export default {
             return this.$createElement(VScrollPanel, {
                 staticClass: 'mux-table-body',
                 props: {
-                    height: this.autocomplete ? 'auto' : this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight
+                    height: this.autocomplete ? 'auto' : this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight,
+                    maxHeight: this.maxHeight
                 },
                 nativeOn: {
                     scroll: e => {
@@ -392,20 +402,18 @@ export default {
                     loadingText: this.loadingText,
                     noDataText: this.noDataText,
                     rowStyle: this.rowStyle,
-                    activeIndex: Table.parse(this.activeIndex, this.rowActiveIndex),
-                    selectIndex: this.rowSelectIndex,
+                    hoverable: this.hoverable,
+                    activeIndex: this.activeIndex,
                     selectable: this.selectable,
                     checkboxSize: this.checkboxSize,
                     selectKey: this.selectKey,
                     value: this.value,
-                    sealed:
-                        !Table.has(this.$scopedSlots, ['header', 'body']) &&
-                        !!this.dataItems.length &&
-                        Table.sealed(columns)
-                }, scopedOpts)
+                    sealed: !Table.has(this.$scopedSlots, ['header', 'body']) && !!this.dataItems.length && Table.sealed(columns)
+                },
+                scopedOpts)
             ])
         },
-        genTHeadContext(props, slots) {
+        genTHeadContext (props, slots) {
             return this.$createElement(VThead, {
                 props: props,
                 scopedSlots: slots,
@@ -419,7 +427,7 @@ export default {
                 }
             })
         },
-        genTBodyContext(props, slots) {
+        genTBodyContext (props, slots) {
             return this.$createElement(VTbody, {
                 props: props,
                 scopedSlots: slots,
@@ -434,15 +442,9 @@ export default {
                         this.rowSelectIndex = index
                         this.$emit('click:row', this.dataItems[index])
                     },
-                    'row:hover': index => {
-                        if (this.hoverable) {
-                            this.rowActiveIndex = index
-                            this.$emit('update:activeIndex', index)
-                        }
-                    },
-                    'row:leave': () => {
-                        this.rowActiveIndex = -1
-                        this.$emit('update:activeIndex', -1)
+                    'row:dblclick': index => {
+                        this.rowSelectIndex = index
+                        this.$emit('dblclick:row', this.dataItems[index])
                     },
                     change: val => {
                         this.$emit('input', val)
@@ -450,15 +452,13 @@ export default {
                 }
             })
         },
-        genFixedTableContext(colgroup, columns, rtl) {
+        genFixedTableContext (colgroup, columns, rtl) {
             const width = colgroup
                 .flat()
                 .reduce((curent, next) => curent + (next.isSole() ? next.width : 0), 0)
             return this.$createElement('div', {
                 staticClass: 'mux-table-container',
-                class: {
-                    'mux-table-container--has-scrollbar': rtl && this.scrollbar.hasVScrollBar()
-                },
+                class: { 'mux-table-container--has-scrollbar': rtl && this.scrollbar.hasVScrollBar() },
                 style: {
                     left: Table.pixel(rtl ? undefined : 0),
                     right: Table.pixel(rtl ? this.scrollbar.getWidth() : undefined),
@@ -467,7 +467,7 @@ export default {
                 }
             }, [this.genFixedTheadContext(colgroup, columns), this.genFixedTBodyContext(columns)])
         },
-        genFixedTheadContext(colgroup, columns) {
+        genFixedTheadContext (colgroup, columns) {
             return this.$createElement('div', {
                 staticClass: 'mux-table-header--wrap'
             }, [
@@ -477,6 +477,7 @@ export default {
                     fillWidth: this.fillWidth,
                     colgroup: colgroup,
                     columns: columns,
+                    preline: this.preline,
                     gutter: false,
                     sealed: true,
                     selectable: this.selectable,
@@ -484,10 +485,11 @@ export default {
                     checkboxClass: this.checkboxClass,
                     value: Table.checkAllState(this.value, this.dataItems, this.selectKey),
                     indeterminate: Table.checkSomeState(this.value, this.dataItems, this.selectKey)
-                }, null)
+                },
+                null)
             ])
         },
-        genScrollBarMask() {
+        genScrollBarMask () {
             return this.$createElement('div', {
                 staticClass: 'mux-table-scrollbar',
                 staticStyle: {
@@ -499,23 +501,19 @@ export default {
                 }
             })
         },
-        genFixedTBodyContext(columns) {
+        genFixedTBodyContext (columns) {
             const scopedOpts = {}
             columns.flat().forEach(item => {
                 if (item.slotable) {
-                    this.genSlotContext(item.slot, item.slot, (scoped, vnode) => { scopedOpts[scoped] = vnode })
+                    this.genSlotContext(item.slot, item.slot, (scoped, vnode) => {
+                        scopedOpts[scoped] = vnode
+                    })
                 }
             })
             return this.$createElement('div', {
                 staticClass: 'mux-table-body--wrap',
                 style: {
-                    height: Table.pixel(
-                        this.wrapHeight -
-                        this.pagiantionHeight -
-                        this.captionHeight -
-                        this.headerHeight -
-                        this.scrollbar.getHeight()
-                    )
+                    height: Table.pixel(this.wrapHeight - this.pagiantionHeight - this.captionHeight - this.headerHeight - this.scrollbar.getHeight())
                 },
                 directives: [{
                     name: 'roll',
@@ -527,6 +525,7 @@ export default {
                 this.genTBodyContext({
                     skin: this.skin,
                     size: this.size,
+                    hoverable: this.hoverable,
                     fillWidth: this.fillWidth,
                     columns: columns,
                     dataItems: this.dataItems,
@@ -538,27 +537,26 @@ export default {
                     checkboxSize: this.checkboxSize,
                     selectKey: this.selectKey,
                     value: this.value
-                }, scopedOpts)
+                },
+                scopedOpts)
             ])
         },
-        genSlotContext(slot, key, callback) {
+        genSlotContext (slot, key, callback) {
             if (this.$scopedSlots[slot]) {
                 callback.apply(this, [key, props => this.$scopedSlots[slot].call(this, props)])
             }
         }
     },
-    render(h) {
-        return h(
-            VPanel, {
-                staticClass: 'component mux-table',
-                style: {
-                    height: Table.pixel(this.autocomplete || this.full ? undefined : this.height)
-                },
-                props: {
-                    full: this.full,
-                    osnap: 0
-                }
-            }, [this.genCaptionContext(), this.genMainContext(), this.genPagiantionContext()]
-        )
+    render (h) {
+        return h(VPanel, {
+            staticClass: 'component mux-table',
+            style: {
+                height: Table.pixel(this.autocomplete || this.full ? undefined : this.height)
+            },
+            props: {
+                full: this.full,
+                osnap: 0
+            }
+        }, [this.genCaptionContext(), this.genMainContext(), this.genPagiantionContext()])
     }
 }

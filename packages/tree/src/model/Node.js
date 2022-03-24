@@ -1,88 +1,170 @@
 export default class Node {
-  constructor (nodeId, parentId, title, type, open, plain, checked) {
-    this.nodeId = nodeId
-    this.parentId = parentId
-    this.title = title
-    this.nodeType = type
-    this.isOpen = open || false
-    this.isPlain = plain || false
-    this.isChecked = checked || false
-    this.isParent = true
-    this.isLoading=false
-    this.isChildrenChecked = false
-    this.timeStamp = 0
-    this.updateChildrenCheckedState(checked)
+  constructor() {
+    this.nodeId = null
+    this.parentId = null
+    this.label =  null
+    this.open = false
+    this.checked = false
+    this.status = 0
+    this.actived = false
+    this.plain = false
+    this.hasChildren = false
+    this.raw = null
   }
   /**
-   * 获取节点ID
-   * return String
+   * @description 设置节点ID
+   * @param {String|Number} nId 
    */
-  getNodeId(){
+  setNodeId(nId){
+    this.nodeId = nId
+  }
+  /**
+   * @description 获取节点ID
+   * @returns String|Number
+   */
+  getNodeId() {
     return this.nodeId
   }
   /**
-   * 获取父节点ID
-   * return String
+   * @description 设置结点父节点ID
+   * @param {String|Number} pId 
    */
-  getParentId () {
+  setParentId(pId){
+    this.parentId = pId
+  }
+  /**
+   * @description 获取父节点ID
+   * @returns String|Number
+   */
+  getParentId() {
     return this.parentId
   }
   /**
-    * 设置点击时间以便更新子节点状态
-    * @param {DateTime} time
-    */
-  setTimeStamp (time) {
-    this.timeStamp = time
+   * @description 设置节点名称
+   * @param {String} label 
+   */
+  setNodeName(label){
+    this.label =label
   }
   /**
-   * 设置arrow
-   * @param {Boolean} isParent
-   */
-  setNodeHasChildren (isParent) {
-    this.isParent = isParent
-  }
-  /**
-   * 更新节点是否选中
-   * @param {Boolean} isChecked
-   */
-  updateCheckedState (isChecked) {
-    this.isChecked = isChecked
-    if (isChecked) { this.isPlain = false }
+   * @description 设置原始数据
+   * @param {*} raw 
+   */ 
+  setData(raw){
+    this.raw = raw
   }
   /**
    * 设置节点是否打开
    * @param {Boolean} isOpen
    */
-  updateOpenState (isOpen) {
-    this.isOpen = isOpen
+  updateOpenState(isOpen) {
+    this.open = isOpen
   }
   /**
-   * 设置选中some
-   * @param {Boolean} isPlain
+   * @description 是否打开
+   * @returns Boolean
    */
-  updatePlainState (isPlain) {
-    this.isPlain = isPlain
+  isOpen(){
+    return this.open
+  }
+
+  /**
+   * @description 设置节点状态
+   * @param {Number} status 
+   */
+  updateStatusState(status) {
+    this.status = status
   }
   /**
-   * 设置是否子节点选中
-   * @param {Boolean} isChecked
+   * @description 更新checked状态
+   * @param {Boolean} isChecked 
    */
-  updateChildrenCheckedState (isChecked) {
-    this.isChildrenChecked = isChecked
+  updateCheckedState(isChecked) {
+    this.checked = isChecked
+    if (isChecked) { this.updatePlainState(false) }
   }
   /**
-   * 更新接点加载状态
-   * @param {*} isLoading 
+   * @description 判断是否Checked
+   * @returns Boolean
    */
-  updateLoadingState(isLoading){
-    this.isLoading=isLoading
+  isChecked(){
+    return this.checked
+  }
+
+  /**
+  * 设置选中some
+  * @param {Boolean} isPlain
+  */
+  updatePlainState(isPlain) {
+    this.plain = isPlain
+  }
+  /**
+   * @description 判断是否plain
+   * @returns 
+   */
+  isPlain(){
+    return this.plain 
+  }
+
+  /**
+   * @description 判断节点是否有子节点 懒加载的标志
+   * @param {Boolean} has 
+   */
+  updateChildrenState(has) {
+    this.hasChildren = has
+  }
+
+/**
+ * 
+ * @param {*} isActived 
+ */
+  updateActivedState(isActived) {
+    this.actived = isActived
   }
   
   /**
-   * 判断是否是父节点
+   * 
+   * @returns Boolean
    */
-  hasChildrenNode(){
-    return this.isParent
+  isActived(){
+    return this.actived
   }
-  
+  /**
+   * @description 判断是否是节点
+   * @param {String|Number} nId 
+   * @returns Boolean
+   */
+  is(nId) {
+    return this.nodeId === nId
+  }
+  /**
+   * @description 判断是否是父节点
+   * @param {String|Number} pId 
+   * @returns Boolean
+   */
+  isParent(pId) {
+    return this.parentId === pId
+  }
+  /**
+   * 
+   * @returns Boolean
+   */
+  isUnPick(){
+    return [0,3].includes(this.status)
+  }
+  /**
+   * 
+   * @returns 
+   */  
+  isLoading(){
+    return this.status === 1
+  }
+  /**
+   * 
+   * @returns 
+   */ 
+  isLeaf(){
+    return this.hasChildren ===false
+  }
+
 }

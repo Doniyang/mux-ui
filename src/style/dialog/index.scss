@@ -9,7 +9,7 @@
     border-radius: $dialog-radius;
     background-color: $dialog-bgcolor;
     transform: translate3d(-50%, -50%, 0);
-    -webkit-user-select: none;
+    user-select: none;
     transition: all 0.2s;
     @include subclass("-header"){
       padding: $dialog-header-padding;

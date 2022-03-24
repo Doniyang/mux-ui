@@ -1,13 +1,9 @@
 {
   "name": "@niyang-es/mux-ui",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "A Vue.js project",
   "author": "niyang",
   "private": false,
-
-
-
-
   "scripts": {
     "build:css": "sass src/style/index.scss:dist/style/index.css",
     "dev:css": "sass src/style:dist/style",
@@ -20,7 +16,7 @@
     "sass": "^1.34.1"
   },
   "peerDependencies": {
-    "@niyang-es/notify": "latest"
+    "@niyang-es/toolkit": "latest"
   },
   "engines": {
     "node": ">= 6.0.0",
@@ -31,6 +27,7 @@
     "last 2 versions",
     "not ie <= 8"
   ],
+  "files": ["dist","libs"],
   "style": "dist/style/index.css",
   "main": "libs/index.js",
   "repository": {

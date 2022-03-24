@@ -2,357 +2,356 @@
 @use '../mixin.scss' as *;
 @use 'sass:selector';
 .component {
-  @include prefix($prefix, "-table") {
-    position: relative;
-    overflow: hidden;
-    max-width: 100%;
-    background-color: $table-bgcolor;
-    box-sizing: border-box;
-    
-    @include prefix($prefix,'-table-panel--is-full'){
-      @include size(100%);
-    }
-
-    @include  subclass('-caption'){
-      position: relative;
-    }
-
-    @include subclass('--is-stripe'){
-      & .mux-table-header, & .mux-table-header--wrap {
-        & table thead th {
-          background-color: $table-stripe-color;
-        }
-      }
-  
-     & .mux-table-body, & .mux-table-body--wrap {
-        & table tbody > tr:nth-child(even) {
-          background-color: $table-stripe-color;
-        }
-      }  
-    }
-    
-    @include subclass('-wrap'){
-      position: relative;
-		  overflow-x: hidden;
-		  overflow-y: auto;
-     
-      @include prefix($prefix, "-table-header--is-fixed"){
-           overflow-y: hidden;
-
-           & .mux-table-body{
-            overflow-y: auto;
-          }
-      }
-
-      @include prefix($prefix, "-table-is-xscroll"){
-        overflow-x: auto;
-        @include prefix($prefix, "-table-header--is-fixed"){
-          overflow-x: hidden;
-          
-          & .mux-table-body{
-            overflow-x: auto;
-          } 
-        }
-      }
-    }
-
-    @include subclass('-container'){
-      position: absolute;
-		  background-color: $table-bgcolor;
-		  overflow: hidden;
-      @include setposition(0,auto,auto,auto);
-    }
-
-    @include subclass('-header--wrap') {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.1s;
-  
-      & .mux-table-meta {
-        &[size='small'] {
-          thead tr:only-child th[rowspan='2'] {
-            height: $table-header-small-height * 2;
-          }
-        }
-  
-        &[size='large'] {
-          thead tr:only-child th[rowspan='2'] {
-            height: $table-header-large-height * 2;
-          }
-        }
-  
-        thead tr:only-child th[rowspan='2'] {
-          height: $table-header-height * 2;
-        }
-      }
-    } 
-
-    @include subclass('-body--wrap') {
-      position: relative;
-      overflow: hidden;
-  
-      & .mux-table-meta {
-        margin-top: -1 * $table-border-size;
-      }
-    }
-
-    @include subclass('-header') {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.1s;
-    }
-
-    @include subclass('-body') {
-      position: relative;
-		  overflow-x: hidden;
-	   	overflow-y: hidden;
-
-       & .mux-table-meta{
-        margin-top: -1 * $table-border-size;
-       }
-    }
-   
-    @include subclass('-meta') {
-      table-layout: fixed;
-      border-collapse: collapse;
-      border-spacing: 0;
-      transition: all 0.1s;
-      
-      &[skin='line'] {
-        th, td {
-          border-width: 0;
-          border-bottom-width: $table-border-size;
-        }
-      }
-  
-      &[skin='row'] {
-        th, td {
-          border-width: 0;
-          border-right-width: $table-border-size;
-        }
-      }
-  
-      &[skin='none'] {
-        th, td {
-          border: none;
-        }
-      }
-  
-      &[size='small'] {
-        th {
-          padding: $table-header-small-gap;
-          font-size: $table-small-font-size;
-        }
-  
-        td {
-          padding: $table-body-small-gap;
-          font-size: $table-small-font-size;
-        }
-  
-        .mux-table-cell {
-          min-height: $table-cell-small-size;
-          line-height: $table-cell-small-size;
-        }
-      }
-  
-      &[size='large'] {
-        th {
-          padding: $table-header-large-gap;
-          font-size: $table-large-font-size;
-        }
-  
-        td {
-          padding: $table-body-large-gap;
-          font-size: $table-large-font-size;
-        }
-  
-        .mux-table-cell {
-          min-height: $table-cell-large-size;
-          line-height: $table-cell-large-size;
-        }
-      }
-  
-      &.mux-table--is-fix {
-        &[size='small'] {
-          th {
-            height: $table-header-small-height;
-            line-height: $table-header-small-height;
-          }
-        }
-  
-        &[size='large'] {
-          th {
-            height: $table-header-large-height;
-            line-height: $table-header-large-height;
-          }
-        }
-  
-        th {
-          height: $table-header-height;
-          line-height: $table-header-height;
-        }
-      }
-  
-      tr {
-        transition: all 0.3s;
-      }
-  
-      th {
-        font-weight: 400;
-        border-width: $table-border-size;
-        border-style: solid;
-        border-color: $table-border-color;
+    @include prefix($prefix, "-table") {
         position: relative;
-        padding: $table-header-gap;
-        font-size: $table-font-size;
-      }
-  
-      td {
-        border-width: $table-border-size;
-        border-style: solid;
-        border-color: $table-border-color;
-        position: relative;
-        padding: $table-body-gap;
-        font-size: $table-font-size;
-        color: $table-cell-color;
-      }
-    }
-   
-    @include subclass('--is-fill-width') {
-      width: 100%;
-    }
-
-    @include subclass('--is-empty') {
-      color: $table-empty-color;
-    }
-
-    @include subclass('--is-loading'){
-      padding: 0 0;
-    }
-
-    @include subclass('-scrollbar-mask'){
-      position: absolute;
-      @include setposition(0,auto,auto,0)
-    }
-    
-    @include subclass('-cell'){
-      width: 100%;
-      min-height: $table-cell-size;
-      line-height: $table-cell-size;
-      user-select: none;
-      white-space: normal;
-      word-break: break-all;
-       
-      &[aria-sort='desc'] {
-        .mux-table-icon-desc {
-          border-top-color: $table-icon-active-color;
-        }
-      }
-  
-      &[aria-sort='asc'] {
-        .mux-table-icon-asc {
-          border-bottom-color: $table-icon-active-color;
-        }
-      }
-
-      @include prefix($prefix,'-table-cell-ellipsis'){
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          word-break: keep-all;
-      }
-     
-      @include prefix($prefix,'-table-cell-cursor'){
-          cursor: pointer !important;
-      }
-    }
-
-    @include prefix($prefix,'-cell--is-editable'){
-      cursor: pointer !important;
-
-      &[aria-modal='true'] {
-        .mux-editor {
-          display: block;
-        }
-      }
-    }
-    
-    @include subclass('-cell--is-checkbox'){
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    @include subclass('-sort') {
-      display: inline-block;
-      position: relative;
-      padding: 0 0;
-      width: $table-icon-size * 2;
-      height: $table-icon-size * 4 + $table-icon-gap;
-      margin: 0 $table-icon-gap;
-      vertical-align: middle;
-    }
-  
-    @include subclass('-icon'){
-      position: absolute;
-      left: 0;
-      border-width: $table-icon-size;
-      border-style: solid;
-      border-color: transparent;
-      display: inline-block;
-      width: 0;
-      height: 0;
-
-      @include prefix($prefix,'-table-icon-asc'){
-        top: 0;
-        border-bottom-color: $table-icon-color;
-      }
-
-      @include prefix($prefix,'-table-icon-desc'){
-        bottom: 0;
-        border-top-color: $table-icon-color;
-      }
-    }
-
-    @include subclass('-pagination') {
-        position: relative;
-	  	  width: 100%;
         overflow: hidden;
+        max-width: 100%;
+        background-color: $table-bgcolor;
+        box-sizing: border-box;
+        @include prefix($prefix,'-table-panel--is-full') {
+            @include size(100%);
+        }
+        @include subclass('-caption') {
+            position: relative;
+        }
+        @include subclass('--is-stripe') {
+            & .mux-table-header,
+            & .mux-table-header--wrap {
+                & table thead th {
+                    background-color: $table-stripe-color;
+                }
+            }
+            & .mux-table-body,
+            & .mux-table-body--wrap {
+                & table tbody>tr:nth-child(even) {
+                    background-color: $table-stripe-color;
+                }
+            }
+        }
+        @include subclass('-wrap') {
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            @include prefix($prefix, "-table-header--is-fixed") {
+                overflow-y: hidden;
+                & .mux-table-body {
+                    overflow-y: auto;
+                }
+            }
+            @include prefix($prefix, "-table-is-xscroll") {
+                overflow-x: auto;
+                @include prefix($prefix, "-table-header--is-fixed") {
+                    overflow-x: hidden;
+                    & .mux-table-body {
+                        overflow-x: auto;
+                    }
+                }
+            }
+        }
+        @include subclass('-container') {
+            position: absolute;
+            background-color: $table-bgcolor;
+            overflow: hidden;
+            @include setposition(0, auto, auto, auto);
+        }
+        @include subclass('-header--wrap') {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.1s;
+            & .mux-table-meta {
+                &[size='small'] {
+                    thead tr:only-child th[rowspan='2'] {
+                        height: $table-header-small-height * 2;
+                    }
+                    thead tr:only-child th[rowspan='3'] {
+                        height: $table-header-small-height * 3;
+                    }
+                    thead tr:only-child th[rowspan='4'] {
+                        height: $table-header-small-height * 4;
+                    }
+                    thead tr:only-child th[rowspan='5'] {
+                        height: $table-header-small-height * 5;
+                    }
+                }
+                &[size='large'] {
+                    thead tr:only-child th[rowspan='2'] {
+                        height: $table-header-large-height * 2;
+                    }
+                    thead tr:only-child th[rowspan='3'] {
+                        height: $table-header-large-height * 3;
+                    }
+                    thead tr:only-child th[rowspan='4'] {
+                        height: $table-header-large-height * 4;
+                    }
+                    thead tr:only-child th[rowspan='5'] {
+                        height: $table-header-large-height * 5;
+                    }
+                }
+                thead tr:only-child th[rowspan='2'] {
+                    height: $table-header-height * 2;
+                }
+                thead tr:only-child th[rowspan='3'] {
+                    height: $table-header-height * 3;
+                }
+                thead tr:only-child th[rowspan='4'] {
+                    height: $table-header-height * 4;
+                }
+                thead tr:only-child th[rowspan='5'] {
+                    height: $table-header-height * 5;
+                }
+            }
+        }
+        @include subclass('-body--wrap') {
+            position: relative;
+            overflow: hidden;
+            & .mux-table-meta {
+                margin-top: -1 * $table-border-size;
+            }
+        }
+        @include subclass('-header') {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.1s;
+        }
+        @include subclass('-body') {
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            box-sizing: border-box;
+            & .mux-table-meta {
+                margin-top: -1 * $table-border-size;
+            }
+        }
+        @include subclass('-meta') {
+            table-layout: fixed;
+            border-collapse: collapse;
+            border-spacing: 0;
+            box-sizing: border-box;
+            transition: all 0.1s;
+            &[skin='line'] {
+                th,
+                td {
+                    border-width: 0;
+                    border-bottom-width: $table-border-size;
+                }
+            }
+            &[skin='row'] {
+                th,
+                td {
+                    border-width: 0;
+                    border-right-width: $table-border-size;
+                }
+            }
+            &[skin='none'] {
+                th,
+                td {
+                    border: none;
+                }
+            }
+            &[size='small'] {
+                th {
+                    padding: $table-header-small-gap;
+                    font-size: $table-small-font-size;
+                }
+                td {
+                    padding: $table-body-small-gap;
+                    font-size: $table-small-font-size;
+                }
+                .mux-table-cell {
+                    min-height: $table-cell-small-size;
+                    line-height: $table-cell-small-size;
+                    padding: $table-cell-small-gap;
+                }
+            }
+            &[size='large'] {
+                th {
+                    padding: $table-header-large-gap;
+                    font-size: $table-large-font-size;
+                }
+                td {
+                    padding: $table-body-large-gap;
+                    font-size: $table-large-font-size;
+                }
+                .mux-table-cell {
+                    min-height: $table-cell-large-size;
+                    line-height: $table-cell-large-size;
+                    padding: $table-cell-large-gap;
+                }
+            }
+            @include prefix($prefix,"-table--is-fix") {
+                &[size='small'] {
+                    th {
+                        height: $table-header-small-height;
+                        line-height: $table-header-small-height;
+                    }
+                }
+                &[size='large'] {
+                    th {
+                        height: $table-header-large-height;
+                        line-height: $table-header-large-height;
+                    }
+                }
+                th {
+                    height: $table-header-height;
+                    line-height: $table-header-height;
+                }
+            }
+            @include prefix($prefix,"-table--is-hoverable") {
+                &>tbody tr:hover td {
+                    &:not(.mux-table--is-empty, .mux-table--is-loading) {
+                        cursor: pointer;
+                        background: $table-stripe-color;
+                    }
+                }
+            }
+            @include prefix($prefix,'-table--is-fill-width') {
+                width: 100%;
+                min-width: 100%;
+            }
+            tr {
+                transition: all 0.3s;
+                &[aria-pressed='true'] {
+                    background: $table-stripe-color;
+                }
+                &[aria-selected='true'] {
+                    background: $table-stripe-color;
+                }
+            }
+            th {
+                min-width: 0;
+                font-weight: 400;
+                vertical-align: middle;
+                border-width: $table-border-size;
+                border-style: solid;
+                border-color: $table-border-color;
+                padding: $table-header-gap;
+                font-size: $table-font-size;
+            }
+            td {
+                min-width: 0;
+                border-width: $table-border-size;
+                border-style: solid;
+                border-color: $table-border-color;
+                position: relative;
+                padding: $table-body-gap;
+                font-size: $table-font-size;
+            }
+        }
+        @include subclass('--is-empty') {
+            color: $table-empty-color;
+        }
+        @include subclass('--is-loading') {
+            padding: 0 0;
+        }
+        @include subclass('-cell') {
+            width: 100%;
+            min-height: $table-cell-size;
+            line-height: $table-cell-size;
+            user-select: none;
+            white-space: normal;
+            word-break: break-all;
+            padding: $table-cell-gap;
+            &[aria-sort='desc'] {
+                .mux-table-icon-desc {
+                    border-top-color: $table-icon-active-color;
+                }
+            }
+            &[aria-sort='asc'] {
+                .mux-table-icon-asc {
+                    border-bottom-color: $table-icon-active-color;
+                }
+            }
+            @include prefix($prefix,'-table-cell-ellipsis') {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                word-break: keep-all;
+                min-width: 0;
+            }
+            @include prefix($prefix,'-table-cell-cursor') {
+                cursor: pointer !important;
+            }
+        }
+        @include subclass('-table-cell--is-editable') {
+            cursor: pointer !important;
+            &[aria-modal='true'] {
+                .mux-editor {
+                    display: block;
+                }
+            }
+        }
+        @include subclass('-cell--is-checkbox') {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @include subclass('-sort') {
+            display: inline-block;
+            position: relative;
+            padding: 0 0;
+            width: $table-icon-size * 2;
+            height: $table-icon-size * 4 + $table-icon-gap;
+            margin: 0 $table-icon-gap;
+            vertical-align: middle;
+        }
+        @include subclass('-icon') {
+            position: absolute;
+            left: 0;
+            border-width: $table-icon-size;
+            border-style: solid;
+            border-color: transparent;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            @include prefix($prefix,'-table-icon-asc') {
+                top: 0;
+                border-bottom-color: $table-icon-color;
+            }
+            @include prefix($prefix,'-table-icon-desc') {
+                bottom: 0;
+                border-top-color: $table-icon-color;
+            }
+        }
+        @include subclass('-pagination') {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        @include subclass('-scrollbar') {
+            position: absolute;
+            @include setposition(0, auto, auto, 0);
+            background: $table-bgcolor;
+        }
     }
-  }
-
-  @include prefix($prefix,'-editor'){
-    display: none;
-    position: absolute;
-    top: 50%;
-    padding: 8px 12px;
-    background-color: $table-bgcolor;
-    z-index: 2;
-
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    @include prefix($prefix,'-editor--is-left'){
-      left: 0;
+    @include prefix($prefix,'-editor') {
+        display: none;
+        position: absolute;
+        top: 50%;
+        padding: 8px 12px;
+        background-color: $table-bgcolor;
+        z-index: 2;
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        border-radius: 4px;
+        @include prefix($prefix,'-editor--is-left') {
+            left: 0;
+        }
+        @include prefix($prefix,'-editor--is-center') {
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        @include prefix($prefix,'-editor--is-right') {
+            right: 0;
+        }
+        @include subclass('-field') {
+            outline: none;
+            text-indent: 4px;
+            padding: 4px 0;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            max-width: 200px;
+            &:focus {
+                border: 1px solid #1a96dc;
+            }
+        }
     }
-    @include prefix($prefix,'-editor--is-center'){
-      left: 50%;
-      transform: translate(-50%, 0);
-    }
-    @include prefix($prefix,'-editor--is-right'){
-      right: 0;
-    }
-    
-    @include subclass('-field'){
-      outline: none;
-      text-indent: 4px;
-      padding: 4px 0;
-      border-radius: 4px;
-      border: 1px solid rgba(0, 0, 0, 0.18);
-      max-width: 200px;
-  
-      &:focus {
-        border: 1px solid #1a96dc;
-      }
-    }
-  }
 }

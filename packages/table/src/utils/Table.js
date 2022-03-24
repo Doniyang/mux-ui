@@ -13,8 +13,12 @@ export default class Table {
         return validator
     }
 
-    static parse (a, b) {
-        return a === -1 ? b : a
+    static isNotEqual (a, b) {
+        return !this.isEqual(a, b)
+    }
+
+    static isEqual (a, b) {
+        return a === b
     }
 
     static isFunction (fn) {

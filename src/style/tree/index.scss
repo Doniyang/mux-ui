@@ -6,7 +6,28 @@
     position: relative;
     overflow: hidden;
     zoom: 1;
+    font-size: $tree-text-size;
     box-sizing: border-box;
+
+    @include subclass("--is-empty"){
+      margin: 0;
+      padding: $tree-empty-gap;
+      text-align: center;
+      color: $tree-empty-color;
+    }
+
+    @include subclass("--is-spining"){
+      width: fit-content;
+      margin: auto;
+      text-align: center;
+    }
+
+    @include subclass("-spin-text"){
+      margin: 0;
+      padding: $tree-spining-gap;
+      text-align: center;
+      color: $tree-spining-color;
+    }
 
     @include subclass("-wrap") {
       list-style: none;
@@ -22,12 +43,12 @@
       overflow: hidden;
       padding: 0;
       margin: 0;
-      *zoom: 1;
-      padding: 0 0 0 15px;
+      zoom: 1;
+      padding: 0;
       box-sizing: border-box;
     }
 
-    @include subclass("-container") {
+    @include subclass("-node") {
       position: relative;
       display: flex;
       flex-wrap: nowrap;
@@ -38,43 +59,53 @@
       color: inherit;
     }
 
-    @include subclass("-icon-box") {
+    @include subclass("-node--is-icon") {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 30px;
-      height: 30px;
+      width: $tree-icon-size;
+      height: $tree-icon-size;
       overflow: hidden;
       transition: all 280ms;
-      &:active {
-        border-radius: 50%;
-        background-color: rgba($color: #3598db, $alpha: 0.24);
-      }
     }
     
-    @include subclass("-checkbox"){
+  
+    @include subclass("-node--is-checkbox"){
         position: static;
         overflow: visible;
-    }
+    } 
 
-    @include subclass("-title"){
+    @include subclass("-node--is-radio"){
+      position: static;
+      overflow: visible;
+  }
+
+    @include subclass("-node--is-content"){
         position: static;
         margin: 0;
-        padding: 0;
+        padding: $tree-content-gap;
         flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     } 
 
 
-    @include subclass("-icon--is-open") {
+    @include subclass("-node--is-open") {
+      margin-top: -6px;
       transform: rotate(90deg);
     }
 
-    @include subclass('-icon--is-hide'){
+    @include subclass('-node--is-hide'){
       visibility: hidden;
     }
 
-    @include subclass("-icon--is-loading"){
+    @include subclass("-node--is-loading"){
       animation: spinner 1.2s linear infinite;
+    }
+
+    @include subclass("-node--is-actived"){
+       background-color:$tree-active-bg-color;
     }
 
     @include subclass("-icon") {
@@ -84,11 +115,12 @@
     
     @include subclass("-loading"){
       display: inline-block;
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-left-color: #59a782;
+      border: $tree-loading-track-size solid $tree-loading-color;
+      border-left-color: $tree-loading--actived-color;
       border-radius: 50%;
-      height: 30%;
-      width: 30px;
+      height: $tree-loading-size;
+      width: $tree-loading-size;
+      box-sizing: border-box;
     } 
   }
 }

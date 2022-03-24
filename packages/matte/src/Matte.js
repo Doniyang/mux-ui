@@ -1,4 +1,4 @@
-import Maskable from '../../../src/utils/maskable/Maskable'
+import Maskable from '../../maskable/Maskable'
 
 export default {
   name: 'v-matte',

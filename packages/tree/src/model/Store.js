@@ -1,230 +1,293 @@
 import Node from "./Node.js";
-import { Notifier } from '@niyang-es/notify'
 export default class Store {
-  constructor(rootKey, data, config) {
-    this.rootId = rootKey;
+  constructor(data, config) {
+    this.rootKey = -1;
     this.config = config;
-    this.nodeMaps = [];
-    this.notifier = new Notifier();
-    this.initNodeTree(data, rootKey, true);
+    this.node = null
+    this.nodeMap = [];
+    this.initialize(data, this.rootKey);
+  }
+    /**
+   * 默认Open
+   */
+  get isOpen() {
+    return !!this.config.isOpen
   }
   /**
-   * 初始化树节点
-   * @param {string} array
-   * @param {String} pId
-   * @param {Boolean} isRoot
+   * 获取节点labeKey
    */
-  initNodeTree(array, pId, isRoot) {
-    const _this = this;
-    array.forEach((node) => {
-      let isOpen = _this.getDefaultOpenState();
-      let isPlain = _this.getDefaultPlainState();
-      let isChecked = _this.getDefaultCheckedState();
-      const key = _this.getNodeValueKey();
-      const text = _this.getNodeTextKey();
-      const children = _this.getNodeChildrenKey();
-      const property = isRoot ? "root" : "leaf";
-      _this.addNode(node[key],pId,node[text],property,isOpen,isPlain,isChecked);
-      if (Array.isArray(node[children])) {
-        _this.initNodeTree(node[children], node[key], false);
-      }
-    });
-  }
-  /**
-   * 添加节点
-   * @param {String} nodeId
-   * @param {String} parentId
-   * @param {String} title
-   * @param {String} type
-   * @param {Boolean} open
-   * @param {Boolean} plain
-   * @param {Boolean} checked
-   */
-  addNode(nodeId, parentId, title, type, open, plain, checked) {
-    this.nodeMaps.push(new Node(nodeId, parentId, title, type, open, plain, checked));
-  }
-  /**
-   * 获取默认打开状态
-   */
-  getDefaultOpenState() {
-    return !!this.config.isOpen;
-  }
-  /**
-   * 获取默认选中状态
-   */
-  getDefaultCheckedState() {
-    return !!this.config.isChecked;
-  }
-  /**
-   * 获取默认plain状态
-   */
-  getDefaultPlainState() {
-    return !!this.config.isPlain;
-  }
-  /**
-   * 获取节点text
-   */
-  getNodeTextKey() {
-    return this.config.text || "name";
+  get labelKey() {
+    return this.config.label || "name";
   }
   /**
    * 获取节点的value
    */
-  getNodeValueKey() {
+  get valueKey() {
     return this.config.value || "id";
   }
 
   /**
    * 节点的children
    */
-  getNodeChildrenKey() {
+  get childrenKey() {
     return this.config.children || "children";
   }
 
-  /**
-   * 获取子节点
-   * @param {String} pid
-   * return Array
-   */
-  getNodeTreeMap(pid) {
-    return this.nodeMaps.filter((node) => node.getParentId() === pid);
+  get hasChildrenKey(){
+    return  this.config.hasChildren || "hasChildren";
   }
+
   /**
-   * 检测是否有子节点
-   * @param {String} nodeId
+   * 初始化树节点
+   * @param {string} array
+   * @param {String} pId
+   * @param {Boolean} isRoot
    */
-  checkNodeHasChildren(nodeId) {
-    return this.nodeMaps.some((n) => n.parentId === nodeId);
-  }
-  /**
-   * 更新根节点的checked状态
-   * @param {*} values 
-   */
-  updateRootNodeCheckedState(values) {
-    const nodeList = this.getNodeTreeMap(this.rootKey);
-    nodeList.forEach((node) => {
-      if (!node.isChecked) {
-        this.updateNodeCheckedState(
-          node.getNodeId(),
-          values.indexOf(node.getNodeId()) > -1
-        );
+  initialize(array, pId) {
+    array.forEach((node) => {
+      this.set(pId, node);
+      if (Array.isArray(node[this.childrenKey])) {
+        this.initialize(node[this.childrenKey], node[this.valueKey]);
       }
     });
+  }
+  /**
+   * @description 设置节点
+   * @param {*} pId 
+   * @param {*} nId 
+   * @param {*} label 
+   * @param {*} isOpen 
+   * @param {*} isChecked 
+   */
+  set(pId, raw) {
+    let node = this._help()
+    node.setParentId(pId)
+    node.setNodeId(raw[this.valueKey])
+    node.setNodeName(raw[this.labelKey])
+    node.setData(raw)
+    node.updateChildrenState(!!raw[this.hasChildrenKey])
+    node.updateOpenState(this.isOpen)
+    this.nodeMap.push(node)
+    this.updateNodeChildrenState(pId, true)
+  }
+  /**
+   * @description 获取rootKey
+   * @returns Number
+   */
+  getRootKey() {
+    return this.rootKey;
+  }
+  /**
+   * @description 获取pId节点下的所有子节点
+   * @param {*} pid 
+   * @returns Array<Node>
+   */
+  getNodeMap(pId) {
+    return this.nodeMap.filter(node => node.isParent(pId))
+  }
+  /**
+   * 
+   * @param {String|Number} nId 
+   * @returns Node
+   */
+  find(nId) {
+    return this.nodeMap.find(node=>node.is(nId))
+  }
+  /**
+   * 
+   * @returns Array<Node>
+   */
+  getCheckedNode() {
+    return this.nodeMap.filter(node => node.isChecked())
+  }
+  /**
+   * @description 过滤子节点
+   * @param {*} pId 
+   */   
+  filterNodeMap(pId){
+      let children = this.getNodeMap(pId)
+      this.nodeMap = this.nodeMap.filter(node=>!node.isParent(pId))
+      if(this.isEmptyArray(children)|| this.isEmptyArray(this.nodeMap)){return false}
+      children.forEach(child=>{
+        this.filterNodeMap(child.getNodeId())
+      })   
+  }
+  /**
+   * 
+   * @param {*} nId 
+   * @param {*} has 
+   */
+  updateNodeChildrenState(nId,has){
+   const node = this.find(nId)
+   if(node){node.updateChildrenState(has)}
+  }
+  /**
+   * @description 更新父节点下的子节点
+   * @param {String} pId 
+   * @param {Array<Object>} ary 
+   */  
+  updateNodeMap(pId,ary){
+    this.filterNodeMap(pId)
+    this.initialize(pId,ary) 
+  }
+  /**
+   * @description 更新状态
+   * @param {String} nId 
+   */
+  updateOnlyCheckedState(nId) {
+    this.nodeMap.forEach(node => {
+      node.updatePlainState(false)
+      node.updateCheckedState(node.is(nId))
+    })
   }
   /**
    * 更新节点
-   * @param {String} nodeId
-   * @param {Boolean} isChecked
+   * @param {Array<String>} checkList 
    */
-  updateNodeCheckedState(nodeId, isChecked) {
-    let node = this.nodeMaps.find((n) => n.nodeId === nodeId);
-    if (node) {
-      node.updatePlainState(false);
-      node.setTimeStamp(Date.now());
-      node.updateCheckedState(isChecked);
-      node.updateChildrenCheckedState(isChecked);
-      this.updateChildrenNodeCheckedState(node.getNodeId(), isChecked);
-      if (node.getParentId() !== this.rootId) {
-        this.updateParentNodeState(node.getParentId());
-      } else {
-        this.emit("async:change", this.getCheckedNode());
-      }
-    }
+  updateTickCheckedState(checkList) {
+    this.nodeMap.forEach(node => {
+      node.updatePlainState(false)
+      node.updateCheckedState(checkList.includes(node.getNodeId()))
+    })
   }
   /**
-   * 更新父节点
-   * @param {String} pId
-   */
-  updateParentNodeState(pId) {
-    let pNode = this.nodeMaps.find((n) => n.nodeId === pId);
-    let childrenNode = this.getNodeTreeMap(pId);
-    let isChecked = childrenNode.every((node) => node.isChecked);
-    let isPlain = childrenNode.some((node) => node.isChecked || node.isPlain);
-    pNode.updatePlainState(isPlain);
-    pNode.updateCheckedState(isChecked);
-    if (pNode.getParentId() !== this.rootId) {
-      this.updateParentNodeState(pNode.getParentId());
-    } else {
-      this.emit("async:change", this.getCheckedNode());
-    }
+   * 
+   * @param {Array<String>} checkList 
+   */  
+  updateMockCheckedState(checkList){
+     if(this.isEmptyArray(checkList)){this.updateTickCheckedState(checkList)}
+     checkList.forEach(nId=>{
+        this.updateChildrenState(nId,true)
+     })  
   }
   /**
-   * 更新子节点是否选中
-   * @param {*} pId
-   * @param {*} isChecked
-   */
-  updateChildrenNodeCheckedState(pId, isChecked) {
-    const nodeList = this.getNodeTreeMap(pId);
-    nodeList.forEach((node) => {
-      node.updateCheckedState(isChecked);
-      node.updateChildrenCheckedState(isChecked);
-      if (node.isOpen) {
-        this.updateChildrenNodeCheckedState(node.getNodeId(), isChecked);
-      }
-    });
-  }
-  /**
-   * 更新节点打开状态
-   * @param {String} nId
-   * @param {Boolean} isOpen
-   */
-  updateNodeOpenState(nId, isOpen) {
-    const node = this.nodeMaps.find((n) => n.nodeId === nId);
-    if (node) {
-      node.updateOpenState(isOpen);
-      if (isOpen) {
-        node.setNodeHasChildren(this.checkNodeHasChildren(nId));
-      }
-    }
-  }
-  /**
-   * 更新节点加载状态
-   * @param {*} nId
-   * @param {*} isLoading
-   */
-  updateNodeLoadingState(nId, isLoading) {
-    const node = this.nodeMaps.find((n) => n.getNodeId() === nId);
-    if (node) {
-      node.updateLoadingState(isLoading);
-    }
-  }
-  /**
-   * 更新节点的是否有子节点
+   * 
    * @param {*} nId 
-   * @param {*} isParent 
    */
-  updateNodeHasChidren(nId,isParent){
-    const node = this.nodeMaps.find((n) => n.getNodeId() === nId);
-    if (node) {
-      node.setNodeHasChildren(isParent);
+  updateActivedState(nId){
+    this.nodeMap.forEach(node=>{
+      node.updateActivedState(node.is(nId))
+    })
+  }
+  /**
+   * 
+   * @param {*} nId 
+   * @param {*} isChecked 
+   */
+  updateCheckedState(nId, isChecked) {
+    const node = this.find(nId)
+    if (node === undefined) { return false }
+    node.updateCheckedState(isChecked)
+    this.updateParentState(node.getParentId(), isChecked)
+    if(node.isOpen()){this.lazyUpdateChildrenState(nId, isChecked)}  
+  }
+  /**
+   * 
+   * @param {*} node 
+   * @param {*} isOpen 
+   */
+  updateOpenState(node,isOpen){
+    node.updateOpenState(isOpen)
+  }
+  /**
+   * 
+   * @param {*} node 
+   * @param {*} status 
+   */
+  updateStatusState(node,status){
+    node.updateStatusState(status)
+  }
+  /**
+   * 
+   * @param {*} pId 
+   * @param {*} isChecked 
+   */
+  lazyUpdateChildrenState(pId,isChecked){
+    this.getNodeMap(pId).filter(n =>n.isChecked() !== isChecked).forEach(node => {
+      node.updatePlainState(false)
+      node.updateCheckedState(isChecked)
+      this.updateChildrenState(node.getNodeId(), isChecked)
+    })
+  }
+  /**
+   * @description 更新子节点
+   * @param {*} nId 
+   * @param {*} isChecked 
+   */
+  updateChildrenState(nId, isChecked) {
+    this.getNodeMap(nId).filter(n =>n.isOpen() && n.isChecked() !== isChecked).forEach(node => {
+      node.updatePlainState(false)
+      node.updateCheckedState(isChecked)
+      this.updateChildrenState(node.getNodeId(), isChecked)
+    })
+  }
+  /**
+   * @description 更新父节点
+   * @param {String} pId 
+   */
+  updateParentState(pId, isChecked) {
+    isChecked ? this.updateParentCheckedState(pId) : this.updateParentPlainState(pId)
+  }
+  /**
+   * 更新父节点checked
+   * @param {*} pId 
+   * 
+   */
+  updateParentCheckedState(pId) {
+    const node = this.find(pId)
+    const isChecked = this.getNodeMap(pId).every(node => node.isChecked())
+    if (node === undefined) { return false }
+    if (isChecked) {
+      node.updateCheckedState(true)
+      this.updateParentCheckedState(node.getParentId())
+    } else {
+      node.updateCheckedState(false)
+      node.updatePlainState(true)
+      this.updateParentPlainState(node.getParentId())
     }
   }
   /**
-   * 获取选中的节点
+   * @description 更新父节点plain
+   * @param {String} pId 
    */
-  getCheckedNode() {
-    return this.nodeMaps.filter((node) => node.isChecked);
+  updateParentPlainState(pId) {
+    const node = this.find(pId)
+    const isPlain = this.getNodeMap(pId).some(node => node.isPlain() || node.isChecked())
+    if (node === undefined) { return false }
+    if (isPlain) {
+      this.updateParentNodePlainState(node)
+    } else {
+      node.updateCheckedState(false)
+      node.updatePlainState(false)
+      this.updateParentPlainState(node.getParentId())
+    }
   }
   /**
-   * 监听事件/订阅事件
-   * @param {String} evt
-   * @param {Function} fn
+   * @description 更新父节点plain状态
+   * @param {*} node 
    */
-  on(evt, fn) {
-    this.notifier.on(evt, fn);
+  updateParentNodePlainState(node) {
+    if (node === undefined) { return false }
+    if (node.isPlain() === false) {
+      node.updateCheckedState(false)
+      node.updatePlainState(true)
+      this.updateParentNodePlainState(this.find(node.getParentId()))
+    }
   }
   /**
-   * 触发事件
+   * @description 判断空数组
+   * @param {*} ary 
+   * @returns 
    */
-  emit(evt, ...args) {
-    this.notifier.notify(evt, args);
+  isEmptyArray(ary){
+    return Array.isArray(ary)&&ary.length===0
   }
   /**
-   * 取消监听
-   * @param {String} evt
-   * @param {Function} fun
+   * @description 创建节点
+   * @returns Node
    */
-  off(evt, fn) {
-    this.notifier.off(evt, fn);
+  _help() {
+    return this.node ? this.node : new Node()
   }
+
 }

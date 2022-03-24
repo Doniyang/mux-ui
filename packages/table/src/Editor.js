@@ -4,7 +4,7 @@ export default {
         position: {
             type: String,
             default: 'center',
-            validator(v) {
+            validator (v) {
                 return ['left', 'center', 'right'].indexOf(v) > -1
             }
         },
@@ -16,44 +16,44 @@ export default {
             type: [Number, String]
         }
     },
-    data() {
+    data () {
         return {
-            edit: ''
+            editVal: ''
         }
     },
-    beforeMount() {
-        this.edit = this.value[this.fieldKey]
+    beforeMount () {
+        this.editVal = this.value[this.fieldKey]
     },
     watch: {
         value: {
-            handler(val) {
-                this.edit = val[this.fieldKey]
+            handler (val) {
+                this.editVal = val[this.fieldKey]
             },
             deep: true,
             immediate: false
         }
     },
     methods: {
-        handleInput(e) {
+        handleInput (e) {
             const target = e.currentTarget || e.target || e.srcElement
-            this.edit = target.value
+            this.editVal = target.value
         },
-        handleClick(e, isCommit) {
+        handleClick (e, isCommit) {
             e.stopPropagation()
             if (isCommit) {
                 this.$emit('commit', {
                     data: this.value,
                     key: this.fieldKey,
-                    value: this.edit
+                    value: this.editVal
                 })
             }
             this.$emit('close', {
                 target: this.$el,
-                value: this.edit,
+                value: this.editVal,
                 commit: isCommit
             })
         },
-        genEditorContext() {
+        genEditorContext () {
             return this.$createElement('div', {
                 staticClass: 'h-box item-align-center'
             }, [
@@ -62,11 +62,11 @@ export default {
                 this.genBtnContext(false, 'error', 'close')
             ])
         },
-        genInputContext() {
+        genInputContext () {
             return this.$createElement('input', {
-                staticClass: 'editor-field',
+                staticClass: 'mux-editor-field',
                 domProps: {
-                    value: this.edit
+                    value: this.editVal
                 },
                 on: {
                     input: e => {
@@ -78,10 +78,10 @@ export default {
                 }
             })
         },
-        genBtnContext(env, color, icon) {
+        genBtnContext (env, color, icon) {
             return this.$createElement('a-button', {
                 class: { 'mx-2': env },
-                props: {
+                props: { 
                     ghost: true,
                     size: 'small',
                     type: color
@@ -93,16 +93,16 @@ export default {
                 }
             }, [this.genIconContext(icon)])
         },
-        genIconContext(icon) {
+        genIconContext (icon) {
             return this.$createElement('a-icon', { type: icon }, null)
         }
     },
-    render(h) {
+    render (h) {
         return h('div', {
             staticClass: 'component mux-editor',
             class: ['mux-editor--is-' + this.position],
             domProps: {
-                ariaLabel: this.edit
+                ariaLabel: this.editVal
             }
         }, [this.genEditorContext()])
     }

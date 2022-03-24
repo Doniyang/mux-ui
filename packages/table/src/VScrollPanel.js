@@ -2,7 +2,7 @@ import { requestAnimationFrame, cancelAnimationFrame } from './utils/Raf'
 import Table from './utils/Table'
 export default {
     name: 'VScrollPanel',
-    inject: ['smartTable'],
+    inject: ['updateScrollbarSize'],
     props: {
         height: {
             type: [Number, String],
@@ -12,33 +12,33 @@ export default {
             type: [Number, String]
         }
     },
-    data() {
+    data () {
         return {
             rafId: null,
             stamp: 0
         }
     },
-    mounted() {
+    mounted () {
         this.updateScrollBar()
     },
-    beforeDestroy() {
+    beforeDestroy () {
         if (this.rafId) {
             cancelAnimationFrame(this.rafId)
         }
     },
     methods: {
-        updateScrollBar() {
+        updateScrollBar () {
             this.rafId = requestAnimationFrame(this.setParentScrollBar.bind(this))
         },
-        setParentScrollBar(time) {
+        setParentScrollBar (time) {
             const el = this.$el
             this.stamp = time
-            if (el) { this.smartTable.setScrollbar(el.offsetHeight - el.clientHeight, el.offsetWidth - el.clientWidth) }
+            if (el) { this.updateScrollbarSize(el.offsetHeight - el.clientHeight, el.offsetWidth - el.clientWidth) }
             if (this.rafId) { cancelAnimationFrame(this.rafId) }
             this.updateScrollBar()
         }
     },
-    render(h) {
+    render (h) {
         return h('div', {
             style: {
                 height: Table.pixel(this.height),

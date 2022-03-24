@@ -1,5 +1,8 @@
 export default {
   name: 'v-radio-group',
+  model:{
+    event:"change"
+  },
   props: {
     block: {
       type: Boolean,
@@ -27,7 +30,10 @@ export default {
   methods: {
     updateChildrenNode(value) {
       if (this.$children.length > 0) {
-        this.$children.forEach(vm => { vm.updateCheckedState(value) })
+        this.$children.forEach(vm => { 
+          vm.setRadioInGroup(true)
+          vm.updateCheckedState(value) 
+        })
       }
     }
   },

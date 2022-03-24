@@ -1,6 +1,6 @@
 import VColgroup from './VColgroup'
-import Checkbox from "../../checkbox"
 import Editor from './Editor'
+import Checkbox from "../../checkbox"
 import Table from './utils/Table'
 export default {
     name: 'VTbody',
@@ -73,7 +73,7 @@ export default {
         }
     },
     methods: {
-        handleCloseClick(e) {
+        handleCloseClick (e) {
             const { target, value, commit } = e
             const parent = target.parentElement || target.parentNode
             if (commit) {
@@ -82,7 +82,7 @@ export default {
             }
             parent.ariaModal = 'false'
         },
-        handleClick(e, cfg, item) {
+        handleClick (e, cfg, item) {
             if (cfg.clickable) {
                 this.$emit('click:cell', item)
             }
@@ -91,10 +91,10 @@ export default {
                 target.ariaModal = 'true'
             }
         },
-        getComputedStyle(row, props) {
+        getComputedStyle (row, props) {
             return props === null ? props : Table.isFunction(this.rowStyle) ? this.rowStyle.apply(this, [row, props.ariaRowIndex]) : this.rowStyle
         },
-        genColgroupContext() {
+        genColgroupContext () {
             return this.$createElement(VColgroup, {
                 props: {
                     columns: this.columns,
@@ -104,10 +104,10 @@ export default {
                 }
             })
         },
-        genTBodyContext() {
+        genTBodyContext () {
             return this.$createElement('tbody', {}, [this.genTBodyChildrenContext()])
         },
-        genTBodyChildrenContext() {
+        genTBodyChildrenContext () {
             const props = {
                 columns: this.columns,
                 loading: this.loading,
@@ -117,56 +117,57 @@ export default {
             }
             return this.$scopedSlots.default ? [this.genSlotContext('default', props)] : this.genItemsContext(props)
         },
-        genItemsContext(props) {
+        genItemsContext (props) {
             const { columns, loading, dataItems, noDataText, loadingText } = props
             if (loading) {
-                return [this.genRowContext(columns.length, loadingText, null, 'loading', this.genLoadingContext)]
+                return [
+                    this.genRowContext(Math.max(columns.length, 1), loadingText, null, 'loading', '', this.genLoadingContext)
+                ]
             }
             if (dataItems.length === 0) {
-                return [this.genRowContext(Math.max(columns.length, 1), noDataText, null, 'empty', this.genNoDataContext)]
+                return [
+                    this.genRowContext(Math.max(columns.length, 1), noDataText, null, 'empty', '', this.genNoDataContext)
+                ]
             }
             return dataItems.map((item, dx) => this.genRowContext(item, columns, {
-                ariaRowIndex: dx,
-                ariaPressed: dx === this.activeIndex,
-                ariaSelected: dx === this.selectIndex
-            }, 'ROW_' + dx, this.genColContext))
+                'aria-rowindex': dx,
+                'aria-pressed': dx === this.activeIndex,
+                'aria-selected': dx === this.selectIndex
+            }, dx, 'ROW_', this.genColContext))
         },
-        genRowContext(row, col, props, key, callback) {
+        genRowContext (row, col, props, key, prefix, callback) {
             return this.$createElement('tr', {
-                key: key,
+                key: prefix + key,
                 style: this.getComputedStyle(row, props),
                 domProps: props,
+                attrs: props,
                 on: {
-                    mouseover: e => {
-                        e.stopPropagation()
-                        this.$emit('row:hover', parseInt(e.currentTarget.ariaRowIndex))
-                    },
-                    mouseout: e => {
-                        e.stopPropagation()
-                        this.$emit('row:leave')
-                    },
                     click: e => {
                         e.stopPropagation()
-                        this.$emit('row:click', parseInt(e.currentTarget.ariaRowIndex))
+                        this.$emit('row:click', key)
+                    },
+                    dblclick: e => {
+                        e.stopPropagation()
+                        this.$emit('row:dblclick', key)
                     }
                 }
             }, callback.apply(this, [row, col]))
         },
-        genColContext(row, cols) {
+        genColContext (row, cols) {
             const children = []
-            if (this.selectable) { children.push(this.genColCheckboxContext(row, this.selectKey)) }
+            if (this.selectable) {
+                children.push(this.genColCheckboxContext(row, this.selectKey))
+            }
             return cols.reduce((accum, current, dx, ary) => {
                 accum.push(this.genColItemContext(row, current, dx, ary.length - 1))
                 return accum
             }, children)
         },
-        genColItemContext(row, item, dx, max) {
+        genColItemContext (row, item, dx, max) {
             return this.$createElement('td', {
-                staticClass: 'mux-text-align-' + item.align,
+                staticClass: 'mux-text-' + item.align,
                 style: Table.isFunction(item.cellStyle) ? item.cellStyle.apply(this, [row, item.field, dx]) : item.cellStyle,
-                class: {
-                    'mux-table-cell--is-editable': item.editable
-                },
+                class: { 'mux-table-cell--is-editable': item.editable },
                 domProps: {
                     ariaLabel: item.field,
                     ariaColIndex: dx,
@@ -183,19 +184,19 @@ export default {
                 item.editable ? this.genEditContext(row, item.field, dx, max) : null
             ])
         },
-        genColCheckboxContext(row, key) {
+        genColCheckboxContext (row, key) {
             return this.$createElement('td', {
-                staticClass: 'mux-text-align-center',
+                staticClass: 'mux-text-center',
                 key: 'TD_CHECKBOX'
             }, [this.genCheckboxWrapContext(row, key)])
         },
-        genCheckboxWrapContext(row, key) {
+        genCheckboxWrapContext (row, key) {
             return this.$createElement('div', {
                 staticClass: 'mux-table-cell mux-table-cell--is-checkbox',
                 domProps: { role: 'checkbox' }
             }, [this.genCheckboxContext(row, key)])
         },
-        genCheckboxContext(row, key) {
+        genCheckboxContext (row, key) {
             return this.$createElement(Checkbox, {
                 props: {
                     checkboxValue: row[key],
@@ -203,12 +204,12 @@ export default {
                 },
                 on: {
                     input: val => {
-                        this.$emit("change", val)
+                        this.$emit('change', val)
                     }
                 }
             })
         },
-        genEditContext(row, field, index, max) {
+        genEditContext (row, field, index, max) {
             return this.$createElement(Editor, {
                 props: {
                     value: row,
@@ -225,25 +226,27 @@ export default {
                 }
             })
         },
-        genLoadingContext(colspan, txt) {
-            return [this.$createElement('td', {
-                    staticClass: 'mux-text-align-center mux-table--is-loading',
+        genLoadingContext (colspan, txt) {
+            return [
+                this.$createElement('td', {
+                    staticClass: 'mux-text-center mux-table--is-loading',
                     attrs: {
                         colspan: colspan
                     }
-                }, this.$scopedSlots.process ?
-                this.genSlotContext('process', { loadingText: txt }) : [this.genCellContext(txt)]
-            )]
+                }, this.$scopedSlots.process ? this.genSlotContext('process', { loadingText: txt }) : [this.genCellContext(txt)])
+            ]
         },
-        genNoDataContext(colspan, txt) {
-            return [this.$createElement('td', {
-                staticClass: 'mux-text-align-center mux-table--is-empty',
-                attrs: {
-                    colspan: colspan
-                }
-            }, this.$scopedSlots.empty ? this.genSlotContext('empty', { noDataText: txt }) : [this.genCellContext(txt)])]
+        genNoDataContext (colspan, txt) {
+            return [
+                this.$createElement('td', {
+                    staticClass: 'mux-text-center mux-table--is-empty',
+                    attrs: {
+                        colspan: colspan
+                    }
+                }, this.$scopedSlots.empty ? this.genSlotContext('empty', { noDataText: txt }) : [this.genCellContext(txt)])
+            ]
         },
-        genCellContext(txt) {
+        genCellContext (txt) {
             return this.$createElement('div', {
                 domProps: {
                     title: txt
@@ -252,17 +255,14 @@ export default {
                 class: { 'mux-table-cell-ellipsis': this.sealed }
             }, txt)
         },
-        genSlotContext(slot, props) {
+        genSlotContext (slot, props) {
             return this.$scopedSlots[slot].call(this, props)
         }
     },
-    render(h) {
+    render (h) {
         return h('table', {
             staticClass: 'mux-table-meta',
-            class: {
-                'mux-table--is-fill-width': this.fillWidth || this.loading || this.dataItems.length === 0,
-                    'mux-table--is-hoverable': this.hoverable
-            },
+            class: { 'mux-table--is-fill-width': this.fillWidth || this.loading || this.dataItems.length === 0, 'mux-table--is-hoverable': this.hoverable },
             attrs: {
                 skin: this.skin,
                 size: this.size,

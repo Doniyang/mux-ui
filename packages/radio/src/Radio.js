@@ -1,5 +1,6 @@
 export default {
   name: 'v-radio',
+  model:{event:'change'},
   props: {
     label: {
       type: String,
@@ -29,6 +30,7 @@ export default {
   },
   data () {
     return {
+      radioInGroup:false,
       defaultChecked: false,
       uuid: Math.random().toString(32).substring(4, 9).toUpperCase()
     }
@@ -56,6 +58,9 @@ export default {
     updateCheckedState (value) {
       return this.defaultChecked = value === this.radioValue
     },
+    setRadioInGroup(flag){
+      this.radioInGroup = flag
+    },
     genRadioWrapContext () {
       return this.$createElement('div', {
         staticClass: 'mux-radio-box'
@@ -79,8 +84,8 @@ export default {
             e.stopPropagation()
             const target = e.target || e.srcElement
             if (target.checked) {
-              this.$emit('input', target.value)
-              this.$parent.$emit('input', target.value)
+              this.$emit('change', target.value)
+              if(this.radioInGroup){this.$parent.$emit('change', target.value)}
             }
           }
         }

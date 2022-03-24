@@ -1,6 +1,6 @@
 export default {
     name: 'VPanel',
-    inject: ['smartTable'],
+    inject: ['updateClientHeight'],
     props: {
         osnap: {
             type: Number,
@@ -15,46 +15,43 @@ export default {
             default: false
         }
     },
-    created() {
+    created () {
         const _this = this
-        window.addEventListener('resize', function onResize(e) {
+        window.addEventListener('resize', function onResize (e) {
             e.stopPropagation()
-            _this.updateClientHeight()
+            _this.updateParentClientHeight()
         }, false)
     },
-    updated() {
+    updated () {
         this.$nextTick(() => {
-            this.updateClientHeight()
+            this.updateParentClientHeight()
         })
     },
-    mounted() {
+    mounted () {
         this.$nextTick(() => {
-            this.updateClientHeight()
+            this.updateParentClientHeight()
         })
     },
-    beforeDestroy() {
+    beforeDestroy () {
         const _this = this
-        window.removeEventListener('resize', function onResize(e) {
+        window.removeEventListener('resize', function onResize (e) {
             e.stopPropagation()
-            _this.updateClientHeight()
+            _this.updateParentClientHeight()
         }, false)
     },
     methods: {
-        updateClientHeight() {
+        updateParentClientHeight () {
             const { height } = this.$el.getBoundingClientRect()
-            this.smartTable.setClientHeight(this.osnap, height)
+            this.updateClientHeight(this.osnap, height)
         }
     },
-    render(h) {
+    render (h) {
         return h(this.tag, {
-            class: {
-                'mux-table-panel--is-full': this.full,
-                    'mux-table-panel--has-free-scrollbar': this.hasXYBar
-            },
+            class: { 'mux-table-panel--is-full': this.full, 'mux-table-panel--has-free-scrollbar': this.hasXYBar },
             on: {
                 resize: e => {
                     e.stopPropagation()
-                    this.updateClientHeight()
+                    this.updateParentClientHeight()
                 }
             }
         }, this.$slots.default)

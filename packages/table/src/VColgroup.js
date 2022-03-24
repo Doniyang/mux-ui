@@ -25,19 +25,21 @@ export default {
         }
     },
     name: 'VColgroup',
-    render(h, context) {
+    render (h, context) {
         const { props } = context
-        return h('colgroup', {}, [
-            props.selectable ? h('col', {
-                staticStyle: {
-                    width: Table.pixel(props.checkboxSize)
-                },
-                attrs: {
-                    name: 'col-checkbox',
-                    align: 'center',
-                    width: props.checkboxSize
-                }
-            }) : null,
+        return h('colgroup', null, [
+            props.selectable
+                ? h('col', {
+                    staticStyle: {
+                        width: Table.pixel(props.checkboxSize)
+                    },
+                    attrs: {
+                        name: 'col-checkbox',
+                        align: 'center',
+                        width: props.checkboxSize
+                    }
+                })
+                : null,
             props.columns.map((d, dx) => h('col', {
                 staticStyle: {
                     width: Table.pixel(d.width)
@@ -48,16 +50,18 @@ export default {
                     width: d.width
                 }
             })),
-            props.gutter ? h('col', {
-                staticStyle: {
-                    width: Table.pixel(props.barWidth)
-                },
-                attrs: {
-                    name: 'col-gutter',
-                    align: 'center',
-                    width: props.barWidth
-                }
-            }) : null
+            props.gutter
+                ? h('col', {
+                    staticStyle: {
+                        width: Table.pixel(props.barWidth + 1)
+                    },
+                    attrs: {
+                        name: 'col-gutter',
+                        align: 'center',
+                        width: props.barWidth + 1
+                    }
+                })
+                : null
         ].flat())
     }
 }
