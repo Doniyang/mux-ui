@@ -73,22 +73,13 @@ export default {
         }
     },
     methods: {
-        handleCloseClick (e) {
-            const { target, value, commit } = e
-            const parent = target.parentElement || target.parentNode
-            if (commit) {
-                const previous = target.previousSibling || target.previousElementSibling
-                previous.innerText = value
-            }
-            parent.ariaModal = 'false'
-        },
         handleClick (e, cfg, item) {
             if (cfg.clickable) {
                 this.$emit('click:cell', item)
             }
             if (cfg.editable) {
                 const target = e.currentTarget || e.target || e.srcElement
-                target.ariaModal = 'true'
+                target.setAttribute('data-editor-dialog','true')
             }
         },
         getComputedStyle (row, props) {
@@ -173,6 +164,7 @@ export default {
                     ariaColIndex: dx,
                     ariaModal: 'false'
                 },
+                attrs:{"data-editor-dialog":"false"},
                 on: {
                     click: e => {
                         this.handleClick(e, item, row)
@@ -212,16 +204,13 @@ export default {
         genEditContext (row, field, index, max) {
             return this.$createElement(Editor, {
                 props: {
-                    value: row,
-                    fieldKey: field,
+                    cell: row,
+                    field: field,
                     position: index === 0 ? 'left' : index === max ? 'right' : 'center'
                 },
                 on: {
-                    commit: data => {
-                        this.$emit('cell:input', data)
-                    },
-                    close: e => {
-                        this.handleCloseClick(e)
+                    submit: (row ,key,value)=> {
+                        this.$emit('cell:input', row,key,value)
                     }
                 }
             })

@@ -14,6 +14,10 @@ export default {
       type: Boolean,
       default: false
     },
+    ghost:{
+      type:Boolean,
+      default:false
+    },
     rounded: {
       type: Boolean,
       default: false
@@ -37,7 +41,8 @@ export default {
     const classMap = [
       "mux-btn-" + context.props.color,
       "mux-btn-" + context.props.size,
-      {
+      {  
+        "mux-btn--is-ghost":context.props.ghost,
         "mux-btn--is-disabled": context.props.disabled,
         "mux-btn--is-block": context.props.block,
         "mux-btn--is-plain": context.props.plain,

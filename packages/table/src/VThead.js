@@ -61,6 +61,7 @@ export default {
             const target = e.currentTarget || e.target || e.srcElement
             const description = target.ariaSort === 'desc' ? 'asc' : 'desc'
             target.ariaSort = description
+            target.setAttribute('data-sort',description)
             this.$emit('sort:update', {
                 sortKey: data.field,
                 sortDirection: description
@@ -108,7 +109,7 @@ export default {
         },
         genColContext (item, key) {
             return this.$createElement('th', {
-                staticClass: 'text-align-' + (item.align || 'center'),
+                staticClass: 'mux-text-' + (item.align || 'center'),
                 style: item.style,
                 class: item.class,
                 domProps: {
@@ -128,6 +129,9 @@ export default {
                 domProps: {
                     ariaSort: 'none'
                 },
+                attrs:{
+                    "data-sort":'none'
+                },
                 on: {
                     click: e => {
                         this.handleSort(e, item)
@@ -140,7 +144,7 @@ export default {
         },
         genColCheckboxContext () {
             return this.$createElement('th', {
-                staticClass: 'text-align-center',
+                staticClass: 'mux-text-center',
                 class: this.checkboxClass,
                 attrs: {
                     rowspan: Math.max(this.colgroup.length, 1)

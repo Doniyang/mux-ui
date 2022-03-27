@@ -435,8 +435,8 @@ export default {
                     'click:cell': item => {
                         this.$emit('click:cell', item)
                     },
-                    'cell:input': data => {
-                        this.$emit('input:cell', data)
+                    'cell:input': (row ,key,value) => {
+                        this.$emit('input:cell', row ,key,value)
                     },
                     'row:click': index => {
                         this.rowSelectIndex = index

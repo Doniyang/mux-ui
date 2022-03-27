@@ -1,3 +1,4 @@
+import Button from "../../button"
 export default {
     name: 'v-editor',
     props: {
@@ -8,65 +9,47 @@ export default {
                 return ['left', 'center', 'right'].indexOf(v) > -1
             }
         },
-        value: {
+        cell: {
             type: [Array, Object],
             default: () => []
         },
-        fieldKey: {
+        field: {
             type: [Number, String]
         }
     },
     data () {
         return {
-            editVal: ''
-        }
-    },
-    beforeMount () {
-        this.editVal = this.value[this.fieldKey]
-    },
-    watch: {
-        value: {
-            handler (val) {
-                this.editVal = val[this.fieldKey]
-            },
-            deep: true,
-            immediate: false
+            edit: ''
         }
     },
     methods: {
         handleInput (e) {
             const target = e.currentTarget || e.target || e.srcElement
-            this.editVal = target.value
+            this.edit = target.value
         },
         handleClick (e, isCommit) {
             e.stopPropagation()
-            if (isCommit) {
-                this.$emit('commit', {
-                    data: this.value,
-                    key: this.fieldKey,
-                    value: this.editVal
-                })
+           const parent = this.$el.parentElement || this.$el.parentNode
+           parent.setAttribute('data-editor-dialog','false')
+           if(isCommit){
+            if(this.edit){this.$set(this.cell, this.field, this.edit)}
+              this.$emit('submit',this.cell,this.field,this.edit)
             }
-            this.$emit('close', {
-                target: this.$el,
-                value: this.editVal,
-                commit: isCommit
-            })
         },
         genEditorContext () {
             return this.$createElement('div', {
-                staticClass: 'h-box item-align-center'
+                staticClass: 'mux-editor-wrap'
             }, [
                 this.genInputContext(),
-                this.genBtnContext(true, 'primary', 'check'),
-                this.genBtnContext(false, 'error', 'close')
+                this.genBtnContext(true, 'primary', '确定'),
+                this.genBtnContext(false, 'error', '取消')
             ])
         },
         genInputContext () {
             return this.$createElement('input', {
                 staticClass: 'mux-editor-field',
                 domProps: {
-                    value: this.editVal
+                    value: this.cell[this.field]
                 },
                 on: {
                     input: e => {
@@ -78,32 +61,25 @@ export default {
                 }
             })
         },
-        genBtnContext (env, color, icon) {
-            return this.$createElement('a-button', {
-                class: { 'mx-2': env },
+        genBtnContext (isCommit, color, text) {
+            return this.$createElement(Button, {
                 props: { 
                     ghost: true,
                     size: 'small',
-                    type: color
+                    color: color
                 },
                 on: {
                     click: e => {
-                        this.handleClick(e, env)
+                        this.handleClick(e, isCommit)
                     }
                 }
-            }, [this.genIconContext(icon)])
-        },
-        genIconContext (icon) {
-            return this.$createElement('a-icon', { type: icon }, null)
-        }
+            }, text)
+        }    
     },
     render (h) {
         return h('div', {
             staticClass: 'component mux-editor',
-            class: ['mux-editor--is-' + this.position],
-            domProps: {
-                ariaLabel: this.editVal
-            }
-        }, [this.genEditorContext()])
+            class: ['mux-editor--is-' + this.position]
+        },[this.genEditorContext()])
     }
 }

@@ -19,6 +19,7 @@
 @mixin btn-color($map, $default: #ffffff) {
   @each $name, $colors in $map {
     $plain: selector.append(&, "--is-plain");
+    $ghost: selector.append(&, "--is-ghost");
     &-#{$name} {
       background-color: list.nth($colors, 1);
       color: list.nth($colors, 2);
@@ -27,7 +28,10 @@
         style: solid;
         color: list.nth($colors, 3);
       };
-   
+      &#{$ghost}{
+        background-color: transparent !important;
+        color: list.nth($colors, 4);
+      }     
       &#{$plain} {
         background-color: $default !important;
         color: list.nth($colors, 4);
