@@ -1,15 +1,20 @@
 <template>
-	<section class="mux-picker-wrapper">
-		
+	<section class="component mux-picker">
 		 	<slot name="header">
 		 		 <header class="mux-picker-header">
-		 			<div class="mux-picker-left"></div>
-		 			<div class=""></div>
-		 			<div></div>
+		 			<div class="mux-picker-left">取消</div>
+		 			<div class="mux-picker-title">头部</div>
+		 			<div class="mux-picker-right">确定</div>
 		 		</header>
 		 	</slot>		 
-		 <main>
-		 	<div></div>
+		 <main class="mux-picker-body">
+		 	  <div class="mux-divider--is-top"></div>
+				<div class="mux-picker-wrap">
+					   <ul class="">
+							 <li></li>
+						 </ul>
+				</div>
+				<div class="mux-divider--is-bottom"></div>
 		 </main>
 	</section>
 </template>
@@ -24,7 +29,5 @@
             width: 100%;
             overflow: hidden;
 		}
-
-		
 	}
 </style>

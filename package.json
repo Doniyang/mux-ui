@@ -1,6 +1,6 @@
 {
   "name": "@niyang-es/mux-ui",
-  "version": "1.0.8",
+  "version": "1.0.12",
   "description": "A Vue.js project",
   "author": "niyang",
   "private": false,
@@ -16,6 +16,7 @@
     "sass": "^1.34.1"
   },
   "peerDependencies": {
+    "@niyang-es/iroll": "latest",
     "@niyang-es/toolkit": "latest"
   },
   "engines": {
@@ -27,7 +28,10 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "files": ["dist","libs"],
+  "files": [
+    "dist",
+    "libs"
+  ],
   "style": "dist/style/index.css",
   "main": "libs/index.js",
   "repository": {
@@ -43,6 +47,5 @@
   "bugs": {
     "url": "https://github.com/Doniyang/mux-ui/issues"
   },
-  "homepage": "https://github.com/Doniyang/mux-ui#readme",
-  "dependencies": {}
+  "homepage": "https://github.com/Doniyang/mux-ui#readme"
 }

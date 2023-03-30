@@ -18,6 +18,7 @@ export { default as Tab } from './tab';
 export { default as TabItem } from './tab-item';
 export { default as Table } from './table';
 export { default as Tree } from './tree'
+export { default as Picker } from './picker'
 
 // export { default as Toast } from './toast'
 // export { default as Upload } from './upload'

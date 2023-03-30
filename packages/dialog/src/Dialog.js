@@ -1,4 +1,4 @@
-import Matte from "../../matte"
+import Matte from "../../overlay"
 
 export default {
   props: {
@@ -38,21 +38,21 @@ export default {
           zIndex:this.nextZIndex
         }
       }, [
-        this.genMatteContext(), 
+        this.genOverlayContext(), 
         this.genContext('header', [this.genTitleContext()]), 
         this.genContext('main', [this.genSlotContext('default', '')]), 
         this.genContext('footer', [this.genSlotContext('footer', '')])
       ])
     },
-    genMatteContext () {
+    genOverlayContext () {
       return this.$createElement(Matte, {
         props: {
           zIndex: this.zIndex,
           closeOnMaskClick: this.closeOnMaskClick
         },
         on: {
-          layerChange: zIndex => this.nextZIndex = zIndex,
-          matteClick: e => {
+          change: zIndex => this.nextZIndex = zIndex,
+          close: e => {
             e.stopPropagation()
             this.$emit('input',false)
           }

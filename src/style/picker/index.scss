@@ -1,0 +1,107 @@
+@use '../variable.scss' as *;
+@use '../mixin.scss' as fn;
+.component{
+  @include fn.prefix($prefix, "-picker") {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    @include fn.subclass('-header'){
+       display: flex;
+       overflow: hidden;
+       align-items: center;
+    }
+     
+    @include fn.subclass('-cancel'){
+      padding: 0 0 0 15px;
+      overflow: hidden;
+    }
+
+    @include fn.subclass('-confirm'){
+      padding: 0 15px 0 0;
+      overflow: hidden;
+    }
+    
+    @include fn.subclass('-title'){
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+    }
+    
+    @include fn.subclass('-body'){
+      position: relative;
+      overflow: hidden;
+    }
+
+    @include fn.subclass('-wrap'){
+        display: flex;
+        height: 264px;
+        cursor: grab;    
+    }
+    
+    @include fn.subclass('-panel'){
+      position: relative;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @include fn.subclass('-panel-wrap'){
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 44px; 
+      transform: translateY(-50%);
+      touch-action: none;
+    }
+
+    @include fn.subclass('-roll'){
+      display: block;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      padding-block-start: 0;
+    }
+    
+    @include fn.subclass('-roll-item'){
+      list-style: none;
+      position: relative;
+      text-align: center;
+      height: 100%;
+      line-height: 44px;
+    }
+    
+    @include fn.subclass('-divider'){
+      position: absolute;
+      top: 50%;
+      right: 0;
+      left: 0;
+      z-index: 2;
+      transform: translateY(-50%);
+      pointer-events: none; 
+      border: 1px solid #DEDEDE;
+      border-left: none;
+      border-right: none;
+      height: 44px;
+    }
+
+    @include fn.subclass('-mask'){
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .4)), linear-gradient(0deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .4));
+      background-repeat: no-repeat;
+      background-position: top,bottom;
+      transform: translateZ(0);
+      pointer-events: none;
+      background-size: 100% 110px;
+    }
+
+  }
+}

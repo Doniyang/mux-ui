@@ -1,7 +1,7 @@
 import Maskable from '../../maskable/Maskable'
 
 export default {
-  name: 'v-matte',
+  name: 'v-overlay',
   props: {
     zIndex: {
       type: Number,
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     setZIndex(zIndex) {
-      this.$emit('layerChange', zIndex)
+      this.$emit('change', zIndex)
     },
     close() {
       this.mask.close(this.uuid)
@@ -45,7 +45,7 @@ export default {
       e.stopPropagation()
       if (this.closeOnMaskClick) {
         this.mask.close(this.uuid)
-        this.$emit('matteClick', e)
+        this.$emit('close', e)
       }
     }
   },
