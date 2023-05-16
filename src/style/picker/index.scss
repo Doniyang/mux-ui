@@ -82,9 +82,12 @@
       z-index: 2;
       transform: translateY(-50%);
       pointer-events: none; 
-      border: 1px solid #DEDEDE;
-      border-left: none;
-      border-right: none;
+      border: {
+        top: 1px solid #DEDEDE;
+        bottom: 1px solid #DEDEDE;
+        left: none;
+        right:none;       
+      };
       height: 44px;
     }
 
