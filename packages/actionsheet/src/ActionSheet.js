@@ -1,4 +1,4 @@
-import Matte from '../../matte'
+import Overlay from '../../overlay'
 import Button from '../../button'
 export default {
   name: 'v-actionsheet',
@@ -39,7 +39,7 @@ export default {
       }, [this.genWrapContext(), this.genMatteContext()])
     },
     genMatteContext () {
-      return this.$createElement(Matte, {
+      return this.$createElement(Overlay, {
         props: {
           zIndex: this.zIndex,
           closeOnMaskClick: this.closeOnMaskClick

@@ -2,19 +2,23 @@ import { IRoll } from "@niyang-es/iroll";
 export default {
   name:'Panel',
   props:{
-    dataItems:{
+    columns:{
       type:Array,
       default:()=>[]
     },
-    level:{
+    colIndex:{
       type:Number,
       default:0
+    },
+    alias:{
+      type:Object,
+      default:()=>({key:'key',value:'value'})
     }
   },
   data(){
     return {
       roll:null,
-      selectionIndex: 0
+      rowIndex: 0
     }
   },
   mounted(){
@@ -29,8 +33,9 @@ export default {
   methods:{
      onScrollStop(e,pos){
         let absY = Math.abs(pos.y)
-        this.selectionIndex = Math.round (absY / 44);
-        this.roll.scrollToElement('.mux-picker-roll-item[aria-current="'+this.selectionIndex+'"]',300)   
+        this.rowIndex = Math.round (absY / 44);
+        this.roll.scrollToElement('.mux-picker-roll-item[aria-rowindex="'+this.rowIndex+'"]',300)
+        this.$emit('columnchange',this.rowIndex,this.colIndex)
      },
      genPanelContext(){
        return this.$createElement('div',{
@@ -42,13 +47,17 @@ export default {
           staticClass:'mux-picker-roll',
           attrs:{ role: 'roll' },
           domProps: { role: 'roll' },                   
-        },this.dataItems.map(data=>this.genPanelScrollItemContext(data))) 
+        },this.columns.map((col,index)=>this.genPanelScrollItemContext(col,index))) 
      },
-     genPanelScrollItemContext(data){
+     genPanelScrollItemContext(column,rowIndex){
       return this.$createElement('li',{
-        staticClass:'mux-picker-roll-item'
-      },data.label)
-     }  
+        staticClass:'mux-picker-roll-item',
+        domProps:{ ariaRowIndex:  rowIndex, ariaColIndex: this.colIndex }
+      },this.updatePanelScrollContent(column))
+     },
+     updatePanelScrollContent(data){
+        return data[this.alias.value]?data[this.alias.value] : data
+     }
   },
   render(h){
      return h('div',{

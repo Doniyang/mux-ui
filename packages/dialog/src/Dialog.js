@@ -1,4 +1,4 @@
-import Matte from "../../overlay"
+import Overlay from "../../overlay"
 
 export default {
   props: {
@@ -45,7 +45,7 @@ export default {
       ])
     },
     genOverlayContext () {
-      return this.$createElement(Matte, {
+      return this.$createElement(Overlay, {
         props: {
           zIndex: this.zIndex,
           closeOnMaskClick: this.closeOnMaskClick

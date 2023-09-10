@@ -11,6 +11,8 @@
        display: flex;
        overflow: hidden;
        align-items: center;
+       background: #F4F7FC;
+       height: 60px;
     }
      
     @include fn.subclass('-cancel'){
@@ -27,11 +29,14 @@
       flex: 1;
       padding: 10px 0;
       text-align: center;
+      font-size: 18px;
+      font-weight: 500;
     }
     
     @include fn.subclass('-body'){
       position: relative;
       overflow: hidden;
+      background: #FFFFFF;
     }
 
     @include fn.subclass('-wrap'){
@@ -72,6 +77,9 @@
       text-align: center;
       height: 100%;
       line-height: 44px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     
     @include fn.subclass('-divider'){
