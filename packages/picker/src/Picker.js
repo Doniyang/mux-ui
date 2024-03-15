@@ -16,10 +16,6 @@ export default {
       type:Array,
       default:()=>[]
     },
-    visible:{ 
-      type:Boolean,
-      default:false
-    },
     alias:{
       type:Object,
       default:()=>({key:'key',value:'value'})
@@ -34,12 +30,21 @@ export default {
     }
   },
   beforeMount(){
-     this.updateStorage(this.columns)
+    this.updateStorage(this.columns)
+    this.updateSelection(this.value)
+  },
+  beforeDestroy(){
+    this.selection = []
+    this.storage = []
   },
   watch:{
-    columns(val){ this.updateStorage(val) },
-    visible(nv,ov){
-      if(nv!=ov){ this.updateState(nv) }
+    columns:{
+      handler(val){this.updateStorage(val)},
+      deep:true
+    },
+    value:{
+      handler(val){this.updateSelection(val)},
+      deep:true
     }
   },
   methods:{
@@ -64,19 +69,19 @@ export default {
     },
     handleClick(e,evt){
       e.stopPropagation()
-      this.isVisible = false
+      this.updateState(false)
       this.close()
       if(evt==='change'){
-        this.$emit(evt,this.getValue()) 
+        this.$emit(evt, this.getIndexArrayOfSelection())
       } else{
         this.$emit(evt) 
       } 
     },
-    getValue(){
-      return [this.selection,Array.from({length:this.storage.length},()=>0)].flat().slice(0,this.storage.length).map((row,col)=>{
-        let data = this.storage[col][row]
-        return data[this.alias.key]?data[this.alias.key]:data
-      })
+    updateSelection(selection){
+       this.selection = selection
+    },
+    getIndexArrayOfSelection(){
+       return [this.selection,Array.from({length:this.storage.length},()=>0)].flat().slice(0,this.storage.length) 
     },
     genOverlayContext () {
       return this.$createElement(Overlay, {
@@ -94,10 +99,28 @@ export default {
         ref:'PickerMask'
       })
     },
+    genFieldContext(){
+      return this.$createElement('div',{
+        staticClass:'mux-picker-field',
+        on: {
+          click: e => { 
+            e.stopPropagation()
+            this.updateState(true)
+          }
+        }
+      },[ this.$scopedSlots.default?this.$scopedSlots.default():null])
+    },
+    genFadeContext(){
+      return this.$createElement('transition',{
+        props:{
+          name:'fade'
+        }
+     },[this.isVisible?this.genPickerContext():null]) 
+    },
     genPickerContext(){
         return this.$createElement('div',{
           style:{zIndex:this.nextZIndex },
-          staticClass:'component mux-picker'
+          staticClass:'mux-picker-container'
         },[this.genOverlayContext(), this.genPickerHeaderContext(),this.genPickerContentContext()]) 
     },
     genPickerHeaderContext(){
@@ -123,11 +146,14 @@ export default {
         props:{
           columns: cols,
           colIndex: dx,
-          alias:this.alias
+          alias:this.alias,
+          selectionIndex:this.selection[dx]
         },
         on:{
           columnchange: (rowIndex,colIndex) => {
-             this.selection.splice(colIndex,1,rowIndex)
+            let selection = this.getIndexArrayOfSelection()
+            selection.splice(colIndex,1,rowIndex)
+            this.selection = selection
              this.$emit('change:column',rowIndex,colIndex)
            }
         }
@@ -172,10 +198,8 @@ export default {
     }
   },
   render(h){
-     return h('transition',{
-        props:{
-          name:'fade'
-        }
-     },[this.isVisible?this.genPickerContext():null]) 
+     return h('div',{
+      staticClass:'component mux-picker'
+     },[this.genFieldContext(),this.genFadeContext()])
   }
 }

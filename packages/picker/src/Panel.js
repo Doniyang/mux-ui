@@ -13,16 +13,20 @@ export default {
     alias:{
       type:Object,
       default:()=>({key:'key',value:'value'})
+    },
+    selectionIndex:{
+      type:Number,
+      default:0
     }
   },
   data(){
     return {
-      roll:null,
-      rowIndex: 0
+      roll:null
     }
   },
   mounted(){
      this.roll = new IRoll(this.$el.firstElementChild, {})
+     this.scrollTo(this.selectionIndex)
      this.roll.on("scroll:end",this.onScrollStop)
   },
   beforeDestroy(){
@@ -33,9 +37,12 @@ export default {
   methods:{
      onScrollStop(e,pos){
         let absY = Math.abs(pos.y)
-        this.rowIndex = Math.round (absY / 44);
-        this.roll.scrollToElement('.mux-picker-roll-item[aria-rowindex="'+this.rowIndex+'"]',300)
-        this.$emit('columnchange',this.rowIndex,this.colIndex)
+        let rowIndex = Math.round (absY / 44);
+        this.scrollTo(rowIndex)
+        this.$emit('columnchange',rowIndex,this.colIndex)
+     },
+     scrollTo(rowIndex){
+        this.roll.scrollTo(0, rowIndex * 44 * -1,300)  
      },
      genPanelContext(){
        return this.$createElement('div',{

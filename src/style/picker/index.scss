@@ -1,51 +1,63 @@
 @use '../variable.scss' as *;
 @use '../mixin.scss' as fn;
-.component{
-  @include fn.prefix($prefix, "-picker") {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
 
-    @include fn.subclass('-header'){
-       display: flex;
-       overflow: hidden;
-       align-items: center;
-       background: #F4F7FC;
-       height: 60px;
+.component {
+  @include fn.prefix($prefix, "-picker") {
+    position: relative;
+    margin: 0;
+    padding: 0;
+
+    @include fn.subclass('-field') {
+      min-height: 0;
     }
-     
-    @include fn.subclass('-cancel'){
+
+    @include fn.subclass('-container') {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+
+    @include fn.subclass('-header') {
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      background: #F4F7FC;
+      height: 60px;
+    }
+
+    @include fn.subclass('-cancel') {
       padding: 0 0 0 15px;
       overflow: hidden;
     }
 
-    @include fn.subclass('-confirm'){
+    @include fn.subclass('-confirm') {
       padding: 0 15px 0 0;
       overflow: hidden;
     }
-    
-    @include fn.subclass('-title'){
+
+    @include fn.subclass('-title') {
       flex: 1;
       padding: 10px 0;
       text-align: center;
       font-size: 18px;
       font-weight: 500;
     }
-    
-    @include fn.subclass('-body'){
+
+    @include fn.subclass('-body') {
       position: relative;
       overflow: hidden;
       background: #FFFFFF;
     }
 
-    @include fn.subclass('-wrap'){
-        display: flex;
-        height: 264px;
-        cursor: grab;    
+    @include fn.subclass('-wrap') {
+      display: flex;
+      height: 264px;
+      cursor: grab;
     }
-    
-    @include fn.subclass('-panel'){
+
+    @include fn.subclass('-panel') {
       position: relative;
       flex: 1;
       height: 100%;
@@ -53,25 +65,25 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    @include fn.subclass('-panel-wrap'){
+    @include fn.subclass('-panel-wrap') {
       position: absolute;
       top: 50%;
       left: 0;
       right: 0;
-      height: 44px; 
+      height: 44px;
       transform: translateY(-50%);
       touch-action: none;
     }
 
-    @include fn.subclass('-roll'){
+    @include fn.subclass('-roll') {
       display: block;
       list-style: none;
       margin: 0;
       padding: 0;
       padding-block-start: 0;
     }
-    
-    @include fn.subclass('-roll-item'){
+
+    @include fn.subclass('-roll-item') {
       list-style: none;
       position: relative;
       text-align: center;
@@ -81,25 +93,28 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-    
-    @include fn.subclass('-divider'){
+
+    @include fn.subclass('-divider') {
       position: absolute;
       top: 50%;
       right: 0;
       left: 0;
       z-index: 2;
       transform: translateY(-50%);
-      pointer-events: none; 
+      pointer-events: none;
+
       border: {
         top: 1px solid #DEDEDE;
         bottom: 1px solid #DEDEDE;
         left: none;
-        right:none;       
-      };
+        right: none;
+      }
+
+      ;
       height: 44px;
     }
 
-    @include fn.subclass('-mask'){
+    @include fn.subclass('-mask') {
       position: absolute;
       top: 0;
       left: 0;
@@ -108,7 +123,7 @@
       height: 100%;
       background-image: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .4)), linear-gradient(0deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .4));
       background-repeat: no-repeat;
-      background-position: top,bottom;
+      background-position: top, bottom;
       transform: translateZ(0);
       pointer-events: none;
       background-size: 100% 110px;
